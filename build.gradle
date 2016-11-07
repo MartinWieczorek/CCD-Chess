@@ -7,9 +7,22 @@
  * user guide available at https://docs.gradle.org/2.14.1/userguide/tutorial_java_projects.html
  */
 
+buildscript{
+
+	repositories {
+        jcenter()
+	}
+
+	dependencies {
+		classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
+	}
+
+}
+
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -17,22 +30,23 @@ repositories {
     // You can declare any Maven/Ivy/file repository here.
 
     mavenCentral()
-    
+
     maven{
     	url "http://bits.netbeans.org/maven2"
     }
-    
+
     maven{
     	url "http://download.osgeo.org/webdav/geotools"
     }
-    
+
 }
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
+
     // The production code uses the SLF4J logging API at compile time
     compile 'org.slf4j:slf4j-api:1.7.21'
-    
+
     compile group: 'org.jdesktop', name: 'appframework', version: '1.0.3'
     compile group: 'org.jdesktop', name: 'swing-layout', version: '1.0.2'
     compile group: 'org.jdesktop', name: 'swing-worker', version: '1.1'
@@ -52,17 +66,34 @@ test {
 sourceSets {
     main {
         java {
-            srcDirs = ['src']
+            srcDirs = ['src/main/java']
         }
-   
-    	resources {
-            srcDirs = ['resources']
+        resources {
+           	srcDirs = ['src/main/resources']
         }
     }
-    
+
     test {
 		java {
 			srcDirs=['test']
 		}
+	}
+}
+
+shadowJar {
+	baseName = 'shadow'
+	classifier = null
+
+  	configurations = [project.configurations.compile]
+}
+
+def manifestClasspath = configurations.compile.collect { it.getName() }.join(',')
+
+jar{
+	manifest{
+		attributes(
+			'Main-Class': 'core.JChessApp',
+			'Class-Path': manifestClasspath
+		)
 	}
 }
