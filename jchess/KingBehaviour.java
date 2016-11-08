@@ -52,7 +52,7 @@ public class KingBehaviour implements PieceBehaviour {
             {
                 boolean canCastling = true;
 
-                Rook rook = (Rook) chessboard.squares[0][square.pozY].piece;
+                Piece rook = chessboard.squares[0][square.pozY].piece;
                 if (!rook.wasMotion)
                 {
                     for (int i = square.pozX - 1; i > 0; i--)
@@ -75,7 +75,7 @@ public class KingBehaviour implements PieceBehaviour {
                     && chessboard.squares[7][square.pozY].piece.name.equals("Rook"))
             {
                 boolean canCastling = true;
-                Rook rook = (Rook) chessboard.squares[7][square.pozY].piece;
+                Piece rook = chessboard.squares[7][square.pozY].piece;
                 if (!rook.wasMotion)
                 {//if king was not moves before and is not checked
                     for (int i = square.pozX + 1; i < 7; i++)
@@ -446,7 +446,7 @@ public class KingBehaviour implements PieceBehaviour {
         }
 
         // King
-        King otherKing;
+        Piece otherKing;
         if (square.piece == chessboard.kingWhite)
         {
             otherKing = chessboard.kingBlack;

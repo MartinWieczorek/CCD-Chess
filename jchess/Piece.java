@@ -26,6 +26,9 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import jchess.Player.colors;
+
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -33,43 +36,64 @@ import java.awt.image.BufferedImage;
 /**
 Class to represent a piece (any kind) - this class should be extended to represent pawn, bishop etc.
  */
-public abstract class Piece
+public class Piece
 {
-
     Chessboard chessboard; // <-- this relations isn't in class diagram, but it's necessary :/
-    public boolean wasMotion; //dirty fix
+    public boolean wasMotion;
     public Square square;
     public Player player;
-    String name;
-    protected String symbol;
-    protected static Image imageBlack;// = null;
-    protected static Image imageWhite;// = null;
+    public String name;
+    public String symbol;
     protected PieceBehaviour behaviour;
     public Image orgImage;
     public Image image;
-    public static short value = 0;
+    public short value;
 
-    Piece(Chessboard chessboard, Player player, PieceBehaviour behaviour)
+    public Piece(Chessboard chessboard, Player player, PieceBehaviour behaviour, String name)
     {
     	this.behaviour = behaviour;
         this.chessboard = chessboard;
         this.player = player;
-        if (player.color == player.color.black)
+        this.name = name;
+        this.setImage();
+        this.orgImage = image;
+        
+        if(name=="Bishop")
         {
-            image = imageBlack;
+        	this.symbol = "B";
+        	this.value = 3;
         }
-        else
+        if(name=="Knight")
         {
-            image = imageWhite;
+        	this.symbol = "N";
+        	this.value = 3;
         }
-        this.name = this.getClass().getSimpleName();
-
+        if(name=="Pawn")
+        {
+        	this.symbol = "";
+        	this.value = 1;
+        }
+        if(name=="Queen")
+        {
+        	this.symbol = "Q";
+        	this.value = 9;
+        }
+        if(name=="Rook")
+        {
+        	this.symbol = "R";
+        	this.value = 5;
+        }
+        if(name=="King")
+        {
+        	this.symbol = "K";
+        	this.value = 99;
+        }
     }
     /* Method to draw piece on chessboard
      * @graph : where to draw
      */
 
-    final void draw(Graphics g)
+    public final void draw(Graphics g)
     {
         try
         {
@@ -79,8 +103,8 @@ public abstract class Piece
             int height = this.chessboard.get_square_height();
             int x = (this.square.pozX * height) + topLeft.x;
             int y = (this.square.pozY * height) + topLeft.y;
-            float addX = (height - image.getWidth(null)) / 2;
-            float addY = (height - image.getHeight(null)) / 2;
+            //float addX = (height - image.getWidth(null)) / 2;
+            //float addY = (height - image.getHeight(null)) / 2;
             if (image != null && g != null)
             {
                 Image tempImage = orgImage;
@@ -104,19 +128,16 @@ public abstract class Piece
         }
     }
 
-    void clean()
-    {
-    }
+    //void clean(){}
 
     /** method check if Piece can move to given square
      * @param square square where piece want to move (Square object)
      * @param allmoves  all moves which can piece do
      * */
-    boolean canMove(Square square, ArrayList allmoves)
+    public boolean canMove(Square square, ArrayList<Square> allmoves)
     {
-        //throw new UnsupportedOperationException("Not supported yet.");
-        ArrayList moves = allmoves;
-        for (Iterator it = moves.iterator(); it.hasNext();)
+        ArrayList<Square> moves = allmoves;
+        for (Iterator<Square> it = moves.iterator(); it.hasNext();)
         {
             Square sq = (Square) it.next();//get next from iterator
             if (sq == square)
@@ -127,32 +148,19 @@ public abstract class Piece
         return false;//if not, piece cannot move
     }
 
-    void setImage()
+    public void setImage()
     {
-        if (this.player.color == this.player.color.black)
+    	if (this.player.color == colors.black)
         {
-            image = imageBlack;
+            image = GUI.loadImage(name+"-B.png");
         }
         else
         {
-            image = imageWhite;
+            image = GUI.loadImage(name+"-W.png");
         }
     }
-    //void setImages(String white, String black) {
-        /* method set image to black or white (depends on player color)
-     * @white: String with name of image with white piece
-     * @black: String with name of image with black piece
-     * */
-    //    this.imageBlack = black;
-    //     this.imageWhite = white;
-    //     if(player.color == player.color.black) {
-    //         this.image = GUI.loadImage(imageBlack);
-    //     } else {
-    //          this.image = GUI.loadImage(imageWhite);
-    //     }
-    //  }/*--endOf-setImages(String white, String black)--*/
 
-    public ArrayList allMoves() {
+    public ArrayList<Square> allMoves() {
     	return this.behaviour.getMoves(this.chessboard, this.square, this.player);
     }
 
@@ -163,5 +171,61 @@ public abstract class Piece
     public String getSymbol()
     {
         return this.symbol;
+    }
+    public int isCheckmatedOrStalemated()
+    {
+        /*
+         *returns: 0-nothing, 1-checkmate, 2-stalemate
+         */
+        if (this.allMoves().size() == 0)
+        {
+            for (int i = 0; i < 8; ++i)
+            {
+                for (int j = 0; j < 8; ++j)
+                {
+                    if (chessboard.squares[i][j].piece != null
+                            && chessboard.squares[i][j].piece.player == this.player
+                            && chessboard.squares[i][j].piece.allMoves().size() != 0)
+                    {
+                        return 0;
+                    }
+                }
+            }
+
+            if (this.isChecked())
+            {
+                return 1;
+            }
+            else
+            {
+                return 2;
+            }
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    /** Method to check will the king be safe when move
+     *  @return bool true if king is save, else returns false
+     */
+    public boolean willBeSafeWhenMoveOtherPiece(Square sqIsHere, Square sqWillBeThere) //long name ;)
+    {
+        Piece tmp = sqWillBeThere.piece;
+        sqWillBeThere.piece = sqIsHere.piece; // move without redraw
+        sqIsHere.piece = null;
+
+        boolean ret = !this.isChecked();
+
+        sqIsHere.piece = sqWillBeThere.piece;
+        sqWillBeThere.piece = tmp;
+
+        return ret;
+    }
+    
+    public boolean isChecked(){
+    	KingBehaviour behaviour = new KingBehaviour();
+    	return !behaviour.isSafe(this.square, this.chessboard, this.square, this.player);
     }
 }
