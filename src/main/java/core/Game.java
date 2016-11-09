@@ -25,7 +25,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.*;
 
-import pieces.King;
+import pieces.Piece;
 import ui.Chat;
 
 import java.awt.*;
@@ -517,7 +517,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
                         this.nextMove();
 
                         //checkmate or stalemate
-                        King king;
+                        Piece king;
                         if (this.activePlayer == settings.playerWhite)
                         {
                             king = chessboard.kingWhite;
