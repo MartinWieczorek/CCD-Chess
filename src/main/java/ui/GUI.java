@@ -33,8 +33,11 @@ import core.JChessApp;
 import java.io.IOException;
 import java.util.Properties;
 import java.io.FileOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 /** Class representing the game interface which is seen by a player and
  * where are lockated available for player opptions, current games and where
@@ -44,14 +47,13 @@ public class GUI
 {
 
     public Game game;
-    private final static Logger LOG = Logger.getLogger(GUI.class.getName());
+    private static final Logger logger = LogManager.getLogger(GUI.class);
     static final public Properties configFile = GUI.getConfigFile();
     
 
     public GUI()
     {
         this.game = new Game();
-
         //this.drawGUI();
     }/*--endOf-GUI--*/
 
@@ -73,6 +75,7 @@ public class GUI
         {
         	String path = new File("").getAbsolutePath();
         	System.out.println("path: " + path);
+        	System.out.println("gui name: "+ GUI.class.getName());
         	
         	//String imageLink = "../theme/" + configFile.getProperty("THEME", "default") + "/images/" + name;
         	String imageLink = "resources/theme/" + configFile.getProperty("THEME", "default") + "/images/" + name;
@@ -100,7 +103,7 @@ public class GUI
     static String getJarPath()
     {
         String path = GUI.class.getProtectionDomain().getCodeSource().getLocation().getFile();  
-        LOG.log(Level.INFO, path);
+        logger.info(path);
         path = path.replaceAll("[a-zA-Z0-9%!@#$%^&*\\(\\)\\[\\]\\{\\}\\.\\,\\s]+\\.jar", "");
         int lastSlash = path.lastIndexOf(File.separator); 
         if(path.length()-1 == lastSlash)
@@ -135,7 +138,7 @@ public class GUI
         {
         	if(defConfFile.isEmpty()){
         		defConfFile.setProperty("THEME", "default");
-        		LOG.log(Level.INFO, "Property THEME created");
+        		logger.info("Property THEME created");
         	}
         	System.out.println("outfile does not exists");
             try
