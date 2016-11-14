@@ -16,13 +16,19 @@
 package ui;
 
 import org.jdesktop.application.Action;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import core.Game;
 import core.JChessApp;
 
 public class JChessAboutBox extends javax.swing.JDialog {
+	
+	private static final Logger logger = LogManager.getLogger(JChessAboutBox.class);
 
     public JChessAboutBox(java.awt.Frame parent) {
         super(parent);
+        logger.info("JChessAboutBox-constructor");
         initComponents();
         getRootPane().setDefaultButton(closeButton);
         

@@ -35,8 +35,8 @@ import java.io.FileWriter;
 import java.io.FileReader;
 import java.util.Calendar;
 import java.awt.event.ComponentListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /** Class responsible for the starts of new games, loading games,
  * saving it, and for ending it.
@@ -45,7 +45,8 @@ import java.util.logging.Logger;
  */
 public class Game extends JPanel implements MouseListener, ComponentListener
 {
-
+	private static final Logger logger = LogManager.getLogger(Game.class);
+	
     public Settings settings;
     public boolean blockedChessboard;
     public Chessboard chessboard;
@@ -57,6 +58,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
 
     public Game()
     {
+    	logger.info("Game-constructor");
         this.setLayout(null);
         this.moves = new Moves(this);
         settings = new Settings();
@@ -101,7 +103,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
         }
         catch (java.io.IOException exc)
         {
-            System.err.println("error creating fileWriter: " + exc);
+        	logger.error("error creating fileWriter: " + exc);
             JOptionPane.showMessageDialog(this, Settings.lang("error_writing_to_file")+": " + exc);
             return;
         }
@@ -119,7 +121,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
         }
         catch (java.io.IOException exc)
         {
-            System.out.println("error writing to file: " + exc);
+        	logger.error("error writing to file: " + exc);
             JOptionPane.showMessageDialog(this, Settings.lang("error_writing_to_file")+": " + exc);
             return;
         }
@@ -152,7 +154,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
         }
         catch (java.io.IOException exc)
         {
-            System.out.println("Something wrong reading file: " + exc);
+        	logger.error("Something wrong reading file: " + exc);
             return;
         }
         BufferedReader br = new BufferedReader(fileR);
@@ -168,7 +170,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
         }
         catch (ReadGameError err)
         {
-            System.out.println("Error reading file: " + err);
+        	logger.error("Error reading file: " + err);
             return;
         }
         Game newGUI = JChessApp.getJcv().addNewTab(whiteName + " vs. " + blackName);
@@ -205,7 +207,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
             }
             catch (java.io.IOException exc)
             {
-                System.out.println("Something wrong reading file: " + exc);
+            	logger.error("Something wrong reading file: " + exc);
             }
             if (str == null)
             {
@@ -240,7 +242,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
         }
         catch (java.lang.StringIndexOutOfBoundsException exc)
         {
-            System.out.println("error getting value: " + exc);
+        	logger.error("error getting value: " + exc);
             return "none";
         }
         return result;
@@ -280,7 +282,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
     public void endGame(String massage)
     {
         this.blockedChessboard = true;
-        System.out.println(massage);
+        logger.info(massage);
         JOptionPane.showMessageDialog(null, massage);
     }
 
@@ -314,7 +316,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
     {
         switchActive();
 
-        System.out.println("next move, active player: " + activePlayer.name + ", color: " + activePlayer.getColor().name() + ", type: " + activePlayer.playerType.name());
+        logger.info("next move, active player: " + activePlayer.name + ", color: " + activePlayer.getColor().name() + ", type: " + activePlayer.playerType.name());
         if (activePlayer.playerType == Player.playerTypes.localUser)
         {
             this.blockedChessboard = false;
@@ -345,7 +347,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
             }
             else
             {
-                System.out.println("Bad move");
+            	logger.info("Bad move");
                 return false;
             }
             chessboard.unselect();
@@ -368,7 +370,8 @@ public class Game extends JPanel implements MouseListener, ComponentListener
         }
         finally
         {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, "ERROR");
+            //Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, "ERROR");
+        	logger.fatal("unknown exception in simulateMove");
         }
     }
 
@@ -541,14 +544,14 @@ public class Game extends JPanel implements MouseListener, ComponentListener
                 } 
                 catch(NullPointerException exc)
                 {
-                    System.err.println(exc.getMessage());
+                	logger.error(exc.getMessage());
                     chessboard.repaint();
                     return;
                 }
             }
             else if (blockedChessboard)
             {
-                System.out.println("Chessboard is blocked");
+            	logger.info("Chessboard is blocked");
             }
         }
         //chessboard.repaint();

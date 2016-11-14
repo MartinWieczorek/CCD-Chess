@@ -33,8 +33,6 @@ import core.JChessApp;
 import java.io.IOException;
 import java.util.Properties;
 import java.io.FileOutputStream;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -74,21 +72,21 @@ public class GUI
         try
         {
         	String path = new File("").getAbsolutePath();
-        	System.out.println("path: " + path);
-        	System.out.println("gui name: "+ GUI.class.getName());
+        	logger.debug("path: " + path);
+        	logger.debug("gui name: "+ GUI.class.getName());
         	
         	//String imageLink = "../theme/" + configFile.getProperty("THEME", "default") + "/images/" + name;
         	String imageLink = "resources/theme/" + configFile.getProperty("THEME", "default") + "/images/" + name;
-            System.out.println(configFile.getProperty("THEME"));
+        	logger.debug(configFile.getProperty("THEME"));
             url = JChessApp.class.getResource(imageLink);
-            System.out.println("loadImage: " + imageLink);
-            System.out.println("url: " + url);
+            logger.debug("loadImage: " + imageLink);
+            logger.debug("url: " + url);
             img = tk.getImage(url);
 
         }
         catch (Exception e)
         {
-            System.out.println("some error loading image!");
+        	logger.error("some error loading image!");
             e.printStackTrace();
         }
         return img;
@@ -103,7 +101,7 @@ public class GUI
     static String getJarPath()
     {
         String path = GUI.class.getProtectionDomain().getCodeSource().getLocation().getFile();  
-        logger.info(path);
+        logger.debug(path);
         path = path.replaceAll("[a-zA-Z0-9%!@#$%^&*\\(\\)\\[\\]\\{\\}\\.\\,\\s]+\\.jar", "");
         int lastSlash = path.lastIndexOf(File.separator); 
         if(path.length()-1 == lastSlash)
@@ -120,9 +118,9 @@ public class GUI
         Properties confFile = new Properties();
         File outFile = new File(GUI.getJarPath() + File.separator + "config.txt");
         //File outFile = new File("config.txt");
-        System.out.println(GUI.getJarPath());
-        System.out.println(outFile.getAbsolutePath());
-        System.out.println(outFile.exists());
+        logger.debug(GUI.getJarPath());
+        logger.debug(outFile.getAbsolutePath());
+        logger.debug(outFile.exists());
 //        try
 //        {
 //        	InputStream is = GUI.class.getResourceAsStream("config.txt");
@@ -140,14 +138,14 @@ public class GUI
         		defConfFile.setProperty("THEME", "default");
         		logger.info("Property THEME created");
         	}
-        	System.out.println("outfile does not exists");
+        	logger.debug("outfile does not exists");
             try
             {
                 defConfFile.store(new FileOutputStream(outFile), null);
             }
             catch (java.io.IOException exc)
             {
-            	System.out.println("some error storing config! what goes: " + exc);
+            	logger.error("some error storing config! what goes: " + exc);
                 exc.printStackTrace();
             }
         }
@@ -157,7 +155,7 @@ public class GUI
         }
         catch (java.io.IOException exc)
         {
-        	System.out.println("some error loading config! what goes: " + exc);
+        	logger.error("some error loading config! what goes: " + exc);
             exc.printStackTrace();
         }
         return confFile;

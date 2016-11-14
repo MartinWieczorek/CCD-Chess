@@ -25,11 +25,14 @@ import java.util.Locale;
 import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /** Class representings game settings available for the current player
  */
 public class Settings implements Serializable
 {
+	private static final Logger logger = LogManager.getLogger(Settings.class);
 
     private static ResourceBundle loc = null;
     public int timeForGame;
@@ -58,6 +61,7 @@ public class Settings implements Serializable
     public Settings()
     {
         //temporally
+    	logger.info("Settings-constructor");
         this.playerWhite = new Player("", "white");
         this.playerBlack = new Player("", "black");
         this.timeLimitSet = false;
@@ -89,7 +93,7 @@ public class Settings implements Serializable
         {
             result = key;
         }
-        System.out.println(Settings.loc.getLocale().toString());
+        logger.info(Settings.loc.getLocale().toString());
         return result;
     }
 }

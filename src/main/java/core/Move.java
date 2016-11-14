@@ -20,9 +20,12 @@ package core;
 
 import core.Moves.castling;
 import pieces.Piece;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 class Move
 {
+	private static final Logger logger = LogManager.getLogger(Move.class);
 
     protected Square from = null;
     protected Square to = null;
@@ -35,6 +38,7 @@ class Move
 
     Move(Square from, Square to, Piece movedPiece, Piece takenPiece, castling castlingMove, boolean wasEnPassant, Piece promotedPiece)
     {
+    	logger.info("Move-constructor");
         this.from = from;
         this.to = to;
 

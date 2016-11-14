@@ -24,6 +24,8 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /** Class responsible for promotion of a pawn.
  * When pawn reach the end of the chessboard it can be change to rook,
@@ -33,6 +35,7 @@ import java.awt.event.ActionEvent;
  */
 public class PawnPromotionWindow extends JDialog implements ActionListener
 {
+	private static final Logger logger = LogManager.getLogger(PawnPromotionWindow.class);
 
     JButton knightButton;
     JButton bishopButton;
@@ -45,6 +48,7 @@ public class PawnPromotionWindow extends JDialog implements ActionListener
     PawnPromotionWindow(Frame parent, String color)
     {
         super(parent);
+        logger.info("PawnPromotionWindow-constructor");
         this.setTitle("Choose piece");
         this.setMinimumSize(new Dimension(520, 130));
         this.setSize(new Dimension(520, 130));
