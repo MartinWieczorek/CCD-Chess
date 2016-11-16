@@ -28,6 +28,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JPanel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import core.Moves.castling;
 import pieces.PawnBehaviour;
@@ -45,7 +47,8 @@ import ui.GUI;
  */
 public class Chessboard extends JPanel
 {
-
+	private static final Logger logger = LogManager.getLogger(Chessboard.class);
+	
     public static final int top = 0;
     public static final int bottom = 7;
     public Square squares[][];//squares of chessboard
@@ -92,6 +95,8 @@ public class Chessboard extends JPanel
      */
     public Chessboard(Settings settings, Moves moves_history)
     {
+    	logger.info("chessboard constructor");
+    	
         this.settings = settings;
         this.activeSquare = null;
         this.square_height = img_height / 8;//we need to devide to know height of field
@@ -169,7 +174,7 @@ public class Chessboard extends JPanel
 
         if (i != 0 && i != 7)
         {
-            System.out.println("error setting figures like rook etc.");
+        	logger.error("error setting figures like rook etc.");
             return;
         }
         else if (i == 0)
@@ -217,7 +222,7 @@ public class Chessboard extends JPanel
     {
         if (i != 1 && i != 6)
         {
-            System.out.println("error setting pawns etc.");
+        	logger.error("error setting pawns etc.");
             return;
         }
         for (int x = 0; x < 8; x++)
@@ -235,7 +240,7 @@ public class Chessboard extends JPanel
     { 
         if ((x > this.get_height()) || (y > this.get_widht())) //test if click is out of chessboard
         {
-            System.out.println("click out of chessboard.");
+        	logger.info("click out of chessboard.");
             return null;
         }
         if (this.settings.renderLabels)
@@ -255,7 +260,7 @@ public class Chessboard extends JPanel
             square_y = (int) square_y + 1;//parse to integer and increment
         }
         //Square newActiveSquare = this.squares[(int)square_x-1][(int)square_y-1];//4test
-        System.out.println("square_x: " + square_x + " square_y: " + square_y + " \n"); //4tests
+        logger.info("square_x: " + square_x + " square_y: " + square_y + " \n"); //4tests
         Square result;
         try
         {
@@ -263,7 +268,7 @@ public class Chessboard extends JPanel
         }
         catch (java.lang.ArrayIndexOutOfBoundsException exc)
         {
-            System.out.println("!!Array out of bounds when getting Square with Chessboard.getSquare(int,int) : " + exc);
+        	logger.error("!!Array out of bounds when getting Square with Chessboard.getSquare(int,int) : " + exc);
             return null;
         }
         return this.squares[(int) square_x - 1][(int) square_y - 1];
@@ -279,7 +284,7 @@ public class Chessboard extends JPanel
         this.active_y_square = sq.getPozY() + 1;
 
         //this.draw();//redraw
-        System.out.println("active_x: " + this.active_x_square + " active_y: " + this.active_y_square);//4tests
+        logger.info("active_x: " + this.active_x_square + " active_y: " + this.active_y_square);//4tests
         repaint();
 
     }/*--endOf-select--*/
@@ -352,7 +357,7 @@ public class Chessboard extends JPanel
         }
         catch (java.lang.IndexOutOfBoundsException exc)
         {
-            System.out.println("error moving piece: " + exc);
+        	logger.error("error moving piece: " + exc);
             return;
         }
         this.move(this.squares[xFrom][yFrom], this.squares[xTo][yTo], true);

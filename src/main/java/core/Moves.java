@@ -26,6 +26,8 @@ import java.awt.Point;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import pieces.Piece;
 
@@ -41,6 +43,7 @@ import javax.swing.JOptionPane;
  */
 public class Moves extends AbstractTableModel
 {
+	private static final Logger logger = LogManager.getLogger(Moves.class);
 
     private ArrayList<String> move = new ArrayList<String>();
     private int columnsNum = 3;
@@ -64,7 +67,8 @@ public class Moves extends AbstractTableModel
 
     Moves(Game game)
     {
-        super();
+    	super();
+    	logger.info("Moves-constructor");
         this.tableModel = new MyDefaultTableModel();
         this.table = new JTable(this.tableModel);
         this.scrollPane = new JScrollPane(this.table);
@@ -379,7 +383,7 @@ public class Moves extends AbstractTableModel
                     break; // R like Rook
             }
             sign = move.charAt(from);
-            System.out.println(sign);
+            logger.info(sign);
             if (sign < 97 || sign > 104) //if lower than 'a' or higher than 'h'
             {
                 return false;
@@ -469,7 +473,7 @@ public class Moves extends AbstractTableModel
             }
             catch (java.lang.StringIndexOutOfBoundsException exc)
             {
-                System.out.println("error parsing file to load: " + exc);
+            	logger.error("error parsing file to load: " + exc);
                 break;
             }
             if (n % 2 == 0)

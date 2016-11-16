@@ -34,12 +34,15 @@ import core.Settings;
 import core.Player.playerTypes;
 import core.Settings.gameModes;
 import core.Settings.gameTypes;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Class responsible for drawing the fold with local game settings
  */
 public class DrawLocalSettings extends JPanel implements ActionListener, TextListener
 {
+	private static final Logger logger = LogManager.getLogger(DrawLocalSettings.class);
 
     JDialog parent;//needet to close newGame window
     JComboBox color;//to choose color of player
@@ -100,7 +103,7 @@ public class DrawLocalSettings extends JPanel implements ActionListener, TextLis
                 }
                 catch (BadLocationException exc)
                 {
-                    System.out.println("Something wrong in editables: \n" + exc);
+                	logger.error("Something wrong in editables: \n" + exc);
                 }
             }
         }
@@ -184,9 +187,9 @@ public class DrawLocalSettings extends JPanel implements ActionListener, TextLis
                 newGUI.gameClock.setTimes(sett.timeForGame, sett.timeForGame);
                 newGUI.gameClock.start();
             }
-            System.out.println(this.time4Game.getActionCommand());
+            logger.info(this.time4Game.getActionCommand());
             //this.time4Game.getComponent(this.time4Game.getSelectedIndex());
-            System.out.println("****************\nStarting new game: " + pl1.getName() + " vs. " + pl2.getName()
+            logger.info("****************\nStarting new game: " + pl1.getName() + " vs. " + pl2.getName()
                     + "\ntime 4 game: " + sett.timeForGame + "\ntime limit set: " + sett.timeLimitSet
                     + "\nwhite on top?: " + sett.upsideDown + "\n****************");//4test
             newGUI.newGame();//start new Game
@@ -200,6 +203,7 @@ public class DrawLocalSettings extends JPanel implements ActionListener, TextLis
     DrawLocalSettings(JDialog parent)
     {
         super();
+        logger.info("DrawLocalSettings-constructor");
         //this.setA//choose oponent
         this.parent = parent;
         this.color = new JComboBox(colors);
@@ -307,7 +311,7 @@ public class DrawLocalSettings extends JPanel implements ActionListener, TextLis
         }
         catch (BadLocationException exc)
         {
-            System.out.println("Something wrong in editables: \n" + exc);
+        	logger.error("Something wrong in editables: \n" + exc);
         }
         return result;
     }

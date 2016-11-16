@@ -30,15 +30,20 @@ import java.awt.*;
 import java.util.ResourceBundle;
 import java.util.PropertyResourceBundle;
 import java.util.Locale;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
  * @author donmateo
  */
 public class NewGameWindow extends JDialog {
+	
+	private static final Logger logger = LogManager.getLogger(NewGameWindow.class);
 
     /** Creates new form NewGameWindow */
     public NewGameWindow() {
+    	logger.info("NewGameWindow-constructor");
         initComponents();
 
         this.setSize(400, 700);

@@ -33,8 +33,9 @@ import core.JChessApp;
 import java.io.IOException;
 import java.util.Properties;
 import java.io.FileOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 /** Class representing the game interface which is seen by a player and
  * where are lockated available for player opptions, current games and where
@@ -44,14 +45,13 @@ public class GUI
 {
 
     public Game game;
-    private final static Logger LOG = Logger.getLogger(GUI.class.getName());
+    private static final Logger logger = LogManager.getLogger(GUI.class);
     static final public Properties configFile = GUI.getConfigFile();
     
 
     public GUI()
     {
         this.game = new Game();
-
         //this.drawGUI();
     }/*--endOf-GUI--*/
 
@@ -72,20 +72,21 @@ public class GUI
         try
         {
         	String path = new File("").getAbsolutePath();
-        	System.out.println("path: " + path);
+        	logger.debug("path: " + path);
+        	logger.debug("gui name: "+ GUI.class.getName());
         	
         	//String imageLink = "../theme/" + configFile.getProperty("THEME", "default") + "/images/" + name;
         	String imageLink = "resources/theme/" + configFile.getProperty("THEME", "default") + "/images/" + name;
-            System.out.println(configFile.getProperty("THEME"));
+        	logger.debug(configFile.getProperty("THEME"));
             url = JChessApp.class.getResource(imageLink);
-            System.out.println("loadImage: " + imageLink);
-            System.out.println("url: " + url);
+            logger.debug("loadImage: " + imageLink);
+            logger.debug("url: " + url);
             img = tk.getImage(url);
 
         }
         catch (Exception e)
         {
-            System.out.println("some error loading image!");
+        	logger.error("some error loading image!");
             e.printStackTrace();
         }
         return img;
@@ -100,7 +101,7 @@ public class GUI
     static String getJarPath()
     {
         String path = GUI.class.getProtectionDomain().getCodeSource().getLocation().getFile();  
-        LOG.log(Level.INFO, path);
+        logger.debug(path);
         path = path.replaceAll("[a-zA-Z0-9%!@#$%^&*\\(\\)\\[\\]\\{\\}\\.\\,\\s]+\\.jar", "");
         int lastSlash = path.lastIndexOf(File.separator); 
         if(path.length()-1 == lastSlash)
@@ -117,9 +118,9 @@ public class GUI
         Properties confFile = new Properties();
         File outFile = new File(GUI.getJarPath() + File.separator + "config.txt");
         //File outFile = new File("config.txt");
-        System.out.println(GUI.getJarPath());
-        System.out.println(outFile.getAbsolutePath());
-        System.out.println(outFile.exists());
+        logger.debug(GUI.getJarPath());
+        logger.debug(outFile.getAbsolutePath());
+        logger.debug(outFile.exists());
 //        try
 //        {
 //        	InputStream is = GUI.class.getResourceAsStream("config.txt");
@@ -135,16 +136,16 @@ public class GUI
         {
         	if(defConfFile.isEmpty()){
         		defConfFile.setProperty("THEME", "default");
-        		LOG.log(Level.INFO, "Property THEME created");
+        		logger.info("Property THEME created");
         	}
-        	System.out.println("outfile does not exists");
+        	logger.debug("outfile does not exists");
             try
             {
                 defConfFile.store(new FileOutputStream(outFile), null);
             }
             catch (java.io.IOException exc)
             {
-            	System.out.println("some error storing config! what goes: " + exc);
+            	logger.error("some error storing config! what goes: " + exc);
                 exc.printStackTrace();
             }
         }
@@ -154,7 +155,7 @@ public class GUI
         }
         catch (java.io.IOException exc)
         {
-        	System.out.println("some error loading config! what goes: " + exc);
+        	logger.error("some error loading config! what goes: " + exc);
             exc.printStackTrace();
         }
         return confFile;
