@@ -50,9 +50,12 @@ public class Chessboard extends JPanel
 	private static final Logger logger = LogManager.getLogger(Chessboard.class);
 	
     public static final int top = 0;
-    public static final int bottom = 7;
+    //public static final int bottom = 7;
+    public static final int bottom = 13;
     public Square squares[][];//squares of chessboard
-    private static final Image orgImage = GUI.loadImage("chessboard.png");//image of chessboard
+    private int numberSqares = 14;
+    //private static final Image orgImage = GUI.loadImage("chessboard.png");//image of chessboard
+    private static final Image orgImage = GUI.loadImage("chessboard_14x14.png");//image of chessboard
     private static Image image = Chessboard.orgImage;//image of chessboard
     private static final Image org_sel_square = GUI.loadImage("sel_square.png");//image of highlited square
     private static Image sel_square = org_sel_square;//image of highlited square
@@ -68,7 +71,8 @@ public class Chessboard extends JPanel
     //public Graphics graph;
     public static final int img_x = 5;//image x position (used in JChessView class!)
     public static final int img_y = img_x;//image y position (used in JChessView class!)
-    public static final int img_widht = 480;//image width
+    //public static final int img_widht = 480;//image width
+    public static final int img_widht = 840;//image width
     public static final int img_height = img_widht;//image height
     private ArrayList<Square> moves;
     private Settings settings;
@@ -99,13 +103,14 @@ public class Chessboard extends JPanel
     	
         this.settings = settings;
         this.activeSquare = null;
-        this.square_height = img_height / 8;//we need to devide to know height of field
-        this.squares = new Square[8][8];//initalization of 8x8 chessboard
+        //this.square_height = img_height / 8;//we need to devide to know height of field
+        this.square_height = img_height / numberSqares;//we need to devide to know height of field
+        this.squares = new Square[numberSqares][numberSqares];//initalization of 8x8 chessboard
         this.active_x_square = 0;
         this.active_y_square = 0;
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < numberSqares; i++)
         {//create object for each square
-            for (int y = 0; y < 8; y++)
+            for (int y = 0; y < numberSqares; y++)
             {
                 this.squares[i][y] = new Square(i, y, null);
             }
@@ -157,10 +162,10 @@ public class Chessboard extends JPanel
             player = plWhite;
             player1 = plBlack;
         }
-        this.setFigures4NewGame(0, player, upsideDown);
-        this.setPawns4NewGame(1, player);
-        this.setFigures4NewGame(7, player1, upsideDown);
-        this.setPawns4NewGame(6, player1);
+        this.setFigures4NewGame(top, player, upsideDown);
+        this.setPawns4NewGame(top + 1, player);
+        this.setFigures4NewGame(bottom, player1, upsideDown);
+        this.setPawns4NewGame(bottom - 1, player1);
     }/*--endOf-setPieces(boolean upsideDown)--*/
 
 
@@ -172,7 +177,7 @@ public class Chessboard extends JPanel
     private void setFigures4NewGame(int i, Player player, boolean upsideDown)
     {
 
-        if (i != 0 && i != 7)
+        if (i != top && i != bottom)
         {
         	logger.error("error setting figures like rook etc.");
             return;
@@ -182,34 +187,34 @@ public class Chessboard extends JPanel
             player.setGoDown(true);
         }
 
-        this.squares[0][i].setPiece(new Piece(this, player, new RookBehaviour(), "Rook"));
-        this.squares[7][i].setPiece(new Piece(this, player, new RookBehaviour(), "Rook"));
-        this.squares[1][i].setPiece(new Piece(this, player, new KnightBehaviour(), "Knight"));
-        this.squares[6][i].setPiece(new Piece(this, player, new KnightBehaviour(), "Knight"));
-        this.squares[2][i].setPiece(new Piece(this, player, new BishopBehaviour(), "Bishop"));
+        this.squares[3][i].setPiece(new Piece(this, player, new RookBehaviour(), "Rook"));
+        this.squares[10][i].setPiece(new Piece(this, player, new RookBehaviour(), "Rook"));
+        this.squares[4][i].setPiece(new Piece(this, player, new KnightBehaviour(), "Knight"));
+        this.squares[9][i].setPiece(new Piece(this, player, new KnightBehaviour(), "Knight"));
         this.squares[5][i].setPiece(new Piece(this, player, new BishopBehaviour(), "Bishop"));
+        this.squares[8][i].setPiece(new Piece(this, player, new BishopBehaviour(), "Bishop"));
         if (upsideDown)
         {
-        	this.squares[4][i].setPiece(new Piece(this, player, new QueenBehaviour(), "Queen"));
+        	this.squares[7][i].setPiece(new Piece(this, player, new QueenBehaviour(), "Queen"));
             if (player.getColor() == Player.colors.white)
             {
-            	this.squares[3][i].setPiece(kingWhite = new Piece(this, player, new KingBehaviour(), "King"));
+            	this.squares[6][i].setPiece(kingWhite = new Piece(this, player, new KingBehaviour(), "King"));
             }
             else
             {
-            	this.squares[3][i].setPiece(kingBlack = new Piece(this, player, new KingBehaviour(), "King"));
+            	this.squares[6][i].setPiece(kingBlack = new Piece(this, player, new KingBehaviour(), "King"));
             }
         }
         else
         {
-        	this.squares[3][i].setPiece(new Piece(this, player, new QueenBehaviour(), "Queen"));
+        	this.squares[6][i].setPiece(new Piece(this, player, new QueenBehaviour(), "Queen"));
             if (player.getColor() == Player.colors.white)
             {
-            	this.squares[4][i].setPiece(kingWhite = new Piece(this, player, new KingBehaviour(), "King"));
+            	this.squares[7][i].setPiece(kingWhite = new Piece(this, player, new KingBehaviour(), "King"));
             }
             else
             {
-            	this.squares[4][i].setPiece(kingBlack =new Piece(this, player, new KingBehaviour(), "King"));
+            	this.squares[7][i].setPiece(kingBlack =new Piece(this, player, new KingBehaviour(), "King"));
             }
         }
     }
@@ -220,12 +225,12 @@ public class Chessboard extends JPanel
      * */
     private void setPawns4NewGame(int i, Player player)
     {
-        if (i != 1 && i != 6)
+        if (i != top + 1 && i != bottom - 1)
         {
         	logger.error("error setting pawns etc.");
             return;
         }
-        for (int x = 0; x < 8; x++)
+        for (int x = top + 3; x < numberSqares - 3; x++)
         {
         	this.squares[x][i].setPiece(new Piece(this, player, new PawnBehaviour(), "Pawn"));
         }
@@ -725,9 +730,9 @@ public class Chessboard extends JPanel
             g2d.drawImage(this.LeftRightLabel, Chessboard.image.getHeight(null) + topLeftPoint.x, 0, null);
         }
         g2d.drawImage(image, topLeftPoint.x, topLeftPoint.y, null);//draw an Image of chessboard
-        for (int i = 0; i < 8; i++) //drawPiecesOnSquares
+        for (int i = 0; i < numberSqares; i++) //drawPiecesOnSquares
         {
-            for (int y = 0; y < 8; y++)
+            for (int y = 0; y < numberSqares; y++)
             {
                 if (this.squares[i][y].piece != null)
                 {
@@ -764,7 +769,8 @@ public class Chessboard extends JPanel
         g.drawImage(Chessboard.orgImage, 0, 0, height, height, null);
         g.dispose();
         Chessboard.image = resized.getScaledInstance(height, height, 0);
-        this.square_height = (float) (height / 8);
+        //this.square_height = (float) (height / 8);
+        this.square_height = (float) (height / numberSqares);
         if (this.settings.renderLabels)
         {
             height += 2 * (this.upDownLabel.getHeight(null));
@@ -796,7 +802,7 @@ public class Chessboard extends JPanel
         int min_label_height = 20;
         int labelHeight = (int) Math.ceil(square_height / 4);
         labelHeight = (labelHeight < min_label_height) ? min_label_height : labelHeight;
-        int labelWidth =  (int) Math.ceil(square_height * 8 + (2 * labelHeight)); 
+        int labelWidth =  (int) Math.ceil(square_height * numberSqares + (2 * labelHeight)); 
         BufferedImage uDL = new BufferedImage(labelWidth + min_label_height, labelHeight, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D uDL2D = (Graphics2D) uDL.createGraphics();
         uDL2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -813,7 +819,7 @@ public class Chessboard extends JPanel
 
         String[] letters =
         {
-            "a", "b", "c", "d", "e", "f", "g", "h"
+            "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"
         };
         if (!this.settings.upsideDown)
         {
@@ -844,7 +850,7 @@ public class Chessboard extends JPanel
 
         if (this.settings.upsideDown)
         {
-            for (int i = 1; i <= 8; i++)
+            for (int i = 1; i <= numberSqares; i++)
             {
                 uDL2D.drawString(new Integer(i).toString(), 3 + (labelHeight / 3), (square_height * (i - 1)) + addX);
             }
@@ -852,7 +858,7 @@ public class Chessboard extends JPanel
         else
         {
             int j = 1;
-            for (int i = 8; i > 0; i--, j++)
+            for (int i = numberSqares; i > 0; i--, j++)
             {
                 uDL2D.drawString(new Integer(i).toString(), 3 + (labelHeight / 3), (square_height * (j - 1)) + addX);
             }
