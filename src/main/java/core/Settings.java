@@ -49,6 +49,8 @@ public class Settings implements Serializable
     public gameModes gameMode;
     private Player playerWhite;
     private Player playerBlack;
+    private Player playerRed;
+    private Player playerBlue;
 
     public enum gameTypes
     {
@@ -64,6 +66,8 @@ public class Settings implements Serializable
     	logger.info("Settings-constructor");
         this.setPlayerWhite(new Player("", "white"));
         this.setPlayerBlack(new Player("", "black"));
+        this.setPlayerRed(new Player("", "red"));
+        this.setPlayerBlue(new Player("", "blue"));
         this.timeLimitSet = false;
 
         gameMode = gameModes.newGame;
@@ -111,5 +115,21 @@ public class Settings implements Serializable
 
 	public void setPlayerBlack(Player playerBlack) {
 		this.playerBlack = playerBlack;
+	}
+
+	public Player getPlayerRed() {
+		return playerRed;
+	}
+
+	public void setPlayerRed(Player playerRed) {
+		this.playerRed = playerRed;
+	}
+
+	public Player getPlayerBlue() {
+		return playerBlue;
+	}
+
+	public void setPlayerBlue(Player playerBlue) {
+		this.playerBlue = playerBlue;
 	}
 }

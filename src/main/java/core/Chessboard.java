@@ -126,18 +126,18 @@ public class Chessboard extends JPanel
      * @param plWhite reference to white player
      * @param plBlack reference to black player
      */
-    public void setPieces(String places, Player plWhite, Player plBlack)
+    public void setPieces(String places, Player plWhite, Player plBlack, Player plRed, Player plBlue)
     {
 
         if (places.equals("")) //if newGame
         {
             if (this.settings.upsideDown)
             {
-                this.setPieces4NewGame(true, plWhite, plBlack);
+                this.setPieces4NewGame(true, plWhite, plBlack, plRed, plBlue);
             }
             else
             {
-                this.setPieces4NewGame(false, plWhite, plBlack);
+                this.setPieces4NewGame(false, plWhite, plBlack, plRed, plBlue);
             }
 
         } 
@@ -151,7 +151,7 @@ public class Chessboard extends JPanel
     /**
      *
      */
-    private void setPieces4NewGame(boolean upsideDown, Player plWhite, Player plBlack)
+    private void setPieces4NewGame(boolean upsideDown, Player plWhite, Player plBlack, Player plRed, Player plBlue)
     {
 
         /* WHITE PIECES */
@@ -162,77 +162,172 @@ public class Chessboard extends JPanel
             player = plWhite;
             player1 = plBlack;
         }
-        this.setFigures4NewGame(top, player, upsideDown);
-        this.setPawns4NewGame(top + 1, player);
-        this.setFigures4NewGame(bottom, player1, upsideDown);
-        this.setPawns4NewGame(bottom - 1, player1);
+//        this.setFigures4NewGame(top, player, upsideDown);
+//        this.setPawns4NewGame(top + 1, player);
+//        this.setFigures4NewGame(bottom, player1, upsideDown);
+//        this.setPawns4NewGame(bottom - 1, player1);
+        
+//        setFigures4NewGame(int row, Player player, boolean invertOrder, boolean switchRowCol)
+        
+        this.setFigures4NewGame(top, player, true, false);
+        this.setPawns4NewGame(top + 1, player, false);
+        
+        this.setFigures4NewGame(bottom, player1, false, false);
+        this.setPawns4NewGame(bottom - 1, player1, false);
+        
+        this.setFigures4NewGame(top, plRed, true, true);
+        this.setPawns4NewGame(top + 1, plRed, true);
+        
+        this.setFigures4NewGame(bottom, plBlue, false, true);
+        this.setPawns4NewGame(bottom - 1, plBlue, true);
     }/*--endOf-setPieces(boolean upsideDown)--*/
 
 
-    /**  method set Figures in row (and set Queen and King to right position)
-     *  @param i row where to set figures (Rook, Knight etc.)
-     *  @param player which is owner of pawns
-     *  @param upsideDown if true white pieces will be on top of chessboard
-     * */
-    private void setFigures4NewGame(int i, Player player, boolean upsideDown)
-    {
-
-        if (i != top && i != bottom)
-        {
-        	logger.error("error setting figures like rook etc.");
-            return;
-        }
-        else if (i == 0)
-        {
-            player.setGoDown(true);
-        }
-
-        this.squares[3][i].setPiece(new Piece(this, player, new RookBehaviour(), "Rook"));
-        this.squares[10][i].setPiece(new Piece(this, player, new RookBehaviour(), "Rook"));
-        this.squares[4][i].setPiece(new Piece(this, player, new KnightBehaviour(), "Knight"));
-        this.squares[9][i].setPiece(new Piece(this, player, new KnightBehaviour(), "Knight"));
-        this.squares[5][i].setPiece(new Piece(this, player, new BishopBehaviour(), "Bishop"));
-        this.squares[8][i].setPiece(new Piece(this, player, new BishopBehaviour(), "Bishop"));
-        if (upsideDown)
-        {
-        	this.squares[7][i].setPiece(new Piece(this, player, new QueenBehaviour(), "Queen"));
-            if (player.getColor() == Player.colors.white)
-            {
-            	this.squares[6][i].setPiece(kingWhite = new Piece(this, player, new KingBehaviour(), "King"));
-            }
-            else
-            {
-            	this.squares[6][i].setPiece(kingBlack = new Piece(this, player, new KingBehaviour(), "King"));
-            }
-        }
-        else
-        {
-        	this.squares[6][i].setPiece(new Piece(this, player, new QueenBehaviour(), "Queen"));
-            if (player.getColor() == Player.colors.white)
-            {
-            	this.squares[7][i].setPiece(kingWhite = new Piece(this, player, new KingBehaviour(), "King"));
-            }
-            else
-            {
-            	this.squares[7][i].setPiece(kingBlack =new Piece(this, player, new KingBehaviour(), "King"));
-            }
-        }
+//    /**  method set Figures in row (and set Queen and King to right position)
+//     *  @param i row where to set figures (Rook, Knight etc.)
+//     *  @param player which is owner of pawns
+//     *  @param upsideDown if true white pieces will be on top of chessboard
+//     * */
+//    private void setFigures4NewGame(int i, Player player, boolean upsideDown)
+//    {
+//
+//        if (i != top && i != bottom)
+//        {
+//        	logger.error("error setting figures like rook etc.");
+//            return;
+//        }
+//        else if (i == 0)
+//        {
+//            player.setGoDown(true);
+//        }
+//
+//        this.squares[3][i].setPiece(new Piece(this, player, new RookBehaviour(), "Rook"));
+//        this.squares[10][i].setPiece(new Piece(this, player, new RookBehaviour(), "Rook"));
+//        this.squares[4][i].setPiece(new Piece(this, player, new KnightBehaviour(), "Knight"));
+//        this.squares[9][i].setPiece(new Piece(this, player, new KnightBehaviour(), "Knight"));
+//        this.squares[5][i].setPiece(new Piece(this, player, new BishopBehaviour(), "Bishop"));
+//        this.squares[8][i].setPiece(new Piece(this, player, new BishopBehaviour(), "Bishop"));
+//        if (upsideDown)
+//        {
+//        	this.squares[6][i].setPiece(new Piece(this, player, new QueenBehaviour(), "Queen"));
+//            if (player.getColor() == Player.colors.white)
+//            {
+//            	this.squares[7][i].setPiece(kingWhite = new Piece(this, player, new KingBehaviour(), "King"));
+//            }
+//            else
+//            {
+//            	this.squares[7][i].setPiece(kingBlack = new Piece(this, player, new KingBehaviour(), "King"));
+//            }
+//        }
+//        else
+//        {
+//        	this.squares[7][i].setPiece(new Piece(this, player, new QueenBehaviour(), "Queen"));
+//            if (player.getColor() == Player.colors.white)
+//            {
+//            	this.squares[6][i].setPiece(kingWhite = new Piece(this, player, new KingBehaviour(), "King"));
+//            }
+//            else
+//            {
+//            	this.squares[6][i].setPiece(kingBlack =new Piece(this, player, new KingBehaviour(), "King"));
+//            }
+//        }
+//    }
+    
+    private void setFigures4NewGame(int row, Player player, boolean invertOrder, boolean switchRowCol){
+    	String[] pieces = {"Rook", "Knight", "Bishop", "King", "Queen", "Bishop", "Knight", "Rook"};
+    	int col = 0;
+    	
+    	// if true, position pieces on left or right on chessboard
+    	if(switchRowCol) 
+    	{
+    		// if true, switch position of king and queen
+    		if(invertOrder)
+    		{
+    			for (int figure = pieces.length - 1; figure >= 0; figure-- ){
+    				setFigure(3 + col++, row, player, pieces[figure]);
+    			}
+    		}
+    		else
+    		{
+    			for (int figure = 0; figure < pieces.length; figure++ ){
+    				setFigure(3 + col++, row, player, pieces[figure]);
+    			}
+    		}
+    	}
+    	else
+    	{
+    		if(invertOrder)
+    		{
+    			for (int figure = pieces.length - 1; figure >= 0; figure-- ){
+    				setFigure(row, 3 + col++, player, pieces[figure]);
+    			}
+    		}
+    		else
+    		{
+    			for (int figure = 0; figure < pieces.length; figure++ ){
+    				setFigure(row, 3 + col++, player, pieces[figure]);
+    			}
+    		}
+    	}
     }
 
-    /**  method set Pawns in row
-     *  @param i row where to set pawns
-     *  @param player player which is owner of pawns
-     * */
-    private void setPawns4NewGame(int i, Player player)
+
+	private void setFigure(int row, int col, Player player, String pieceName) {
+		switch (pieceName){
+			case "Rook":
+				this.squares[col][row].setPiece(new Piece(this, player, new RookBehaviour(), "Rook"));
+				break;
+			case "Knight":
+				this.squares[col][row].setPiece(new Piece(this, player, new KnightBehaviour(), "Knight"));
+				break;
+			case "Bishop":
+				this.squares[col][row].setPiece(new Piece(this, player, new BishopBehaviour(), "Bishop"));
+				break;
+			case "Queen":
+				this.squares[col][row].setPiece(new Piece(this, player, new QueenBehaviour(), "Queen"));
+				break;
+			case "King":
+				if(player.getColor() == Player.colors.black)
+					this.squares[col][row].setPiece(kingBlack =new Piece(this, player, new KingBehaviour(), "King"));
+				else
+					this.squares[col][row].setPiece(kingWhite =new Piece(this, player, new KingBehaviour(), "King"));
+				break;
+		}
+		logger.debug("set " + pieceName + " on pos: (" + row + "," + col + ") for player: " + player.getName());
+	}
+
+//    /**  method set Pawns in row
+//     *  @param row row where to set pawns
+//     *  @param player player which is owner of pawns
+//     * */
+//    private void setPawns4NewGame(int row, Player player)
+//    {
+//        if (row != top + 1 && row != bottom - 1)
+//        {
+//        	logger.error("error setting pawns etc.");
+//            return;
+//        }
+//        for (int x = top + 3; x < numberSqares - 3; x++)
+//        {
+//        	this.squares[x][row].setPiece(new Piece(this, player, new PawnBehaviour(), "Pawn"));
+//        }
+//    }
+    
+    private void setPawns4NewGame(int row, Player player, boolean switchRowCol)
     {
-        if (i != top + 1 && i != bottom - 1)
+        if (row != top + 1 && row != bottom - 1)
         {
         	logger.error("error setting pawns etc.");
             return;
         }
         for (int x = top + 3; x < numberSqares - 3; x++)
         {
-        	this.squares[x][i].setPiece(new Piece(this, player, new PawnBehaviour(), "Pawn"));
+        	if(switchRowCol)
+        		this.squares[row][x].setPiece(new Piece(this, player, new PawnBehaviour(), "Pawn"));
+        	else
+        		this.squares[x][row].setPiece(new Piece(this, player, new PawnBehaviour(), "Pawn"));
+        	
+        	logger.debug("set pawn on pos: (" + x + "," + row + ") for player: " + player.getName());
         }
     }
 
@@ -712,6 +807,7 @@ public class Chessboard extends JPanel
         return this.topLeft;
     }
 
+    // responsible for drawing chessboard and pieces
     @Override
     public void paintComponent(Graphics g)
     {
