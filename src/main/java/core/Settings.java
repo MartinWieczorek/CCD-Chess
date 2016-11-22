@@ -22,7 +22,6 @@ package core;
 
 import java.io.Serializable;
 import java.util.Locale;
-import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import org.apache.logging.log4j.LogManager;
@@ -53,7 +52,7 @@ public class Settings implements Serializable
     public enum gameTypes
     {
 
-        local, network
+        local
     }
     public gameTypes gameType;
     public boolean renderLabels = true;
