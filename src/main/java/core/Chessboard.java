@@ -685,18 +685,6 @@ public class Chessboard extends JPanel
             return false;
         }
     }
-    
-    /**
-     * Method to draw Chessboard and their elements (pieces etc.)
-     * @deprecated 
-     */
-    public void draw()
-    {
-        this.getGraphics().drawImage(image, this.getTopLeftPoint().x, this.getTopLeftPoint().y, null);//draw an Image of chessboard
-        this.drawLabels();
-        this.repaint();
-    }/*--endOf-draw--*/
-
 
     /**
      * Annotations to superclass Game updateing and painting the crossboard
