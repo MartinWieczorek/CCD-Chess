@@ -9,11 +9,10 @@ import org.junit.Test;
 import pieces.KingBehaviour;
 import pieces.KnightBehaviour;
 import pieces.Piece;
-import ui.NewGameWindow;
 
 public class ChessboardTest {
 	
-	//Szenarien bspw. als Konstanten speichern und über Namen mit getRefSquares Daten holen
+	//Szenarien bspw. als Konstanten speichern 
 	public static Square[] Solution1 = {new Square(1, 4, null),new Square(2, 5, null), new Square(2, 7, null)};
 	
 	//um strin des szenarios erweitern
@@ -24,10 +23,6 @@ public class ChessboardTest {
 		}
 		return false;
 	}
-	
-//	private ArrayList<Square> getRefSquares(){
-//		return null;
-//	}
 	
 	//Scenario1 KnightTest1
 	/* X = Knight
