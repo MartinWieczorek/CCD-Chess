@@ -115,6 +115,15 @@ public class Chessboard extends JPanel
         this.drawLabels((int) this.square_height);
     }/*--endOf-Chessboard--*/
 
+    /**
+     * 
+     * @param piece
+     * @param x
+     * @param y
+     */
+    public void setPiece(Piece piece, int x, int y){
+    	this.squares[x][y].setPiece(piece);
+    }
 
     /** Method setPieces on begin of new game or loaded game
      * @param places string with pieces to set on chessboard
