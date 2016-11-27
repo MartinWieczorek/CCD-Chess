@@ -30,30 +30,24 @@ public class Player implements Serializable
 {
 
     String name;
+    private colors color;
 
     public enum colors
     {
-
-        white, black, red, blue
+        white, black, red, green
     }
-    private colors color;
-
+   
     public enum playerTypes
     {
-
         localUser, networkUser, computer
     }
     public playerTypes playerType;
     private boolean goDown;
 
-    public Player()
-    {
-    }
-
-    public Player(String name, String color)
+    public Player(String name, colors color)
     {
         this.name = name;
-        this.setColor(colors.valueOf(color));
+        this.setColor(color);
         this.setGoDown(false);
     }
 

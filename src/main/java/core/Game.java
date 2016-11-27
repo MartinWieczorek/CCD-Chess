@@ -253,7 +253,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
      */
     public void newGame()
     {
-        chessboard.setPieces("", settings.getPlayerWhite(), settings.getPlayerBlack(), settings.getPlayerRed(), settings.getPlayerBlue());
+        chessboard.setPieces("", settings.getPlayerWhite(), settings.getPlayerBlack(), settings.getPlayerRed(), settings.getPlayerGreen());
 
         //System.out.println("new game, game type: "+settings.gameType.name());
 

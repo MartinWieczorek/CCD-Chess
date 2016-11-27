@@ -43,98 +43,118 @@ Class to represent a piece (any kind) - this class should be extended to represe
  */
 public class Piece
 {
-    public Chessboard chessboard; // <-- this relations isn't in class diagram, but it's necessary :/
+    private Chessboard chessboard;
     public boolean wasMotion;
     public Square square;
     public Player player;
     public String name;
     public String symbol;
-    protected PieceBehaviour behaviour;
+    protected PieceBehaviour[] behaviours;
     public Image orgImage;
     public Image image;
-    public short value;
-
-    public Piece(Chessboard chessboard, Player player, PieceBehaviour behaviour, String name)
+    
+    public Piece(Chessboard chessboard, Player player, PieceBehaviour[] behaviours, String name)
     {
-    	this.behaviour = behaviour;
+    	this.behaviours = behaviours;
         this.chessboard = chessboard;
         this.player = player;
         this.name = name;
         this.setImage();
         this.orgImage = image;
         
-        if(name=="Bishop")
+        switch(name)
         {
+        case "Bishop":
         	this.symbol = "B";
-        	this.value = 3;
-        }
-        if(name=="Knight")
-        {
+        	break;
+        case "Knight":
         	this.symbol = "N";
-        	this.value = 3;
-        }
-        if(name=="Pawn")
-        {
-        	this.symbol = "";
-        	this.value = 1;
-        }
-        if(name=="Queen")
-        {
+        	break;
+        case "Pawn":
+        	this.symbol = "P";
+        	break;
+        case "Queen":
         	this.symbol = "Q";
-        	this.value = 9;
-        }
-        if(name=="Rook")
-        {
+        	break;
+        case "Rook":
         	this.symbol = "R";
-        	this.value = 5;
-        }
-        if(name=="King")
-        {
+        	break;
+        case "King":
         	this.symbol = "K";
-        	this.value = 99;
+        	break;
         }
     }
-    /* Method to draw piece on chessboard
-     * @graph : where to draw
-     */
-
-    public final void draw(Graphics g)
+    
+    public void setSquare(Square square)
     {
-        try
-        {
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            Point topLeft = this.chessboard.getTopLeftPoint();
-            int height = this.chessboard.get_square_height();
-            int x = (this.square.getPozX() * height) + topLeft.x;
-            int y = (this.square.getPozY() * height) + topLeft.y;
-            //float addX = (height - image.getWidth(null)) / 2;
-            //float addY = (height - image.getHeight(null)) / 2;
-            if (image != null && g != null)
-            {
-                Image tempImage = orgImage;
-                BufferedImage resized = new BufferedImage(height, height, BufferedImage.TYPE_INT_ARGB_PRE);
-                Graphics2D imageGr = (Graphics2D) resized.createGraphics();
-                imageGr.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                imageGr.drawImage(tempImage, 0, 0, height, height, null);
-                imageGr.dispose();
-                image = resized.getScaledInstance(height, height, 0);
-                g2d.drawImage(image, x, y, null);
-            }
-            else
-            {
-                System.out.println("image is null!");
-            }
-
-        }
-        catch (java.lang.NullPointerException exc)
-        {
-            System.out.println("Something wrong when painting piece: " + exc.getMessage());
-        }
+    	this.square = square;
+    }
+    
+    public Square getSquare()
+    {
+    	return this.square;
     }
 
-    //void clean(){}
+    /** Method check if piece has other owner than calling piece
+     * @param x x position on chessboard
+     * @param y y position on chessboard
+     * @return true if owner(player) is different
+     * */
+    static boolean enemyPieceOnPosition(int x, int y, Chessboard chessboard, Player player)
+    {
+        Square square = chessboard.squares[x][y];
+        if (square.piece == null)
+        {
+            return false;
+        }
+        if (player != square.piece.player)
+        {
+            return true;
+        }
+        return false;
+    }
+    
+    static boolean checkSpaceAtPosition (int x, int y, Player player, Chessboard chessboard)
+    {
+    	if(chessboard.squares[x][y].piece == null) return true;
+    	else return false;
+    }
+  
+    static boolean checkPieceAtPosition(int x, int y, Player player, Chessboard chessboard)
+    {
+        if (chessboard.squares[x][y].piece != null
+                && chessboard.squares[x][y].piece.name.equals("King"))
+        {
+            return false;
+        }
+        Piece piece = chessboard.squares[x][y].piece;
+        if (piece == null || //if this square is empty
+                piece.player != player) //or piece is another player
+        {
+            return true;
+        }
+        return false;
+    }
+    
 
+    /** Method is useful for out of bounds protection
+     * @param x  x position on chessboard
+     * @param y y position on chessboard
+     * @return true if parameters are out of bounds (array)
+     * */
+    static boolean isout(int x, int y, Chessboard chessboard)
+    {
+    	int numSquares = chessboard.getNumSquares();
+    	int cornerSquares = chessboard.getCornerSquares();
+        if (x < 0 || y < 0 || x > numSquares - 1 || y > numSquares - 1 || //out of outer borders?
+        	(x < cornerSquares && ( y > numSquares - 1 - cornerSquares || y < cornerSquares)) || //inside left corners?
+        	(x > numSquares - cornerSquares - 1 && ( y > numSquares - 1 - cornerSquares || y < cornerSquares ))) //inside right corners?
+        {
+            return true;
+        }
+        return false;
+    }
+    
     /** method check if Piece can move to given square
      * @param square square where piece want to move (Square object)
      * @param allmoves  all moves which can piece do
@@ -166,11 +186,16 @@ public class Piece
     }
 
     public ArrayList<Square> allMoves() {
-    	return this.behaviour.getMoves(this.chessboard, this.square, this.player);
+    	ArrayList<Square> result = new ArrayList<Square>();
+    	for(int i = 0; i< behaviours.length; ++i)
+    	{
+    		result.addAll(behaviours[i].getMoves(chessboard, square, player));
+    	}
+    	return result;
     }
 
-    public void changeBehaviour(PieceBehaviour behaviour){
-    	this.behaviour = behaviour;
+    public void changeBehaviour(PieceBehaviour[] behaviours){
+    	this.behaviours = behaviours;
     }
     
     public String getSymbol()
@@ -179,14 +204,12 @@ public class Piece
     }
     public int isCheckmatedOrStalemated()
     {
-        /*
-         *returns: 0-nothing, 1-checkmate, 2-stalemate
-         */
+        //returns: 0-nothing, 1-checkmate, 2-stalemate
         if (this.allMoves().size() == 0)
         {
-            for (int i = 0; i < 8; ++i)
+            for (int i = 0; i < chessboard.getNumSquares(); ++i)
             {
-                for (int j = 0; j < 8; ++j)
+                for (int j = 0; j < chessboard.getNumSquares(); ++j)
                 {
                     if (chessboard.squares[i][j].piece != null
                             && chessboard.squares[i][j].piece.player == this.player
@@ -196,7 +219,6 @@ public class Piece
                     }
                 }
             }
-
             if (this.isChecked())
             {
                 return 1;
@@ -232,5 +254,43 @@ public class Piece
     public boolean isChecked(){
     	KingBehaviour behaviour = new KingBehaviour();
     	return !behaviour.isSafe(this.square, this.chessboard, this.square, this.player);
+    }
+    
+    /* Method to draw piece on chessboard
+     * @graph : where to draw
+     */
+    public final void draw(Graphics g)
+    {
+        try
+        {
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            Point topLeft = this.chessboard.getTopLeftPoint();
+            int height = this.chessboard.get_square_height();
+            int x = (this.square.getPozX() * height) + topLeft.x;
+            int y = (this.square.getPozY() * height) + topLeft.y;
+            //float addX = (height - image.getWidth(null)) / 2;
+            //float addY = (height - image.getHeight(null)) / 2;
+            if (image != null && g != null)
+            {
+                Image tempImage = orgImage;
+                BufferedImage resized = new BufferedImage(height, height, BufferedImage.TYPE_INT_ARGB_PRE);
+                Graphics2D imageGr = (Graphics2D) resized.createGraphics();
+                imageGr.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                imageGr.drawImage(tempImage, 0, 0, height, height, null);
+                imageGr.dispose();
+                image = resized.getScaledInstance(height, height, 0);
+                g2d.drawImage(image, x, y, null);
+            }
+            else
+            {
+                System.out.println("image is null!");
+            }
+
+        }
+        catch (java.lang.NullPointerException exc)
+        {
+            System.out.println("Something wrong when painting piece: " + exc.getMessage());
+        }
     }
 }

@@ -28,14 +28,14 @@ public class KingBehaviour implements PieceBehaviour {
         {
             for (int y = square.getPozY() - 1; y <= square.getPozY() + 1; y++)
             {
-                if (!PieceBehaviour.isout(i, y))
+                if (!Piece.isout(i, y, chessboard))
                 {//out of bounds protection
                     sq = chessboard.squares[i][y];
                     if (square == sq)
                     {//if we're checking square on which is King
                         continue;
                     }
-                    if (PieceBehaviour.checkPiece(i, y, chessboard, player))
+                    if (Piece.checkPieceAtPosition(i, y, player, chessboard))
                     {//if square is empty
                         if (isSafe(sq, chessboard, square, player))
                         {
@@ -205,7 +205,7 @@ public class KingBehaviour implements PieceBehaviour {
         }
 
         // Bishop & Queen
-        for (int h = s.getPozX() - 1, i = s.getPozY() + 1; !PieceBehaviour.isout(h, i); --h, ++i) //left-up
+        for (int h = s.getPozX() - 1, i = s.getPozY() + 1; !Piece.isout(h, i, chessboard); --h, ++i) //left-up
         {
             if (chessboard.squares[h][i].piece == null || chessboard.squares[h][i] == square) //if on this square isn't piece
             {
@@ -229,7 +229,7 @@ public class KingBehaviour implements PieceBehaviour {
             }
         }
 
-        for (int h = s.getPozX() - 1, i = s.getPozY() - 1; !PieceBehaviour.isout(h, i); --h, --i) //left-down
+        for (int h = s.getPozX() - 1, i = s.getPozY() - 1; !Piece.isout(h, i, chessboard); --h, --i) //left-down
         {
             if (chessboard.squares[h][i].piece == null || chessboard.squares[h][i] == square) //if on this square isn't piece
             {
@@ -253,7 +253,7 @@ public class KingBehaviour implements PieceBehaviour {
             }
         }
 
-        for (int h = s.getPozX() + 1, i = s.getPozY() + 1; !PieceBehaviour.isout(h, i); ++h, ++i) //right-up
+        for (int h = s.getPozX() + 1, i = s.getPozY() + 1; !Piece.isout(h, i, chessboard); ++h, ++i) //right-up
         {
             if (chessboard.squares[h][i].piece == null || chessboard.squares[h][i] == square) //if on this square isn't piece
             {
@@ -277,7 +277,7 @@ public class KingBehaviour implements PieceBehaviour {
             }
         }
 
-        for (int h = s.getPozX() + 1, i = s.getPozY() - 1; !PieceBehaviour.isout(h, i); ++h, --i) //right-down
+        for (int h = s.getPozX() + 1, i = s.getPozY() - 1; !Piece.isout(h, i, chessboard); ++h, --i) //right-down
         {
             if (chessboard.squares[h][i].piece == null || chessboard.squares[h][i] == square) //if on this square isn't piece
             {
@@ -308,7 +308,7 @@ public class KingBehaviour implements PieceBehaviour {
         newX = s.getPozX() - 2;
         newY = s.getPozY() + 1;
 
-        if (!PieceBehaviour.isout(newX, newY))
+        if (!Piece.isout(newX, newY, chessboard))
         {
             if (chessboard.squares[newX][newY].piece == null) //if on this square isn't piece
             {
@@ -326,7 +326,7 @@ public class KingBehaviour implements PieceBehaviour {
         newX = s.getPozX() - 1;
         newY = s.getPozY() + 2;
 
-        if (!PieceBehaviour.isout(newX, newY))
+        if (!Piece.isout(newX, newY, chessboard))
         {
             if (chessboard.squares[newX][newY].piece == null) //if on this square isn't piece
             {
@@ -344,7 +344,7 @@ public class KingBehaviour implements PieceBehaviour {
         newX = s.getPozX() + 1;
         newY = s.getPozY() + 2;
 
-        if (!PieceBehaviour.isout(newX, newY))
+        if (!Piece.isout(newX, newY, chessboard))
         {
             if (chessboard.squares[newX][newY].piece == null) //if on this square isn't piece
             {
@@ -362,7 +362,7 @@ public class KingBehaviour implements PieceBehaviour {
         newX = s.getPozX() + 2;
         newY = s.getPozY() + 1;
 
-        if (!PieceBehaviour.isout(newX, newY))
+        if (!Piece.isout(newX, newY, chessboard))
         {
             if (chessboard.squares[newX][newY].piece == null) //if on this square isn't piece
             {
@@ -380,7 +380,7 @@ public class KingBehaviour implements PieceBehaviour {
         newX = s.getPozX() + 2;
         newY = s.getPozY() - 1;
 
-        if (!PieceBehaviour.isout(newX, newY))
+        if (!Piece.isout(newX, newY, chessboard))
         {
             if (chessboard.squares[newX][newY].piece == null) //if on this square isn't piece
             {
@@ -398,7 +398,7 @@ public class KingBehaviour implements PieceBehaviour {
         newX = s.getPozX() + 1;
         newY = s.getPozY() - 2;
 
-        if (!PieceBehaviour.isout(newX, newY))
+        if (!Piece.isout(newX, newY, chessboard))
         {
             if (chessboard.squares[newX][newY].piece == null) //if on this square isn't piece
             {
@@ -416,7 +416,7 @@ public class KingBehaviour implements PieceBehaviour {
         newX = s.getPozX() - 1;
         newY = s.getPozY() - 2;
 
-        if (!PieceBehaviour.isout(newX, newY))
+        if (!Piece.isout(newX, newY, chessboard))
         {
             if (chessboard.squares[newX][newY].piece == null) //if on this square isn't piece
             {
@@ -434,7 +434,7 @@ public class KingBehaviour implements PieceBehaviour {
         newX = s.getPozX() - 2;
         newY = s.getPozY() - 1;
 
-        if (!PieceBehaviour.isout(newX, newY))
+        if (!Piece.isout(newX, newY, chessboard))
         {
             if (chessboard.squares[newX][newY].piece == null) //if on this square isn't piece
             {
@@ -472,7 +472,7 @@ public class KingBehaviour implements PieceBehaviour {
         {//System.out.println("go down");
             newX = s.getPozX() - 1;
             newY = s.getPozY() + 1;
-            if (!PieceBehaviour.isout(newX, newY))
+            if (!Piece.isout(newX, newY, chessboard))
             {
                 if (chessboard.squares[newX][newY].piece == null) //if on this square isn't piece
                 {
@@ -486,7 +486,7 @@ public class KingBehaviour implements PieceBehaviour {
                 }
             }
             newX = s.getPozX() + 1;
-            if (!PieceBehaviour.isout(newX, newY))
+            if (!Piece.isout(newX, newY, chessboard))
             {
                 if (chessboard.squares[newX][newY].piece == null) //if on this square isn't piece
                 {
@@ -504,7 +504,7 @@ public class KingBehaviour implements PieceBehaviour {
         {//System.out.println("go up");
             newX = s.getPozX() - 1;
             newY = s.getPozY() - 1;
-            if (!PieceBehaviour.isout(newX, newY))
+            if (!Piece.isout(newX, newY, chessboard))
             {
                 if (chessboard.squares[newX][newY].piece == null) //if on this square isn't piece
                 {
@@ -518,7 +518,7 @@ public class KingBehaviour implements PieceBehaviour {
                 }
             }
             newX = s.getPozX() + 1;
-            if (!PieceBehaviour.isout(newX, newY))
+            if (!Piece.isout(newX, newY, chessboard))
             {
                 if (chessboard.squares[newX][newY].piece == null) //if on this square isn't piece
                 {

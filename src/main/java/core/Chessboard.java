@@ -39,6 +39,7 @@ import pieces.BishopBehaviour;
 import pieces.KnightBehaviour;
 import pieces.RookBehaviour;
 import pieces.Piece;
+import pieces.PieceBehaviour;
 import ui.GUI;
 
 /** Class to represent chessboard. Chessboard is made from squares.
@@ -50,11 +51,10 @@ public class Chessboard extends JPanel
 	private static final Logger logger = LogManager.getLogger(Chessboard.class);
 	
     public static final int top = 0;
-    //public static final int bottom = 7;
     public static final int bottom = 13;
-    public Square squares[][];//squares of chessboard
-    private int numberSqares = 14;
-    //private static final Image orgImage = GUI.loadImage("chessboard.png");//image of chessboard
+    public Square squares[][]; //squares of chessboard
+    private int numberSquares = 14;
+    private int cornerSquares = 3;
     private static final Image orgImage = GUI.loadImage("chessboard_14x14.png");//image of chessboard
     private static Image image = Chessboard.orgImage;//image of chessboard
     private static final Image org_sel_square = GUI.loadImage("sel_square.png");//image of highlited square
@@ -67,17 +67,17 @@ public class Chessboard extends JPanel
     private Point topLeft = new Point(0, 0);
     private int active_x_square;
     private int active_y_square;
-    private float square_height;//height of square
-    //public Graphics graph;
+    private float square_height; //height of square
     public static final int img_x = 5;//image x position (used in JChessView class!)
     public static final int img_y = img_x;//image y position (used in JChessView class!)
-    //public static final int img_widht = 480;//image width
     public static final int img_widht = 840;//image width
     public static final int img_height = img_widht;//image height
     private ArrayList<Square> moves;
     private Settings settings;
     public Piece kingWhite;
     public Piece kingBlack;
+    public Piece kingRed;
+    public Piece kingGreen;
     //-------- for undo ----------
     private Square undo1_sq_begin = null;
     private Square undo1_sq_end = null;
@@ -104,13 +104,13 @@ public class Chessboard extends JPanel
         this.settings = settings;
         this.activeSquare = null;
         //this.square_height = img_height / 8;//we need to devide to know height of field
-        this.square_height = img_height / numberSqares;//we need to devide to know height of field
-        this.squares = new Square[numberSqares][numberSqares];//initalization of 8x8 chessboard
+        this.square_height = img_height / numberSquares;//we need to devide to know height of field
+        this.squares = new Square[numberSquares][numberSquares];//initalization of 8x8 chessboard
         this.active_x_square = 0;
         this.active_y_square = 0;
-        for (int i = 0; i < numberSqares; i++)
+        for (int i = 0; i < numberSquares; i++)
         {//create object for each square
-            for (int y = 0; y < numberSqares; y++)
+            for (int y = 0; y < numberSquares; y++)
             {
                 this.squares[i][y] = new Square(i, y, null);
             }
@@ -126,18 +126,17 @@ public class Chessboard extends JPanel
      * @param plWhite reference to white player
      * @param plBlack reference to black player
      */
-    public void setPieces(String places, Player plWhite, Player plBlack, Player plRed, Player plBlue)
+    public void setPieces(String places, Player plWhite, Player plBlack, Player plRed, Player plGreen)
     {
-
         if (places.equals("")) //if newGame
         {
             if (this.settings.upsideDown)
             {
-                this.setPieces4NewGame(true, plWhite, plBlack, plRed, plBlue);
+                this.setPieces4NewGame(true, plWhite, plBlack, plRed, plGreen);
             }
             else
             {
-                this.setPieces4NewGame(false, plWhite, plBlack, plRed, plBlue);
+                this.setPieces4NewGame(false, plWhite, plBlack, plRed, plGreen);
             }
 
         } 
@@ -151,7 +150,7 @@ public class Chessboard extends JPanel
     /**
      *
      */
-    private void setPieces4NewGame(boolean upsideDown, Player plWhite, Player plBlack, Player plRed, Player plBlue)
+    private void setPieces4NewGame(boolean upsideDown, Player plWhite, Player plBlack, Player plRed, Player plGreen)
     {
 
         /* WHITE PIECES */
@@ -178,60 +177,9 @@ public class Chessboard extends JPanel
         this.setFigures4NewGame(top, plRed, true, true);
         this.setPawns4NewGame(top + 1, plRed, true);
         
-        this.setFigures4NewGame(bottom, plBlue, false, true);
-        this.setPawns4NewGame(bottom - 1, plBlue, true);
+        this.setFigures4NewGame(bottom, plGreen, false, true);
+        this.setPawns4NewGame(bottom - 1, plGreen, true);
     }/*--endOf-setPieces(boolean upsideDown)--*/
-
-
-//    /**  method set Figures in row (and set Queen and King to right position)
-//     *  @param i row where to set figures (Rook, Knight etc.)
-//     *  @param player which is owner of pawns
-//     *  @param upsideDown if true white pieces will be on top of chessboard
-//     * */
-//    private void setFigures4NewGame(int i, Player player, boolean upsideDown)
-//    {
-//
-//        if (i != top && i != bottom)
-//        {
-//        	logger.error("error setting figures like rook etc.");
-//            return;
-//        }
-//        else if (i == 0)
-//        {
-//            player.setGoDown(true);
-//        }
-//
-//        this.squares[3][i].setPiece(new Piece(this, player, new RookBehaviour(), "Rook"));
-//        this.squares[10][i].setPiece(new Piece(this, player, new RookBehaviour(), "Rook"));
-//        this.squares[4][i].setPiece(new Piece(this, player, new KnightBehaviour(), "Knight"));
-//        this.squares[9][i].setPiece(new Piece(this, player, new KnightBehaviour(), "Knight"));
-//        this.squares[5][i].setPiece(new Piece(this, player, new BishopBehaviour(), "Bishop"));
-//        this.squares[8][i].setPiece(new Piece(this, player, new BishopBehaviour(), "Bishop"));
-//        if (upsideDown)
-//        {
-//        	this.squares[6][i].setPiece(new Piece(this, player, new QueenBehaviour(), "Queen"));
-//            if (player.getColor() == Player.colors.white)
-//            {
-//            	this.squares[7][i].setPiece(kingWhite = new Piece(this, player, new KingBehaviour(), "King"));
-//            }
-//            else
-//            {
-//            	this.squares[7][i].setPiece(kingBlack = new Piece(this, player, new KingBehaviour(), "King"));
-//            }
-//        }
-//        else
-//        {
-//        	this.squares[7][i].setPiece(new Piece(this, player, new QueenBehaviour(), "Queen"));
-//            if (player.getColor() == Player.colors.white)
-//            {
-//            	this.squares[6][i].setPiece(kingWhite = new Piece(this, player, new KingBehaviour(), "King"));
-//            }
-//            else
-//            {
-//            	this.squares[6][i].setPiece(kingBlack =new Piece(this, player, new KingBehaviour(), "King"));
-//            }
-//        }
-//    }
     
     private void setFigures4NewGame(int row, Player player, boolean invertOrder, boolean switchRowCol){
     	String[] pieces = {"Rook", "Knight", "Bishop", "King", "Queen", "Bishop", "Knight", "Rook"};
@@ -244,13 +192,13 @@ public class Chessboard extends JPanel
     		if(invertOrder)
     		{
     			for (int figure = pieces.length - 1; figure >= 0; figure-- ){
-    				setFigure(3 + col++, row, player, pieces[figure]);
+    				setFigure(cornerSquares + col++, row, player, pieces[figure]);
     			}
     		}
     		else
     		{
     			for (int figure = 0; figure < pieces.length; figure++ ){
-    				setFigure(3 + col++, row, player, pieces[figure]);
+    				setFigure(cornerSquares + col++, row, player, pieces[figure]);
     			}
     		}
     	}
@@ -259,13 +207,13 @@ public class Chessboard extends JPanel
     		if(invertOrder)
     		{
     			for (int figure = pieces.length - 1; figure >= 0; figure-- ){
-    				setFigure(row, 3 + col++, player, pieces[figure]);
+    				setFigure(row, cornerSquares + col++, player, pieces[figure]);
     			}
     		}
     		else
     		{
     			for (int figure = 0; figure < pieces.length; figure++ ){
-    				setFigure(row, 3 + col++, player, pieces[figure]);
+    				setFigure(row, cornerSquares + col++, player, pieces[figure]);
     			}
     		}
     	}
@@ -275,43 +223,30 @@ public class Chessboard extends JPanel
 	private void setFigure(int row, int col, Player player, String pieceName) {
 		switch (pieceName){
 			case "Rook":
-				this.squares[col][row].setPiece(new Piece(this, player, new RookBehaviour(), "Rook"));
+				this.squares[col][row].setPiece(new Piece(this, player, new PieceBehaviour[] {new RookBehaviour()}, "Rook"));
 				break;
 			case "Knight":
-				this.squares[col][row].setPiece(new Piece(this, player, new KnightBehaviour(), "Knight"));
+				this.squares[col][row].setPiece(new Piece(this, player,  new PieceBehaviour[] {new KnightBehaviour()}, "Knight"));
 				break;
 			case "Bishop":
-				this.squares[col][row].setPiece(new Piece(this, player, new BishopBehaviour(), "Bishop"));
+				this.squares[col][row].setPiece(new Piece(this, player, new PieceBehaviour[] {new BishopBehaviour()}, "Bishop"));
 				break;
 			case "Queen":
-				this.squares[col][row].setPiece(new Piece(this, player, new QueenBehaviour(), "Queen"));
+				this.squares[col][row].setPiece(new Piece(this, player,  new PieceBehaviour[] {new BishopBehaviour(), new RookBehaviour()}, "Queen"));
 				break;
 			case "King":
 				if(player.getColor() == Player.colors.black)
-					this.squares[col][row].setPiece(kingBlack =new Piece(this, player, new KingBehaviour(), "King"));
+					this.squares[col][row].setPiece(kingBlack =new Piece(this, player, new PieceBehaviour[] {new KingBehaviour()}, "King"));
+				else if(player.getColor() == Player.colors.white)
+					this.squares[col][row].setPiece(kingWhite =new Piece(this, player, new PieceBehaviour[] {new KingBehaviour()}, "King"));
+				else if(player.getColor() == Player.colors.red)
+					this.squares[col][row].setPiece(kingRed =new Piece(this, player, new PieceBehaviour[] {new KingBehaviour()}, "King"));
 				else
-					this.squares[col][row].setPiece(kingWhite =new Piece(this, player, new KingBehaviour(), "King"));
+					this.squares[col][row].setPiece(kingGreen =new Piece(this, player, new PieceBehaviour[] {new KingBehaviour()}, "King"));
 				break;
 		}
 		logger.debug("set " + pieceName + " on pos: (" + row + "," + col + ") for player: " + player.getName());
 	}
-
-//    /**  method set Pawns in row
-//     *  @param row row where to set pawns
-//     *  @param player player which is owner of pawns
-//     * */
-//    private void setPawns4NewGame(int row, Player player)
-//    {
-//        if (row != top + 1 && row != bottom - 1)
-//        {
-//        	logger.error("error setting pawns etc.");
-//            return;
-//        }
-//        for (int x = top + 3; x < numberSqares - 3; x++)
-//        {
-//        	this.squares[x][row].setPiece(new Piece(this, player, new PawnBehaviour(), "Pawn"));
-//        }
-//    }
     
     private void setPawns4NewGame(int row, Player player, boolean switchRowCol)
     {
@@ -320,12 +255,12 @@ public class Chessboard extends JPanel
         	logger.error("error setting pawns etc.");
             return;
         }
-        for (int x = top + 3; x < numberSqares - 3; x++)
+        for (int x = top + cornerSquares; x < numberSquares - cornerSquares; x++)
         {
         	if(switchRowCol)
-        		this.squares[row][x].setPiece(new Piece(this, player, new PawnBehaviour(), "Pawn"));
+        		this.squares[row][x].setPiece(new Piece(this, player, new PieceBehaviour[] {new PawnBehaviour()}, "Pawn"));
         	else
-        		this.squares[x][row].setPiece(new Piece(this, player, new PawnBehaviour(), "Pawn"));
+        		this.squares[x][row].setPiece(new Piece(this, player, new PieceBehaviour[] {new PawnBehaviour()}, "Pawn"));
         	
         	logger.debug("set pawn on pos: (" + x + "," + row + ") for player: " + player.getName());
         }
@@ -401,6 +336,15 @@ public class Chessboard extends JPanel
         //this.draw();//redraw
         repaint();
     }/*--endOf-unselect--*/
+    
+
+    public int getCornerSquares(){
+    	return this.cornerSquares;
+    }
+    
+	public int getNumSquares() {
+		return this.numberSquares;
+	}
     
     public int get_widht()
     {
@@ -577,34 +521,26 @@ public class Chessboard extends JPanel
 
                     if (newPiece.equals("Queen")) // transform pawn to queen
                     {
-                    	Piece queen = new Piece(this, end.piece.player, new QueenBehaviour(), "Queen");
-                    	queen.chessboard = end.piece.chessboard;
-                        queen.player = end.piece.player;
-                        queen.square = end.piece.square;
+                    	Piece queen = new Piece(this, end.piece.player, new PieceBehaviour[] {new RookBehaviour(), new BishopBehaviour()}, "Queen");
+                        queen.setSquare(end.piece.square);
                         end.piece = queen;
                     }
                     else if (newPiece.equals("Rook")) // transform pawn to rook
                     {
-                    	Piece rook = new Piece(this, end.piece.player, new RookBehaviour(), "Rook");
-                        rook.chessboard = end.piece.chessboard;
-                        rook.player = end.piece.player;
-                        rook.square = end.piece.square;
+                    	Piece rook = new Piece(this, end.piece.player,  new PieceBehaviour[] {new RookBehaviour()}, "Rook");
+                        rook.setSquare(end.piece.square);
                         end.piece = rook;
                     }
                     else if (newPiece.equals("Bishop")) // transform pawn to bishop
                     {
-                    	Piece bishop = new Piece(this, end.piece.player, new BishopBehaviour(), "Bishop");
-                        bishop.chessboard = end.piece.chessboard;
-                        bishop.player = end.piece.player;
-                        bishop.square = end.piece.square;
+                    	Piece bishop = new Piece(this, end.piece.player,new PieceBehaviour[] { new BishopBehaviour()}, "Bishop");
+                        bishop.setSquare(end.piece.square);
                         end.piece = bishop;
                     }
                     else // transform pawn to knight
                     {
-                    	Piece knight = new Piece(this, end.piece.player, new KnightBehaviour(), "Knight");
-                        knight.chessboard = end.piece.chessboard;
-                        knight.player = end.piece.player;
-                        knight.square = end.piece.square;
+                    	Piece knight = new Piece(this, end.piece.player, new PieceBehaviour[] {new KnightBehaviour()}, "Knight");
+                        knight.setSquare(end.piece.square);
                         end.piece = knight;
                     }
                     promotedPiece = end.piece;
@@ -826,9 +762,9 @@ public class Chessboard extends JPanel
             g2d.drawImage(this.LeftRightLabel, Chessboard.image.getHeight(null) + topLeftPoint.x, 0, null);
         }
         g2d.drawImage(image, topLeftPoint.x, topLeftPoint.y, null);//draw an Image of chessboard
-        for (int i = 0; i < numberSqares; i++) //drawPiecesOnSquares
+        for (int i = 0; i < numberSquares; i++) //drawPiecesOnSquares
         {
-            for (int y = 0; y < numberSqares; y++)
+            for (int y = 0; y < numberSquares; y++)
             {
                 if (this.squares[i][y].piece != null)
                 {
@@ -866,7 +802,7 @@ public class Chessboard extends JPanel
         g.dispose();
         Chessboard.image = resized.getScaledInstance(height, height, 0);
         //this.square_height = (float) (height / 8);
-        this.square_height = (float) (height / numberSqares);
+        this.square_height = (float) (height / numberSquares);
         if (this.settings.renderLabels)
         {
             height += 2 * (this.upDownLabel.getHeight(null));
@@ -898,7 +834,7 @@ public class Chessboard extends JPanel
         int min_label_height = 20;
         int labelHeight = (int) Math.ceil(square_height / 4);
         labelHeight = (labelHeight < min_label_height) ? min_label_height : labelHeight;
-        int labelWidth =  (int) Math.ceil(square_height * numberSqares + (2 * labelHeight)); 
+        int labelWidth =  (int) Math.ceil(square_height * numberSquares + (2 * labelHeight)); 
         BufferedImage uDL = new BufferedImage(labelWidth + min_label_height, labelHeight, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D uDL2D = (Graphics2D) uDL.createGraphics();
         uDL2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -946,7 +882,7 @@ public class Chessboard extends JPanel
 
         if (this.settings.upsideDown)
         {
-            for (int i = 1; i <= numberSqares; i++)
+            for (int i = 1; i <= numberSquares; i++)
             {
                 uDL2D.drawString(new Integer(i).toString(), 3 + (labelHeight / 3), (square_height * (i - 1)) + addX);
             }
@@ -954,7 +890,7 @@ public class Chessboard extends JPanel
         else
         {
             int j = 1;
-            for (int i = numberSqares; i > 0; i--, j++)
+            for (int i = numberSquares; i > 0; i--, j++)
             {
                 uDL2D.drawString(new Integer(i).toString(), 3 + (labelHeight / 3), (square_height * (j - 1)) + addX);
             }

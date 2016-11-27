@@ -42,182 +42,93 @@ public class PawnBehaviour implements PieceBehaviour {
 
 	@Override
 	public ArrayList<Square> getMoves(Chessboard chessboard, Square square, Player player) {
-		ArrayList<Square> list = new ArrayList<Square>();
-        Square sq;
-        Square sq1;
-        int first = square.getPozY() - 1;//number where to move
-        int second = square.getPozY() - 2;//number where to move (only in first move)
-        if (player.isGoDown())
-        {//check if player "go" down or up
-            first = square.getPozY() + 1;//if yes, change value
-            second = square.getPozY() + 2;//if yes, change value
-        }
-        if (PieceBehaviour.isout(first, first))
-        {//out of bounds protection
-            return list;//return empty list
-        }
-        sq = chessboard.squares[square.getPozX()][first];
-        if (sq.piece == null)
-        {//if next is free
-            //list.add(sq);//add
-            if (player.getColor() == Player.colors.white)
-            {//white
-
-                if (chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[square.getPozX()][first]))
-                {
-                    list.add(chessboard.squares[square.getPozX()][first]);
-                }
-            }
-            else
-            {//or black
-
-                if (chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[square.getPozX()][first]))
-                {
-                    list.add(chessboard.squares[square.getPozX()][first]);
-                }
-            }
-
-            if ((player.isGoDown() && square.getPozY() == 1) || (!player.isGoDown() && square.getPozY() == 6))
-            {
-                sq1 = chessboard.squares[square.getPozX()][second];
-                if (sq1.piece == null)
-                {
-                    //list.add(sq1);//only in first move
-                    if (player.getColor() == Player.colors.white)
-                    {//white
-
-                        if (chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[square.getPozX()][second]))
-                        {
-                            list.add(chessboard.squares[square.getPozX()][second]);
-                        }
+		ArrayList<Square> result = new ArrayList<Square>();
+		if(player.getColor() != Player.colors.white) result.addAll(computeMove(0, 1, square, chessboard, player));
+		if(player.getColor() != Player.colors.black) result.addAll(computeMove(0, -1, square, chessboard, player));
+		if(player.getColor() != Player.colors.red) result.addAll(computeMove(-1, 0, square, chessboard, player)); //noch zu kontrolieren
+		if(player.getColor() != Player.colors.green) result.addAll(computeMove(1, 0, square, chessboard, player)); //noch zu kontrolieren 
+		result.addAll(computeTake(1, 1, square, chessboard, player));
+		result.addAll(computeTake(1, -1, square, chessboard, player));
+		result.addAll(computeTake(-1, 1, square, chessboard, player));
+		result.addAll(computeTake(-1, -1, square, chessboard, player));
+		return result;
+	}
+	private ArrayList<Square> computeMove(int x, int y, Square square, Chessboard chessboard, Player player)
+	{
+		int newX = square.getPozX() + x;
+		int newY = square.getPozY() + y;
+		ArrayList<Square> result = new ArrayList<Square>();
+		if (!Piece.isout(newX, newY, chessboard) && Piece.checkPieceAtPosition(newX, newY, player, chessboard) &&
+				Piece.checkSpaceAtPosition(newX, newY, player, chessboard)) //checks if there is an enemy piece or no piece and no King
+		{
+        	switch (player.getColor())
+        	{
+            	case white :
+            		if (chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[newX][newY]))
+                    {
+                        result.add(chessboard.squares[newX][newY]);
                     }
-                    else
-                    {//or black
-
-                        if (chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[square.getPozX()][second]))
-                        {
-                            list.add(chessboard.squares[square.getPozX()][second]);
-                        }
+            		break;
+            	case black :
+            		if (chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[newX][newY]))
+                    {
+                        result.add(chessboard.squares[newX][newY]);
                     }
-                }
-            }
-        }
-        if (!PieceBehaviour.isout(square.getPozX() - 1, square.getPozY())) //out of bounds protection
-        {
-            //capture
-            sq = chessboard.squares[square.getPozX() - 1][first];
-            if (sq.piece != null)
-            {//check if can hit left
-                if (player != sq.piece.player && !sq.piece.name.equals("King"))
-                {
-                    if (player.getColor() == Player.colors.white)
-                    {//white
-
-                        if (chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[square.getPozX() - 1][first]))
-                        {
-                            list.add(chessboard.squares[square.getPozX() - 1][first]);
-                        }
+            		break;
+            	case red :
+            		if (chessboard.kingRed.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[newX][newY]))
+                    {
+                        result.add(chessboard.squares[newX][newY]);
                     }
-                    else
-                    {//or black
-
-                        if (chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[square.getPozX() - 1][first]))
-                        {
-                            list.add(chessboard.squares[square.getPozX() - 1][first]);
-                        }
+            		break;
+            	case green :
+            		if (chessboard.kingGreen.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[newX][newY]))
+                    {
+                        result.add(chessboard.squares[newX][newY]);
                     }
-                }
-            }
-
-            //En passant
-            sq = chessboard.squares[square.getPozX() - 1][square.getPozY()];
-            if (sq.piece != null
-                    && chessboard.twoSquareMovedPawn != null
-                    && sq == chessboard.twoSquareMovedPawn.square)
-            {//check if can hit left
-                if (player != sq.piece.player && !sq.piece.name.equals("King"))
-                {// unnecessary
-
-                    //list.add(sq);
-                    if (player.getColor() == Player.colors.white)
-                    {//white
-
-                        if (chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[square.getPozX() - 1][first]))
-                        {
-                            list.add(chessboard.squares[square.getPozX() - 1][first]);
-                        }
+            		break;
+        	}
+		}
+		return result;
+		
+	}
+	private ArrayList<Square> computeTake(int x, int y, Square square, Chessboard chessboard, Player player)
+	{
+		int newX = square.getPozX() + x;
+		int newY = square.getPozY() + y;
+		ArrayList<Square> result = new ArrayList<Square>();
+		if (!Piece.isout(newX, newY, chessboard) && Piece.checkPieceAtPosition(newX, newY, player, chessboard) &&
+				!Piece.checkSpaceAtPosition(newX, newY, player, chessboard)) //checks if there is an enemy piece or no piece and no King
+		{
+        	switch (player.getColor())
+        	{
+            	case white :
+            		if (chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[newX][newY]))
+                    {
+                        result.add(chessboard.squares[newX][newY]);
                     }
-                    else
-                    {//or black
-
-                        if (chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[square.getPozX() - 1][first]))
-                        {
-                            list.add(chessboard.squares[square.getPozX() - 1][first]);
-                        }
+            		break;
+            	case black :
+            		if (chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[newX][newY]))
+                    {
+                        result.add(chessboard.squares[newX][newY]);
                     }
-                }
-            }
-        }
-        if (!PieceBehaviour.isout(square.getPozX() + 1, square.getPozY()))
-        {//out of bounds protection
-
-            //capture
-            sq = chessboard.squares[square.getPozX() + 1][first];
-            if (sq.piece != null)
-            {//check if can hit right
-                if (player != sq.piece.player && !sq.piece.name.equals("King"))
-                {
-                    //list.add(sq);
-                    if (player.getColor() == Player.colors.white)
-                    { //white
-
-                        if (chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[square.getPozX() + 1][first]))
-                        {
-                            list.add(chessboard.squares[square.getPozX() + 1][first]);
-                        }
+            		break;
+            	case red :
+            		if (chessboard.kingRed.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[newX][newY]))
+                    {
+                        result.add(chessboard.squares[newX][newY]);
                     }
-                    else
-                    {//or black
-
-                        if (chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[square.getPozX() + 1][first]))
-                        {
-                            list.add(chessboard.squares[square.getPozX() + 1][first]);
-                        }
+            		break;
+            	case green :
+            		if (chessboard.kingGreen.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[newX][newY]))
+                    {
+                        result.add(chessboard.squares[newX][newY]);
                     }
-                }
-            }
-
-            //En passant
-            sq = chessboard.squares[square.getPozX() + 1][square.getPozY()];
-            if (sq.piece != null
-                    && chessboard.twoSquareMovedPawn != null
-                    && sq == chessboard.twoSquareMovedPawn.square)
-            {//check if can hit left
-                if (player != sq.piece.player && !sq.piece.name.equals("King"))
-                {// unnecessary
-
-                    //list.add(sq);
-                    if (player.getColor() == Player.colors.white)
-                    {//white
-
-                        if (chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[square.getPozX() + 1][first]))
-                        {
-                            list.add(chessboard.squares[square.getPozX() + 1][first]);
-                        }
-                    }
-                    else
-                    {//or black
-
-                        if (chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[square.getPozX() + 1][first]))
-                        {
-                            list.add(chessboard.squares[square.getPozX() + 1][first]);
-                        }
-                    }
-                }
-            }
-        }
-
-        return list;
+            		break;
+        	}
+		}
+		return result;
 	}
 
 }

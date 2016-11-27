@@ -22,7 +22,6 @@ package core;
 
 import java.io.Serializable;
 import java.util.Locale;
-import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import org.apache.logging.log4j.LogManager;
@@ -50,7 +49,7 @@ public class Settings implements Serializable
     private Player playerWhite;
     private Player playerBlack;
     private Player playerRed;
-    private Player playerBlue;
+    private Player playerGreen;
 
     public enum gameTypes
     {
@@ -64,10 +63,10 @@ public class Settings implements Serializable
     {
         //temporally
     	logger.info("Settings-constructor");
-        this.setPlayerWhite(new Player("", "white"));
-        this.setPlayerBlack(new Player("", "black"));
-        this.setPlayerRed(new Player("", "red"));
-        this.setPlayerBlue(new Player("", "blue"));
+        this.setPlayerWhite(new Player("", Player.colors.white));
+        this.setPlayerBlack(new Player("", Player.colors.black));
+        this.setPlayerRed(new Player("", Player.colors.red));
+        this.setPlayerGreen(new Player("", Player.colors.green));
         this.timeLimitSet = false;
 
         gameMode = gameModes.newGame;
@@ -125,11 +124,11 @@ public class Settings implements Serializable
 		this.playerRed = playerRed;
 	}
 
-	public Player getPlayerBlue() {
-		return playerBlue;
+	public Player getPlayerGreen() {
+		return playerGreen;
 	}
 
-	public void setPlayerBlue(Player playerBlue) {
-		this.playerBlue = playerBlue;
+	public void setPlayerGreen(Player playerGreen) {
+		this.playerGreen = playerGreen;
 	}
 }
