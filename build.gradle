@@ -7,6 +7,12 @@
  * user guide available at https://docs.gradle.org/2.14.1/userguide/tutorial_java_projects.html
  */
 
+allprojects {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:deprecation" << "-Xlint:unchecked"
+    }
+}
+
 buildscript{
 
 	repositories {
@@ -100,3 +106,4 @@ jar{
 		)
 	}
 }
+

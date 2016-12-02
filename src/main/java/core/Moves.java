@@ -460,7 +460,7 @@ public class Moves extends AbstractTableModel
         int from = 0;
         int to = 0;
         int n = 1;
-        ArrayList<String> tempArray = new ArrayList();
+        ArrayList<String> tempArray = new ArrayList<String>();
         int tempStrSize = moves.length() - 1;
         while (true)
         {
