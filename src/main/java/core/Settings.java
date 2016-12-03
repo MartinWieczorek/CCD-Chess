@@ -37,21 +37,21 @@ public class Settings implements Serializable
     public int timeForGame;
     public boolean runningChat;
     public boolean runningGameClock;
-    public boolean timeLimitSet;//tel us if player choose time 4 game or it's infinity
+    public boolean timeLimitSet;//tell us if player choose time 4 game or it's infinity
     public boolean upsideDown;
 
     public enum gameModes
     {
-
         newGame, loadGame
     }
     public gameModes gameMode;
-    public Player playerWhite;
-    public Player playerBlack;
+    private Player playerWhite;
+    private Player playerBlack;
+    private Player playerRed;
+    private Player playerGreen;
 
     public enum gameTypes
     {
-
         local
     }
     public gameTypes gameType;
@@ -61,8 +61,10 @@ public class Settings implements Serializable
     {
         //temporally
     	logger.info("Settings-constructor");
-        this.playerWhite = new Player("", "white");
-        this.playerBlack = new Player("", "black");
+        this.setPlayerWhite(new Player("", Player.colors.white));
+        this.setPlayerBlack(new Player("", Player.colors.black));
+        this.setPlayerRed(new Player("", Player.colors.red));
+        this.setPlayerGreen(new Player("", Player.colors.green));
         this.timeLimitSet = false;
 
         gameMode = gameModes.newGame;
@@ -95,4 +97,36 @@ public class Settings implements Serializable
         logger.info(Settings.loc.getLocale().toString());
         return result;
     }
+
+	public Player getPlayerWhite() {
+		return playerWhite;
+	}
+
+	public void setPlayerWhite(Player playerWhite) {
+		this.playerWhite = playerWhite;
+	}
+
+	public Player getPlayerBlack() {
+		return playerBlack;
+	}
+
+	public void setPlayerBlack(Player playerBlack) {
+		this.playerBlack = playerBlack;
+	}
+
+	public Player getPlayerRed() {
+		return playerRed;
+	}
+
+	public void setPlayerRed(Player playerRed) {
+		this.playerRed = playerRed;
+	}
+
+	public Player getPlayerGreen() {
+		return playerGreen;
+	}
+
+	public void setPlayerGreen(Player playerGreen) {
+		this.playerGreen = playerGreen;
+	}
 }

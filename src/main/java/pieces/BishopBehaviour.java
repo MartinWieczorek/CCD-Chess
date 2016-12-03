@@ -20,132 +20,75 @@ import core.Square;
 
 public class BishopBehaviour implements PieceBehaviour {
 
+static private BishopBehaviour instance;
+	
+	private BishopBehaviour(){}
+	
+	static public BishopBehaviour getInstance()
+	{
+		if(instance == null){
+			instance = new BishopBehaviour();
+		}
+		
+		return instance;
+	}
+	
 	@Override
 	public ArrayList<Square> getMoves(Chessboard chessboard, Square square, Player player) {
 		
-		ArrayList<Square> list = new ArrayList<Square>();
-
-	        for (int h = square.getPozX() - 1, i = square.getPozY() + 1; !PieceBehaviour.isout(h, i); --h, ++i) //left-up
-	        {
-	            if (PieceBehaviour.checkPiece(h, i, chessboard, player)) //if on this square isn't piece
-	            {
-	                if (player.getColor() == Player.colors.white) //white
-	                {
-	                    if (chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[h][i]))
-	                    {
-	                        list.add(chessboard.squares[h][i]);
-	                    }
-	                }
-	                else //or black
-	                {
-	                    if (chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[h][i]))
-	                    {
-	                        list.add(chessboard.squares[h][i]);
-	                    }
-	                }
-
-	                if (PieceBehaviour.otherOwner(h, i, chessboard, player))
-	                {
-	                    break;
-	                }
-	            }
-	            else
-	            {
-	                break;//we've to break because we cannot go beside other piece!!
-	            }
-	        }
-
-	        for (int h = square.getPozX() - 1, i = square.getPozY() - 1; !PieceBehaviour.isout(h, i); --h, --i) //left-down
-	        {
-	            if (PieceBehaviour.checkPiece(h, i, chessboard, player)) //if on this square isn't piece
-	            {
-	                if (player.getColor() == Player.colors.white) //white
-	                {
-	                    if (chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[h][i]))
-	                    {
-	                        list.add(chessboard.squares[h][i]);
-	                    }
-	                }
-	                else //or black
-	                {
-	                    if (chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[h][i]))
-	                    {
-	                        list.add(chessboard.squares[h][i]);
-	                    }
-	                }
-
-	                if (PieceBehaviour.otherOwner(h, i, chessboard, player))
-	                {
-	                    break;
-	                }
-	            }
-	            else
-	            {
-	                break;//we've to break because we cannot go beside other piece!!
-	            }
-	        }
-
-	        for (int h = square.getPozX() + 1, i = square.getPozY() + 1; !PieceBehaviour.isout(h, i); ++h, ++i) //right-up
-	        {
-	            if (PieceBehaviour.checkPiece(h, i, chessboard, player)) //if on this square isn't piece
-	            {
-	                if (player.getColor() == Player.colors.white) //white
-	                {
-	                    if (chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[h][i]))
-	                    {
-	                        list.add(chessboard.squares[h][i]);
-	                    }
-	                }
-	                else //or black
-	                {
-	                    if (chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[h][i]))
-	                    {
-	                        list.add(chessboard.squares[h][i]);
-	                    }
-	                }
-
-	                if (PieceBehaviour.otherOwner(h, i, chessboard, player))
-	                {
-	                    break;
-	                }
-	            }
-	            else
-	            {
-	                break;//we've to break because we cannot go beside other piece!!
-	            }
-	        }
-
-	        for (int h = square.getPozX() + 1, i = square.getPozY() - 1; !PieceBehaviour.isout(h, i); ++h, --i) //right-down
-	        {
-	            if (PieceBehaviour.checkPiece(h, i, chessboard, player)) //if on this square isn't piece
-	            {
-	                if (player.getColor() == Player.colors.white) //white
-	                {
-	                    if (chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[h][i]))
-	                    {
-	                        list.add(chessboard.squares[h][i]);
-	                    }
-	                }
-	                else //or black
-	                {
-	                    if (chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[h][i]))
-	                    {
-	                        list.add(chessboard.squares[h][i]);
-	                    }
-	                }
-
-	                if (PieceBehaviour.otherOwner(h, i, chessboard, player))
-	                {
-	                    break;
-	                }
-	            }
-	            else
-	            {
-	                break;//we've to break because we cannot go beside other piece!!
-	            }
-	        }
-
-	        return list;
+		ArrayList<Square> result = new ArrayList<Square>();
+		result.addAll(computeDirektion(1, 1, square, chessboard, player));
+		result.addAll(computeDirektion(-1, 1, square, chessboard, player));
+		result.addAll(computeDirektion(1, -1, square, chessboard, player));
+		result.addAll(computeDirektion(-1, -1, square, chessboard, player));
+		
+		return result;
 	}
-
+	
+	private ArrayList<Square> computeDirektion(int xDir, int yDir, Square square, Chessboard chessboard, Player player)
+	{
+		ArrayList<Square> result = new ArrayList<Square>();
+		 for (int x = square.getPozX() + xDir, y = square.getPozY() + yDir; !PieceBehaviour.isout(x, y, chessboard); x=x+xDir, y=y+yDir)
+	        {
+	            if (PieceBehaviour.checkPieceAtPosition(x, y, player, chessboard)) //checks if there is an enemy piece, no piece and no King
+	            {
+	            	switch (player.getColor())
+	            	{
+		            	case white :
+		            		if (chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[x][y]))
+		                    {
+		                        result.add(chessboard.squares[x][y]);
+		                    }
+		            		break;
+		            	case black :
+		            		if (chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[x][y]))
+		                    {
+		                        result.add(chessboard.squares[x][y]);
+		                    }
+		            		break;
+		            	case red :
+		            		if (chessboard.kingRed.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[x][y]))
+		                    {
+		                        result.add(chessboard.squares[x][y]);
+		                    }
+		            		break;
+		            	case green :
+		            		if (chessboard.kingGreen.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[x][y]))
+		                    {
+		                        result.add(chessboard.squares[x][y]);
+		                    }
+		            		break;
+	            	}
+	            	if (PieceBehaviour.enemyPieceOnPosition(x, y, chessboard, player))
+		            {
+		                break; //we've to break because we cannot go beside other piece!!
+		            }
+	            }
+	        	else
+	            {
+	            	break; //we've to break because we cannot go beside other piece!!
+	            }
+	        }
+		return result;
+	}
 }
