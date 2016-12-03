@@ -66,7 +66,7 @@ public class Chessboard extends JPanel
     private Point topLeft = new Point(0, 0);
     private int active_x_square;
     private int active_y_square;
-    private float square_height; //height of square
+    private float square_height;//height of square
     public static final int img_x = 5;//image x position (used in JChessView class!)
     public static final int img_y = img_x;//image y position (used in JChessView class!)
     public static final int img_widht = 840;//image width
@@ -89,7 +89,6 @@ public class Chessboard extends JPanel
     //For En passant:
     //|-> Pawn whose in last turn moved two square
     public Piece twoSquareMovedPawn = null;
-    public Piece twoSquareMovedPawn2 = null;
     private Moves moves_history;
 
     /** Chessboard class constructor
@@ -105,8 +104,8 @@ public class Chessboard extends JPanel
         //this.square_height = img_height / 8;//we need to devide to know height of field
         this.square_height = img_height / numberSquares;//we need to devide to know height of field
         this.squares = new Square[numberSquares][numberSquares];//initalization of 8x8 chessboard
-        this.active_x_square = 0;
-        this.active_y_square = 0;
+        this.setActive_x_square(0);
+        this.setActive_y_square(0);
         for (int i = 0; i < numberSquares; i++)
         {//create object for each square
             for (int y = 0; y < numberSquares; y++)
@@ -116,7 +115,7 @@ public class Chessboard extends JPanel
         }//--endOf--create object for each square
         this.moves_history = moves_history;
         this.setDoubleBuffered(true);
-        this.drawLabels((int) this.square_height);
+        this.drawLabels((int) this.getSquare_height());
     }/*--endOf-Chessboard--*/
 
 
@@ -355,374 +354,25 @@ public class Chessboard extends JPanel
         return this.get_height(false);
     }
 
-
     public int get_widht(boolean includeLables)
     {
         return this.getHeight();
     }/*--endOf-get_widht--*/
 
-
     int get_height(boolean includeLabels)
     {
         if (this.settings.renderLabels)
         {
-            return Chessboard.image.getHeight(null) + upDownLabel.getHeight(null);
+            return Chessboard.image.getHeight(null) + getUpDownLabel().getHeight(null);
         }
         return Chessboard.image.getHeight(null);
     }/*--endOf-get_height--*/
 
-
     public int get_square_height()
     {
-        int result = (int) this.square_height;
+        int result = (int) this.getSquare_height();
         return result;
     }
-
-    public void move(Square begin, Square end)
-    {
-        move(begin, end, true);
-    }
-
-    /** Method to move piece over chessboard
-     * @param xFrom from which x move piece
-     * @param yFrom from which y move piece
-     * @param xTo to which x move piece
-     * @param yTo to which y move piece
-     */
-    public void move(int xFrom, int yFrom, int xTo, int yTo)
-    {
-        Square fromSQ = null;
-        Square toSQ = null;
-        try
-        {
-            fromSQ = this.squares[xFrom][yFrom];
-            toSQ = this.squares[xTo][yTo];
-        }
-        catch (java.lang.IndexOutOfBoundsException exc)
-        {
-        	logger.error("error moving piece: " + exc);
-            return;
-        }
-        this.move(this.squares[xFrom][yFrom], this.squares[xTo][yTo], true);
-    }
-
-    public void move(Square begin, Square end, boolean refresh)
-    {
-        this.move(begin, end, refresh, true);
-    }
-
-    /** Method move piece from square to square
-     * @param begin square from which move piece
-     * @param end square where we want to move piece         *
-     * @param refresh chessboard, default: true
-     * */
-    public void move(Square begin, Square end, boolean refresh, boolean clearForwardHistory)
-    {
-
-        castling wasCastling = Moves.castling.none;
-        Piece promotedPiece = null;
-        boolean wasEnPassant = false;
-        if (end.piece != null)
-        {
-            end.piece.square = null;
-        }
-
-        Square tempBegin = new Square(begin);//4 moves history
-        Square tempEnd = new Square(end);  //4 moves history
-        //for undo
-        undo1_piece_begin = begin.piece;
-        undo1_sq_begin = begin;
-        undo1_piece_end = end.piece;
-        undo1_sq_end = end;
-        ifWasEnPassant = null;
-        ifWasCastling = null;
-        breakCastling = false;
-        // ---
-
-        twoSquareMovedPawn2 = twoSquareMovedPawn;
-
-        begin.piece.square = end;//set square of piece to ending
-        end.piece = begin.piece;//for ending square set piece from beginin square
-        begin.piece = null;//make null piece for begining square
-
-        if (end.piece.name.equals("King"))
-        {
-            if (!(end.piece).wasMotion)
-            {
-                breakCastling = true;
-                (end.piece).wasMotion = true;
-            }
-
-            //Castling
-            if (begin.getPozX() + 2 == end.getPozX())
-            {
-                move(squares[7][begin.getPozY()], squares[end.getPozX() - 1][begin.getPozY()], false, false);
-                ifWasCastling = end.piece;  //for undo
-                wasCastling = Moves.castling.shortCastling;
-                //this.moves_history.addMove(tempBegin, tempEnd, clearForwardHistory, wasCastling, wasEnPassant);
-                //return;
-            }
-            else if (begin.getPozX() - 2 == end.getPozX())
-            {
-                move(squares[0][begin.getPozY()], squares[end.getPozX() + 1][begin.getPozY()], false, false);
-                ifWasCastling = end.piece;  // for undo
-                wasCastling = Moves.castling.longCastling;
-                //this.moves_history.addMove(tempBegin, tempEnd, clearForwardHistory, wasCastling, wasEnPassant);
-                //return;
-            }
-            //endOf Castling
-        }
-        else if (end.piece.name.equals("Rook"))
-        {
-            if (!(end.piece).wasMotion)
-            {
-                breakCastling = true;
-                (end.piece).wasMotion = true;
-            }
-        }
-        else if (end.piece.name.equals("Pawn"))
-        {
-            if (twoSquareMovedPawn != null && squares[end.getPozX()][begin.getPozY()] == twoSquareMovedPawn.square) //en passant
-            {
-                ifWasEnPassant = squares[end.getPozX()][begin.getPozY()].piece; //for undo
-
-                tempEnd.piece = squares[end.getPozX()][begin.getPozY()].piece; //ugly hack - put taken pawn in en passant plasty do end square
-
-                squares[end.getPozX()][begin.getPozY()].piece = null;
-                wasEnPassant = true;
-            }
-
-            if (begin.getPozY() - end.getPozY() == 2 || end.getPozY() - begin.getPozY() == 2) //moved two square
-            {
-                breakCastling = true;
-                twoSquareMovedPawn = end.piece;
-            }
-            else
-            {
-                twoSquareMovedPawn = null; //erase last saved move (for En passant)
-            }
-
-            if (end.piece.square.getPozY() == 0 || end.piece.square.getPozY() == 7) //promote Pawn
-            {
-                if (clearForwardHistory)
-                {
-                    String color;
-                    if (end.piece.player.getColor() == Player.colors.white)
-                    {
-                        color = "W"; // promotionWindow was show with pieces in this color
-                    }
-                    else
-                    {
-                        color = "B";
-                    }
-
-                    String newPiece = JChessApp.getJcv().showPawnPromotionBox(color); //return name of new piece
-
-                    if (newPiece.equals("Queen")) // transform pawn to queen
-                    {
-                    	Piece queen = new Piece(this, end.piece.player, new PieceBehaviour[] {RookBehaviour.getInstance(), BishopBehaviour.getInstance()}, "Queen");
-                        queen.setSquare(end.piece.square);
-                        end.piece = queen;
-                    }
-                    else if (newPiece.equals("Rook")) // transform pawn to rook
-                    {
-                    	Piece rook = new Piece(this, end.piece.player,  new PieceBehaviour[] {RookBehaviour.getInstance()}, "Rook");
-                        rook.setSquare(end.piece.square);
-                        end.piece = rook;
-                    }
-                    else if (newPiece.equals("Bishop")) // transform pawn to bishop
-                    {
-                    	Piece bishop = new Piece(this, end.piece.player,new PieceBehaviour[] {BishopBehaviour.getInstance()}, "Bishop");
-                        bishop.setSquare(end.piece.square);
-                        end.piece = bishop;
-                    }
-                    else // transform pawn to knight
-                    {
-                    	Piece knight = new Piece(this, end.piece.player, new PieceBehaviour[] {KnightBehaviour.getInstance()}, "Knight");
-                        knight.setSquare(end.piece.square);
-                        end.piece = knight;
-                    }
-                    promotedPiece = end.piece;
-                }
-            }
-        }
-        else if (!end.piece.name.equals("Pawn"))
-        {
-            twoSquareMovedPawn = null; //erase last saved move (for En passant)
-        }
-        //}
-
-        if (refresh)
-        {
-            this.unselect();//unselect square
-            repaint();
-        }
-
-        if (clearForwardHistory)
-        {
-            this.moves_history.clearMoveForwardStack();
-            this.moves_history.addMove(tempBegin, tempEnd, true, wasCastling, wasEnPassant, promotedPiece);
-        }
-        else
-        {
-            this.moves_history.addMove(tempBegin, tempEnd, false, wasCastling, wasEnPassant, promotedPiece);
-        }
-    }/*endOf-move()-*/
-
-
-    public boolean redo()
-    {
-        return redo(true);
-    }
-
-    public boolean redo(boolean refresh)
-    {
-        if ( this.settings.gameType == Settings.gameTypes.local ) //redo only for local game
-        {
-            Move first = this.moves_history.redo();
-
-            Square from = null;
-            Square to = null;
-
-            if (first != null)
-            {
-                from = first.getFrom();
-                to = first.getTo();
-
-                this.move(this.squares[from.getPozX()][from.getPozY()], this.squares[to.getPozX()][to.getPozY()], true, false);
-                if (first.getPromotedPiece() != null)
-                {
-                    Piece pawn = this.squares[to.getPozX()][to.getPozY()].piece;
-                    pawn.square = null;
-
-                    this.squares[to.getPozX()][to.getPozY()].piece = first.getPromotedPiece();
-                    Piece promoted = this.squares[to.getPozX()][to.getPozY()].piece;
-                    promoted.square = this.squares[to.getPozX()][to.getPozY()];
-                }
-                return true;
-            }
-            
-        }
-        return false;
-    }
-
-    public boolean undo()
-    {
-        return undo(true);
-    }
-
-    public synchronized boolean undo(boolean refresh) //undo last move
-    {
-        Move last = this.moves_history.undo();
-
-
-        if (last != null && last.getFrom() != null)
-        {
-            Square begin = last.getFrom();
-            Square end = last.getTo();
-            try
-            {
-                Piece moved = last.getMovedPiece();
-                this.squares[begin.getPozX()][begin.getPozY()].piece = moved;
-
-                moved.square = this.squares[begin.getPozX()][begin.getPozY()];
-
-                Piece taken = last.getTakenPiece();
-                if (last.getCastlingMove() != castling.none)
-                {
-                    Piece rook = null;
-                    if (last.getCastlingMove() == castling.shortCastling)
-                    {
-                        rook = this.squares[end.getPozX() - 1][end.getPozY()].piece;
-                        this.squares[7][begin.getPozY()].piece = rook;
-                        rook.square = this.squares[7][begin.getPozY()];
-                        this.squares[end.getPozX() - 1][end.getPozY()].piece = null;
-                    }
-                    else
-                    {
-                        rook = this.squares[end.getPozX() + 1][end.getPozY()].piece;
-                        this.squares[0][begin.getPozY()].piece = rook;
-                        rook.square = this.squares[0][begin.getPozY()];
-                        this.squares[end.getPozX() + 1][end.getPozY()].piece = null;
-                    }
-                    moved.wasMotion = false;
-                    rook.wasMotion = false;
-                    this.breakCastling = false;
-                }
-                else if (moved.name.equals("Rook"))
-                {
-                	moved.wasMotion = false;
-                }
-                else if (moved.name.equals("Pawn") && last.wasEnPassant())
-                {
-                	Piece pawn = last.getTakenPiece();
-                    this.squares[end.getPozX()][begin.getPozY()].piece = pawn;
-                    pawn.square = this.squares[end.getPozX()][begin.getPozY()];
-
-                }
-                else if (moved.name.equals("Pawn") && last.getPromotedPiece() != null)
-                {
-                    Piece promoted = this.squares[end.getPozX()][end.getPozY()].piece;
-                    promoted.square = null;
-                    this.squares[end.getPozX()][end.getPozY()].piece = null;
-                }
-
-                //check one more move back for en passant
-                Move oneMoveEarlier = this.moves_history.getLastMoveFromHistory();
-                if (oneMoveEarlier != null && oneMoveEarlier.wasPawnTwoFieldsMove())
-                {
-                    Piece canBeTakenEnPassant = this.squares[oneMoveEarlier.getTo().getPozX()][oneMoveEarlier.getTo().getPozY()].piece;
-                    if (canBeTakenEnPassant.name.equals("Pawn"))
-                    {
-                        this.twoSquareMovedPawn = canBeTakenEnPassant;
-                    }
-                }
-
-                if (taken != null && !last.wasEnPassant())
-                {
-                    this.squares[end.getPozX()][end.getPozY()].piece = taken;
-                    taken.square = this.squares[end.getPozX()][end.getPozY()];
-                }
-                else
-                {
-                    this.squares[end.getPozX()][end.getPozY()].piece = null;
-                }
-
-                if (refresh)
-                {
-                    this.unselect();//unselect square
-                    repaint();
-                }
-
-            }
-            catch (java.lang.ArrayIndexOutOfBoundsException exc)
-            {
-                return false;
-            }
-            catch (java.lang.NullPointerException exc)
-            {
-                return false;
-            }
-
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    
-    /**
-     * Method to draw Chessboard and their elements (pieces etc.)
-     * @deprecated 
-     */
-    public void draw()
-    {
-        this.getGraphics().drawImage(image, this.getTopLeftPoint().x, this.getTopLeftPoint().y, null);//draw an Image of chessboard
-        this.drawLabels();
-        this.repaint();
-    }/*--endOf-draw--*/
-
 
     /**
      * Annotations to superclass Game updateing and painting the crossboard
@@ -737,7 +387,7 @@ public class Chessboard extends JPanel
     {
         if (this.settings.renderLabels)
         {
-            return new Point(this.topLeft.x + this.upDownLabel.getHeight(null), this.topLeft.y + this.upDownLabel.getHeight(null));
+            return new Point(this.topLeft.x + this.getUpDownLabel().getHeight(null), this.topLeft.y + this.getUpDownLabel().getHeight(null));
         }
         return this.topLeft;
     }
@@ -755,8 +405,8 @@ public class Chessboard extends JPanel
             {
                 this.drawLabels();
             }
-            g2d.drawImage(this.upDownLabel, 0, 0, null);
-            g2d.drawImage(this.upDownLabel, 0, Chessboard.image.getHeight(null) + topLeftPoint.y, null);
+            g2d.drawImage(this.getUpDownLabel(), 0, 0, null);
+            g2d.drawImage(this.getUpDownLabel(), 0, Chessboard.image.getHeight(null) + topLeftPoint.y, null);
             g2d.drawImage(this.LeftRightLabel, 0, 0, null);
             g2d.drawImage(this.LeftRightLabel, Chessboard.image.getHeight(null) + topLeftPoint.x, 0, null);
         }
@@ -771,27 +421,26 @@ public class Chessboard extends JPanel
                 }
             }
         }//--endOf--drawPiecesOnSquares
-        if ((this.active_x_square != 0) && (this.active_y_square != 0)) //if some square is active
+        if ((this.getActive_x_square() != 0) && (this.getActive_y_square() != 0)) //if some square is active
         {
             g2d.drawImage(sel_square, 
-                            ((this.active_x_square - 1) * (int) square_height) + topLeftPoint.x,
-                            ((this.active_y_square - 1) * (int) square_height) + topLeftPoint.y, null);//draw image of selected square
-            Square tmpSquare = this.squares[(int) (this.active_x_square - 1)][(int) (this.active_y_square - 1)];
+                            ((this.getActive_x_square() - 1) * (int) getSquare_height()) + topLeftPoint.x,
+                            ((this.getActive_y_square() - 1) * (int) getSquare_height()) + topLeftPoint.y, null);//draw image of selected square
+            Square tmpSquare = this.squares[(int) (this.getActive_x_square() - 1)][(int) (this.getActive_y_square() - 1)];
             if (tmpSquare.piece != null)
             {
-                this.moves = this.squares[(int) (this.active_x_square - 1)][(int) (this.active_y_square - 1)].piece.allMoves();
+                this.moves = this.squares[(int) (this.getActive_x_square() - 1)][(int) (this.getActive_y_square() - 1)].piece.allMoves();
             }
 
             for (Iterator<Square> it = moves.iterator(); moves != null && it.hasNext();)
             {
                 Square sq = (Square) it.next();
                 g2d.drawImage(able_square, 
-                        (sq.getPozX() * (int) square_height) + topLeftPoint.x,
-                        (sq.getPozY() * (int) square_height) + topLeftPoint.y, null);
+                        (sq.getPozX() * (int) getSquare_height()) + topLeftPoint.x,
+                        (sq.getPozY() * (int) getSquare_height()) + topLeftPoint.y, null);
             }
         }
     }/*--endOf-paint--*/
-
 
     public void resizeChessboard(int height)
     {
@@ -804,27 +453,27 @@ public class Chessboard extends JPanel
         this.square_height = (float) (height / numberSquares);
         if (this.settings.renderLabels)
         {
-            height += 2 * (this.upDownLabel.getHeight(null));
+            height += 2 * (this.getUpDownLabel().getHeight(null));
         }
         this.setSize(height, height);
 
-        resized = new BufferedImage((int) square_height, (int) square_height, BufferedImage.TYPE_INT_ARGB_PRE);
+        resized = new BufferedImage((int) getSquare_height(), (int) getSquare_height(), BufferedImage.TYPE_INT_ARGB_PRE);
         g = resized.createGraphics();
-        g.drawImage(Chessboard.org_able_square, 0, 0, (int) square_height, (int) square_height, null);
+        g.drawImage(Chessboard.org_able_square, 0, 0, (int) getSquare_height(), (int) getSquare_height(), null);
         g.dispose();
-        Chessboard.able_square = resized.getScaledInstance((int) square_height, (int) square_height, 0);
+        Chessboard.able_square = resized.getScaledInstance((int) getSquare_height(), (int) getSquare_height(), 0);
 
-        resized = new BufferedImage((int) square_height, (int) square_height, BufferedImage.TYPE_INT_ARGB_PRE);
+        resized = new BufferedImage((int) getSquare_height(), (int) getSquare_height(), BufferedImage.TYPE_INT_ARGB_PRE);
         g = resized.createGraphics();
-        g.drawImage(Chessboard.org_sel_square, 0, 0, (int) square_height, (int) square_height, null);
+        g.drawImage(Chessboard.org_sel_square, 0, 0, (int) getSquare_height(), (int) getSquare_height(), null);
         g.dispose();
-        Chessboard.sel_square = resized.getScaledInstance((int) square_height, (int) square_height, 0);
+        Chessboard.sel_square = resized.getScaledInstance((int) getSquare_height(), (int) getSquare_height(), 0);
         this.drawLabels();
     }
 
     protected void drawLabels()
     {
-        this.drawLabels((int) this.square_height);
+        this.drawLabels((int) this.getSquare_height());
     }
 
     protected final void drawLabels(int square_height)
@@ -868,7 +517,7 @@ public class Chessboard extends JPanel
             }
         }
         uDL2D.dispose();
-        this.upDownLabel = uDL;
+        this.setUpDownLabel(uDL);
 
         uDL = new BufferedImage(labelHeight, labelWidth + min_label_height, BufferedImage.TYPE_3BYTE_BGR);
         uDL2D = (Graphics2D) uDL.createGraphics();
@@ -912,4 +561,58 @@ public class Chessboard extends JPanel
     {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
+    
+
+	public Settings getSettings()
+	{
+		return settings;
+	}
+	
+
+	public Image getUpDownLabel()
+	{
+		return upDownLabel;
+	}
+
+	public void setUpDownLabel(Image upDownLabel)
+	{
+		this.upDownLabel = upDownLabel;
+	}
+	
+
+	public float getSquare_height()
+	{
+		return square_height;
+	}
+	
+	public void setSquare_height(float square_height)
+	{
+		this.square_height = square_height;
+	}
+
+	public int getActive_x_square()
+	{
+		return active_x_square;
+	}
+
+	public void setActive_x_square(int active_x_square)
+	{
+		this.active_x_square = active_x_square;
+	}
+
+	public int getActive_y_square()
+	{
+		return active_y_square;
+	}
+
+	public void setActive_y_square(int active_y_square)
+	{
+		this.active_y_square = active_y_square;
+	}
+	
+
+	public Moves getMoves_history()
+	{
+		return moves_history;
+	}
 }

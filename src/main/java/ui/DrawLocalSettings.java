@@ -195,12 +195,13 @@ public class DrawLocalSettings extends JPanel implements ActionListener, TextLis
             newGUI.newGame();//start new Game
             this.parent.setVisible(false);//hide parent
             newGUI.chessboard.repaint();
-            newGUI.chessboard.draw();
+            //newGUI.chessboard.draw();
         }
 
     }
 
-    DrawLocalSettings(JDialog parent)
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	DrawLocalSettings(JDialog parent)
     {
         super();
         logger.info("DrawLocalSettings-constructor");

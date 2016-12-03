@@ -26,7 +26,6 @@ import java.awt.event.MouseListener;
 import javax.swing.*;
 
 import pieces.Piece;
-import ui.Chat;
 
 import java.awt.*;
 import java.io.File;
@@ -52,9 +51,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
     public Chessboard chessboard;
     private Player activePlayer;
     public GameClock gameClock;
-    public Client client;
     public Moves moves;
-    public Chat chat;
 
     public Game()
     {
@@ -78,11 +75,6 @@ public class Game extends JPanel implements MouseListener, ComponentListener
         movesHistory.setSize(new Dimension(180, 350));
         movesHistory.setLocation(new Point(500, 121));
         this.add(movesHistory);
-
-        this.chat = new Chat();
-        this.chat.setSize(new Dimension(380, 100));
-        this.chat.setLocation(new Point(0, 500));
-        this.chat.setMinimumSize(new Dimension(400, 100));
 
         this.blockedChessboard = false;
         this.setLayout(null);
@@ -265,7 +257,8 @@ public class Game extends JPanel implements MouseListener, ComponentListener
         //dirty hacks starts over here :) 
         //to fix rendering artefacts on first run
         Game activeGame = JChessApp.getJcv().getActiveTabGame();
-        if( activeGame != null && JChessApp.getJcv().getNumberOfOpenedTabs() == 0 )
+        //if( activeGame != null && JChessApp.getJcv().getNumberOfOpenedTabs() == 0 )
+        if( activeGame != null  )
         {
             activeGame.chessboard.resizeChessboard(activeGame.chessboard.get_height(false));
             activeGame.chessboard.repaint();
@@ -348,17 +341,17 @@ public class Game extends JPanel implements MouseListener, ComponentListener
     {
         try 
         {
-            chessboard.select(chessboard.squares[beginX][beginY]);
+        	ChessboardLogic.getInstance().select(chessboard, chessboard.squares[beginX][beginY]);
             if (chessboard.activeSquare.piece.allMoves().indexOf(chessboard.squares[endX][endY]) != -1) //move
             {
-                chessboard.move(chessboard.squares[beginX][beginY], chessboard.squares[endX][endY]);
+            	ChessboardLogic.getInstance().move(chessboard, chessboard.squares[beginX][beginY], chessboard.squares[endX][endY]);
             }
             else
             {
             	logger.info("Bad move");
                 return false;
             }
-            chessboard.unselect();
+            ChessboardLogic.getInstance().unselect(chessboard);
             nextMove();
 
             return true;
@@ -394,7 +387,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
         
         if( this.settings.gameType == Settings.gameTypes.local )
         {
-            status = chessboard.undo();
+            status = ChessboardLogic.getInstance().undo(chessboard, true);
             if( status )
             {
                 this.switchActive();
@@ -403,11 +396,6 @@ public class Game extends JPanel implements MouseListener, ComponentListener
             {
                 chessboard.repaint();//repaint for sure
             }
-        }
-        else if( this.settings.gameType == Settings.gameTypes.network )
-        {
-            this.client.sendUndoAsk();
-            status = true;
         }
         return status;
     }
@@ -418,7 +406,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
         
         if( this.settings.gameType == Settings.gameTypes.local )
         {
-            while( chessboard.undo() )
+            while( ChessboardLogic.getInstance().undo(chessboard, true) )
             {
                 result = true;
             }
@@ -437,7 +425,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
         
         if( this.settings.gameType == Settings.gameTypes.local )
         {
-            while( chessboard.redo() )
+            while( ChessboardLogic.getInstance().redo(chessboard, true) )
             {
                 result = true;
             }
@@ -452,7 +440,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
     
     public boolean redo()
     {
-        boolean status = chessboard.redo();
+        boolean status = ChessboardLogic.getInstance().redo(chessboard, true);
         if( this.settings.gameType == Settings.gameTypes.local )
         {
             if ( status )
@@ -493,7 +481,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
                     int x = event.getX();//get X position of mouse
                     int y = event.getY();//get Y position of mouse
 
-                    Square sq = chessboard.getSquare(x, y);
+                    Square sq = ChessboardLogic.getInstance().getSquare(chessboard, x, y);
                     if ((sq == null && sq.piece == null && chessboard.activeSquare == null)
                             || (this.chessboard.activeSquare == null && sq.piece != null && sq.piece.player != this.activePlayer))
                     {
@@ -502,27 +490,22 @@ public class Game extends JPanel implements MouseListener, ComponentListener
 
                     if (sq.piece != null && sq.piece.player == this.activePlayer && sq != chessboard.activeSquare)
                     {
-                        chessboard.unselect();
-                        chessboard.select(sq);
+                    	ChessboardLogic.getInstance().unselect(chessboard);
+                    	ChessboardLogic.getInstance().select(chessboard, sq);
                     }
                     else if (chessboard.activeSquare == sq) //unselect
                     {
-                        chessboard.unselect();
+                    	ChessboardLogic.getInstance().unselect(chessboard);
                     }
                     else if (chessboard.activeSquare != null && chessboard.activeSquare.piece != null
                             && chessboard.activeSquare.piece.allMoves().indexOf(sq) != -1) //move
                     {
                         if (settings.gameType == Settings.gameTypes.local)
                         {
-                            chessboard.move(chessboard.activeSquare, sq);
-                        }
-                        else if (settings.gameType == Settings.gameTypes.network)
-                        {
-                            client.sendMove(chessboard.activeSquare.getPozX(), chessboard.activeSquare.getPozY(), sq.getPozX(), sq.getPozY());
-                            chessboard.move(chessboard.activeSquare, sq);
+                        	ChessboardLogic.getInstance().move(chessboard, chessboard.activeSquare, sq);
                         }
 
-                        chessboard.unselect();
+                        ChessboardLogic.getInstance().unselect(chessboard);
 
                         //switch player
                         this.nextMove();
@@ -586,11 +569,6 @@ public class Game extends JPanel implements MouseListener, ComponentListener
         this.moves.getScrollPane().setLocation(new Point(chess_height + 5, 100));
         this.moves.getScrollPane().setSize(this.moves.getScrollPane().getWidth(), chess_height - 100);
         this.gameClock.setLocation(new Point(chess_height + 5, 0));
-        if (this.chat != null)
-        {
-            this.chat.setLocation(new Point(0, chess_height + 5));
-            this.chat.setSize(new Dimension(chess_height, this.getHeight() - (chess_height + 5))); 
-        }
     }
 
     public void componentMoved(ComponentEvent e)

@@ -54,7 +54,7 @@ public class Settings implements Serializable
     public enum gameTypes
     {
 
-        local, network
+        local
     }
     public gameTypes gameType;
     public boolean renderLabels = true;

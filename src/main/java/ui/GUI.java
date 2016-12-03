@@ -25,7 +25,6 @@ import java.net.*;
 import java.io.*;
 import java.io.InputStreamReader;
 import javax.swing.*;
-import javax.swing.JPanel;
 
 import core.Game;
 import core.JChessApp;
