@@ -49,7 +49,7 @@ public class ChessboardTest {
 		testBoard.squares[3][7].setPiece(testBoard.kingWhite = new Piece(testBoard, settings.playerWhite, new KingBehaviour(), "King"));
 		testBoard.squares[3][0].setPiece(testBoard.kingBlack = new Piece(testBoard, settings.playerBlack, new KingBehaviour(), "King"));
 		//test Knight Movements
-		testBoard.setPiece(new Piece(testBoard, settings.playerWhite, new KnightBehaviour(), "Knight"), p1[0], p1[1]);
+		ChessboardLogic.getInstance().setPiece(testBoard, new Piece(testBoard, settings.playerWhite, new KnightBehaviour(), "Knight"), p1[0], p1[1]);
 		ArrayList<Square>testMoves = testBoard.squares[p1[0]][p1[1]].piece.allMoves();
 		for(Square sq : testMoves){
 			assertTrue(isSolution(sq, Solution1));
