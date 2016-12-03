@@ -123,20 +123,6 @@ public class Game extends JPanel implements MouseListener, ComponentListener
     /** Loading game method(loading game state from the earlier saved file)
      *  @param file File where is saved game
      */
-
-    /*@Override
-    public void setSize(int width, int height) {
-    Dimension min = this.getMinimumSize();
-    if(min.getHeight() < height && min.getWidth() < width) {
-    super.setSize(width, height);
-    } else if(min.getHeight() < height) {
-    super.setSize(width, (int)min.getHeight());
-    } else if(min.getWidth() < width) {
-    super.setSize((int)min.getWidth(), height);
-    } else {
-    super.setSize(width, height);
-    }
-    }*/
     static public void loadGame(File file)
     {
         FileReader fileR = null;
@@ -245,9 +231,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
      */
     public void newGame()
     {
-        chessboard.setPieces("", settings.getPlayerWhite(), settings.getPlayerBlack(), settings.getPlayerRed(), settings.getPlayerGreen());
-
-        //System.out.println("new game, game type: "+settings.gameType.name());
+        ChessboardLogic.getInstance().setPieces(chessboard, "", settings.getPlayerWhite(), settings.getPlayerBlack(), settings.getPlayerRed(), settings.getPlayerGreen());
 
         activePlayer = settings.getPlayerWhite();
         if (activePlayer.playerType != Player.playerTypes.localUser)
