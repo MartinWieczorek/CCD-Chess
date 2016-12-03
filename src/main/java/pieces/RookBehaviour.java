@@ -20,6 +20,19 @@ import core.Square;
  */
 
 public class RookBehaviour implements PieceBehaviour {
+	
+	static private RookBehaviour instance;
+	
+	private RookBehaviour(){}
+	
+	static public RookBehaviour getInstance()
+	{
+		if(instance == null){
+			instance = new RookBehaviour();
+		}
+		
+		return instance;
+	}
 
 	@Override
 	public ArrayList<Square> getMoves(Chessboard chessboard, Square square, Player player){
@@ -35,9 +48,9 @@ public class RookBehaviour implements PieceBehaviour {
 	private ArrayList<Square> computeDirektion(int xDir, int yDir, Square square, Chessboard chessboard, Player player)
 	{
 		ArrayList<Square> result = new ArrayList<Square>();
-		 for (int x = square.getPozX() + xDir, y = square.getPozY() + yDir; !Piece.isout(x, y, chessboard); x=x+xDir, y=y+yDir)
+		 for (int x = square.getPozX() + xDir, y = square.getPozY() + yDir; !PieceBehaviour.isout(x, y, chessboard); x=x+xDir, y=y+yDir)
 	        {
-	            if (Piece.checkPieceAtPosition(x, y, player, chessboard)) //checks if there is an enemy piece, no piece and no King
+	            if (PieceBehaviour.checkPieceAtPosition(x, y, player, chessboard)) //checks if there is an enemy piece, no piece and no King
 	            {
 	            	switch (player.getColor())
 	            	{
@@ -66,7 +79,7 @@ public class RookBehaviour implements PieceBehaviour {
 		                    }
 		            		break;
 	            	}
-	            	if (Piece.enemyPieceOnPosition(x, y, chessboard, player))
+	            	if (PieceBehaviour.enemyPieceOnPosition(x, y, chessboard, player))
 		            {
 		                break; //we've to break because we cannot go beside other piece!!
 		            }

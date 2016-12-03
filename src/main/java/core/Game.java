@@ -292,9 +292,17 @@ public class Game extends JPanel implements MouseListener, ComponentListener
     {
         if (activePlayer == settings.getPlayerWhite())
         {
+            activePlayer = settings.getPlayerRed();
+        }
+        else  if (activePlayer == settings.getPlayerRed())
+        {
             activePlayer = settings.getPlayerBlack();
         }
-        else
+        else  if (activePlayer == settings.getPlayerBlack())
+        {
+            activePlayer = settings.getPlayerGreen();
+        }
+        else  if (activePlayer == settings.getPlayerGreen())
         {
             activePlayer = settings.getPlayerWhite();
         }

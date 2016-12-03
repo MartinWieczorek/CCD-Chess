@@ -175,6 +175,7 @@ public class GameClock extends JPanel implements Runnable
      */
     public void switch_clocks()
     {
+    	//TODO 4Player implementation
         /*in documentation this method is called 'switch', but it's restricted name
         to switch block (in pascal called "case") - this've to be repaired in documentation by Wąsu:P*/
         if (this.runningClock == this.clock1)

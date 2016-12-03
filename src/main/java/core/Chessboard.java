@@ -34,7 +34,6 @@ import org.apache.logging.log4j.Logger;
 import core.Moves.castling;
 import pieces.PawnBehaviour;
 import pieces.KingBehaviour;
-import pieces.QueenBehaviour;
 import pieces.BishopBehaviour;
 import pieces.KnightBehaviour;
 import pieces.RookBehaviour;
@@ -223,26 +222,26 @@ public class Chessboard extends JPanel
 	private void setFigure(int row, int col, Player player, String pieceName) {
 		switch (pieceName){
 			case "Rook":
-				this.squares[col][row].setPiece(new Piece(this, player, new PieceBehaviour[] {new RookBehaviour()}, "Rook"));
+				this.squares[col][row].setPiece(new Piece(this, player, new PieceBehaviour[] {RookBehaviour.getInstance()}, "Rook"));
 				break;
 			case "Knight":
-				this.squares[col][row].setPiece(new Piece(this, player,  new PieceBehaviour[] {new KnightBehaviour()}, "Knight"));
+				this.squares[col][row].setPiece(new Piece(this, player,  new PieceBehaviour[] {KnightBehaviour.getInstance()}, "Knight"));
 				break;
 			case "Bishop":
-				this.squares[col][row].setPiece(new Piece(this, player, new PieceBehaviour[] {new BishopBehaviour()}, "Bishop"));
+				this.squares[col][row].setPiece(new Piece(this, player, new PieceBehaviour[] {BishopBehaviour.getInstance()}, "Bishop"));
 				break;
 			case "Queen":
-				this.squares[col][row].setPiece(new Piece(this, player,  new PieceBehaviour[] {new BishopBehaviour(), new RookBehaviour()}, "Queen"));
+				this.squares[col][row].setPiece(new Piece(this, player,  new PieceBehaviour[] {BishopBehaviour.getInstance(), RookBehaviour.getInstance()}, "Queen"));
 				break;
 			case "King":
 				if(player.getColor() == Player.colors.black)
-					this.squares[col][row].setPiece(kingBlack =new Piece(this, player, new PieceBehaviour[] {new KingBehaviour()}, "King"));
+					this.squares[col][row].setPiece(kingBlack =new Piece(this, player, new PieceBehaviour[] {KingBehaviour.getInstance()}, "King"));
 				else if(player.getColor() == Player.colors.white)
-					this.squares[col][row].setPiece(kingWhite =new Piece(this, player, new PieceBehaviour[] {new KingBehaviour()}, "King"));
+					this.squares[col][row].setPiece(kingWhite =new Piece(this, player, new PieceBehaviour[] {KingBehaviour.getInstance()}, "King"));
 				else if(player.getColor() == Player.colors.red)
-					this.squares[col][row].setPiece(kingRed =new Piece(this, player, new PieceBehaviour[] {new KingBehaviour()}, "King"));
+					this.squares[col][row].setPiece(kingRed =new Piece(this, player, new PieceBehaviour[] {KingBehaviour.getInstance()}, "King"));
 				else
-					this.squares[col][row].setPiece(kingGreen =new Piece(this, player, new PieceBehaviour[] {new KingBehaviour()}, "King"));
+					this.squares[col][row].setPiece(kingGreen =new Piece(this, player, new PieceBehaviour[] {KingBehaviour.getInstance()}, "King"));
 				break;
 		}
 		logger.debug("set " + pieceName + " on pos: (" + row + "," + col + ") for player: " + player.getName());
@@ -258,9 +257,9 @@ public class Chessboard extends JPanel
         for (int x = top + cornerSquares; x < numberSquares - cornerSquares; x++)
         {
         	if(switchRowCol)
-        		this.squares[row][x].setPiece(new Piece(this, player, new PieceBehaviour[] {new PawnBehaviour()}, "Pawn"));
+        		this.squares[row][x].setPiece(new Piece(this, player, new PieceBehaviour[] {PawnBehaviour.getInstance()}, "Pawn"));
         	else
-        		this.squares[x][row].setPiece(new Piece(this, player, new PieceBehaviour[] {new PawnBehaviour()}, "Pawn"));
+        		this.squares[x][row].setPiece(new Piece(this, player, new PieceBehaviour[] {PawnBehaviour.getInstance()}, "Pawn"));
         	
         	logger.debug("set pawn on pos: (" + x + "," + row + ") for player: " + player.getName());
         }
@@ -521,25 +520,25 @@ public class Chessboard extends JPanel
 
                     if (newPiece.equals("Queen")) // transform pawn to queen
                     {
-                    	Piece queen = new Piece(this, end.piece.player, new PieceBehaviour[] {new RookBehaviour(), new BishopBehaviour()}, "Queen");
+                    	Piece queen = new Piece(this, end.piece.player, new PieceBehaviour[] {RookBehaviour.getInstance(), BishopBehaviour.getInstance()}, "Queen");
                         queen.setSquare(end.piece.square);
                         end.piece = queen;
                     }
                     else if (newPiece.equals("Rook")) // transform pawn to rook
                     {
-                    	Piece rook = new Piece(this, end.piece.player,  new PieceBehaviour[] {new RookBehaviour()}, "Rook");
+                    	Piece rook = new Piece(this, end.piece.player,  new PieceBehaviour[] {RookBehaviour.getInstance()}, "Rook");
                         rook.setSquare(end.piece.square);
                         end.piece = rook;
                     }
                     else if (newPiece.equals("Bishop")) // transform pawn to bishop
                     {
-                    	Piece bishop = new Piece(this, end.piece.player,new PieceBehaviour[] { new BishopBehaviour()}, "Bishop");
+                    	Piece bishop = new Piece(this, end.piece.player,new PieceBehaviour[] {BishopBehaviour.getInstance()}, "Bishop");
                         bishop.setSquare(end.piece.square);
                         end.piece = bishop;
                     }
                     else // transform pawn to knight
                     {
-                    	Piece knight = new Piece(this, end.piece.player, new PieceBehaviour[] {new KnightBehaviour()}, "Knight");
+                    	Piece knight = new Piece(this, end.piece.player, new PieceBehaviour[] {KnightBehaviour.getInstance()}, "Knight");
                         knight.setSquare(end.piece.square);
                         end.piece = knight;
                     }

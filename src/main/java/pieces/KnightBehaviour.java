@@ -19,6 +19,19 @@ import core.Square;
 //
 
 public class KnightBehaviour implements PieceBehaviour {
+	
+static private KnightBehaviour instance;
+	
+	private KnightBehaviour(){}
+	
+	static public KnightBehaviour getInstance()
+	{
+		if(instance == null){
+			instance = new KnightBehaviour();
+		}
+		
+		return instance;
+	}
 
 	@Override
 	public ArrayList<Square> getMoves(Chessboard chessboard, Square square, Player player)
@@ -42,7 +55,7 @@ public class KnightBehaviour implements PieceBehaviour {
 		int newY = square.getPozY() + offsetY;
 		ArrayList<Square> result = new ArrayList<Square>();
 		
-		if (!Piece.isout(newX, newY, chessboard) && Piece.checkPieceAtPosition(newX, newY, player, chessboard))
+		if (!PieceBehaviour.isout(newX, newY, chessboard) && PieceBehaviour.checkPieceAtPosition(newX, newY, player, chessboard))
         {
 			switch (player.getColor())
         	{
