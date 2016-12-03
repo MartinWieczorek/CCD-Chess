@@ -49,7 +49,8 @@ public class ThemeChooseWindow extends JDialog implements ActionListener, ListSe
     JButton themePreviewButton;
     JButton okButton;
 
-    ThemeChooseWindow(Frame parent) throws Exception
+    @SuppressWarnings("unchecked")
+	ThemeChooseWindow(Frame parent) throws Exception
     {
         super(parent);
         logger.info("ThemeChooseWindow-constructor");
