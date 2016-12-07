@@ -28,7 +28,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /** Class to representing the full game time
- * @param game The current game
+ * 
  */
 public class GameClock extends JPanel implements Runnable
 {

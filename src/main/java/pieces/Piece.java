@@ -197,7 +197,7 @@ public class Piece
     }
     
     /** Method to draw piece on chessboard
-     * @graph : where to draw
+     * @param g : graph where to draw
      */
     public final void draw(Graphics g)
     {

@@ -82,6 +82,7 @@ static private PawnBehaviour instance;
 		result.addAll(computeTake(-1, -1, square, chessboard, player));
 		return result;
 	}
+	
 	private ArrayList<Square> computeMove(int x, int y, Square square, Chessboard chessboard, Player player)
 	{
 		int newX = square.getPozX() + x;

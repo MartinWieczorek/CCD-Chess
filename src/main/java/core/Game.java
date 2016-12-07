@@ -256,11 +256,11 @@ public class Game extends JPanel implements MouseListener, ComponentListener
     /** Method to end game
      *  @param message what to show player(s) at end of the game (for example "draw", "black wins" etc.)
      */
-    public void endGame(String massage)
+    public void endGame(String message)
     {
         this.blockedChessboard = true;
-        logger.info(massage);
-        JOptionPane.showMessageDialog(null, massage);
+        logger.info(message);
+        JOptionPane.showMessageDialog(null, message);
     }
 
     /** Method to swich active players after move
@@ -519,7 +519,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
                 } 
                 catch(NullPointerException exc)
                 {
-                	logger.error(exc.getMessage());
+                	logger.error("mousePressed(): " + exc.getMessage());
                     chessboard.repaint();
                     return;
                 }
