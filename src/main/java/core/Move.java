@@ -52,7 +52,7 @@ class Move
         {
             this.wasPawnTwoFieldsMove = true;
         }
-        else if (movedPiece.name.equals("Pawn") && to.getPozY() == Chessboard.bottom || to.getPozY() == Chessboard.top && promotedPiece != null)
+        else if (movedPiece.name.equals("Pawn") && to.getPozY() == Chessboard.getBottom() || to.getPozY() == Chessboard.getTop() && promotedPiece != null)
         {
             this.promotedTo = promotedPiece;
         }

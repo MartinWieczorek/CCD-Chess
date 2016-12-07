@@ -65,11 +65,11 @@ public class ChessboardTest {
 		//knight position
 		int[] p1 = {3, 3};
 		//kings placen
-		testBoard.squares[6][13].setPiece(testBoard.kingWhite = new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] {KingBehaviour.getInstance()}, "King"));
-		testBoard.squares[6][0].setPiece(testBoard.kingBlack = new Piece(testBoard, settings.getPlayerBlack(), new PieceBehaviour[] {KingBehaviour.getInstance()}, "King"));
+		testBoard.getSquares()[6][13].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] {KingBehaviour.getInstance()}, "King"));
+		testBoard.getSquares()[6][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(), new PieceBehaviour[] {KingBehaviour.getInstance()}, "King"));
 		//test Knight Movements
-		testBoard.squares[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] {KnightBehaviour.getInstance()}, "Knight"));
-		ArrayList<Square>testMoves = testBoard.squares[p1[0]][p1[1]].piece.allMoves();
+		testBoard.getSquares()[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] {KnightBehaviour.getInstance()}, "Knight"));
+		ArrayList<Square>testMoves = testBoard.getSquares()[p1[0]][p1[1]].allMoves();
 		for(Square sq : testMoves){
 			assertTrue(isSolution(sq, Solution1));
 		}
@@ -78,9 +78,12 @@ public class ChessboardTest {
 	
 	
 	//Szenarien bspw. als Konstanten speichern 
-		public static Square[] SolutionPawn1 = {new Square(4, 11, null),
-												new Square(3, 12, null),
-												new Square(5, 12, null)
+		public static Square[] SolutionPawn1 = {new Square(4, 9, null),
+												new Square(4, 8, null),
+												new Square(2, 10, null),
+												new Square(3, 10, null),
+												new Square(5, 10, null),
+												new Square(6, 10, null)
 												};
 	
 	//Scenario1 PawnTest1
@@ -94,13 +97,13 @@ public class ChessboardTest {
 		|_|_|_|_|_|_|_|_|_|_|_|_|_|_|05
 		|_|_|_|_|_|_|_|_|_|_|_|_|_|_|06
 		|_|_|_|_|_|_|_|_|_|_|_|_|_|_|07
-		|_|_|_|_|_|_|_|_|_|_|_|_|_|_|08
-		|_|_|_|_|_|_|_|_|_|_|_|_|_|_|09
-		|_|_|_|_|_|_|_|_|_|_|_|_|_|_|10
-		|-|-|-|_|o|_|_|_|_|_|_|-|-|-|11
-		|-|-|-|o|X|o|_|_|_|_|_|-|-|-|12
+		|_|_|_|_|o|_|_|_|_|_|_|_|_|_|08
+		|_|_|_|_|o|_|_|_|_|_|_|_|_|_|09
+		|_|_|o|o|X|o|o|_|_|_|_|_|_|_|10
+		|-|-|-|_|_|_|_|_|_|_|_|-|-|-|11
+		|-|-|-|_|_|_|_|_|_|_|_|-|-|-|12
 		|-|-|-|_|_|_|K|_|_|_|_|-|-|-|13
-		0 1 2 3 4 5 6 7 8 9 10  12 
+		0 1 2 3 4 5 6 7 8 9 10 	12 
 		                      11  13  
 		*/
 	@Test
@@ -113,20 +116,71 @@ public class ChessboardTest {
 		// knight position
 		int[] p1 = { 4, 12 };
 		// kings placen
-		testBoard.squares[6][13].setPiece(testBoard.kingWhite = new Piece(testBoard, settings.getPlayerWhite(),
+		testBoard.getSquares()[6][13].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
 				new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
-		testBoard.squares[6][0].setPiece(testBoard.kingBlack = new Piece(testBoard, settings.getPlayerBlack(),
+		testBoard.getSquares()[6][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(),
 				new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
 		// test Knight Movements
-		testBoard.squares[p1[0]][p1[1]].setPiece(
+		testBoard.getSquares()[p1[0]][p1[1]].setPiece(
 				new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
-		ArrayList<Square> testMoves = testBoard.squares[p1[0]][p1[1]].piece.allMoves();
+		ArrayList<Square> testMoves = testBoard.getSquares()[p1[0]][p1[1]].allMoves();
 		for (Square sq : testMoves) {
+			System.out.println("sol: x"+sq.getPozX()+" y:"+sq.getPozY());
 			assertTrue(isSolution(sq, SolutionPawn1));
 		}
 
 	}
 
+	//Szenarien bspw. als Konstanten speichern 
+			public static Square[] SolutionPawn2 = {new Square(4, 11, null),
+													new Square(4, 10, null),
+													};
+		
+		//Scenario1 PawnTest1
+			/* X = Pawn
+			 * o = movepoints
+			|-|-|-|_|_|_|_|K|_|_|_|-|-|-|00
+			|-|-|-|_|_|_|_|_|_|_|_|-|-|-|01
+			|-|-|-|_|_|_|_|_|_|_|_|-|-|-|02
+			|_|_|_|_|_|_|_|_|_|_|_|_|_|_|03
+			|_|_|_|_|_|_|_|_|_|_|_|_|_|_|04
+			|_|_|_|_|_|_|_|_|_|_|_|_|_|_|05
+			|_|_|_|_|_|_|_|_|_|_|_|_|_|_|06
+			|_|_|_|_|_|_|_|_|_|_|_|_|_|_|07
+			|_|_|_|_|_|_|_|_|_|_|_|_|_|_|08
+			|_|_|_|_|_|_|_|_|_|_|_|_|_|_|09
+			|_|_|_|_|o|_|_|_|_|_|_|_|_|_|10
+			|-|-|-|_|o|_|_|_|_|_|_|-|-|-|11
+			|-|-|-|_|X|_|_|_|_|_|_|-|-|-|12
+			|-|-|-|_|_|_|K|_|_|_|_|-|-|-|13
+			0 1 2 3 4 5 6 7 8 9 10 	12 
+			                      11  13  
+			*/
+		@Test
+		public void testPawn_Scenario2() {
+			Game game = new Game();
+			Settings settings = new Settings();
+			Moves moves_history = new Moves(game);
+			Chessboard testBoard = new Chessboard(settings, moves_history);
+			// testBoard.setPieces("", settings.playerWhite, settings.playerBlack);
+			// knight position
+			int[] p1 = { 4, 12 };
+			// kings placen
+			testBoard.getSquares()[6][13].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
+					new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
+			testBoard.getSquares()[6][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(),
+					new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
+			// test Knight Movements
+			testBoard.getSquares()[p1[0]][p1[1]].setPiece(
+					new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
+			ArrayList<Square> testMoves = testBoard.getSquares()[p1[0]][p1[1]].allMoves();
+			for (Square sq : testMoves) {
+				System.out.println("sol: x"+sq.getPozX()+" y:"+sq.getPozY());
+				assertTrue(isSolution(sq, SolutionPawn2));
+			}
+
+		}
+		
 	// Szenarien bspw. als Konstanten speichern
 	public static Square[] SolutionRook1 = { new Square(4, 10, null), new Square(4, 9, null), new Square(4, 8, null),
 			new Square(4, 7, null), new Square(4, 6, null), new Square(4, 5, null), new Square(4, 4, null),
@@ -165,14 +219,14 @@ public class ChessboardTest {
 		// knight position
 		int[] p1 = { 4, 11 };
 		// kings placen
-		testBoard.squares[6][13].setPiece(testBoard.kingWhite = new Piece(testBoard, settings.getPlayerWhite(),
+		testBoard.getSquares()[6][13].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
 				new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
-		testBoard.squares[6][0].setPiece(testBoard.kingBlack = new Piece(testBoard, settings.getPlayerBlack(),
+		testBoard.getSquares()[6][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(),
 				new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
 		// test Knight Movements
-		testBoard.squares[p1[0]][p1[1]].setPiece(
+		testBoard.getSquares()[p1[0]][p1[1]].setPiece(
 				new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { RookBehaviour.getInstance() }, "Rook"));
-		ArrayList<Square> testMoves = testBoard.squares[p1[0]][p1[1]].piece.allMoves();
+		ArrayList<Square> testMoves = testBoard.getSquares()[p1[0]][p1[1]].allMoves();
 		for (Square sq : testMoves) {
 			assertTrue(isSolution(sq, SolutionRook1));
 		}
@@ -217,14 +271,14 @@ public class ChessboardTest {
 		// knight position
 		int[] p1 = { 4, 11 };
 		// kings placen
-		testBoard.squares[6][13].setPiece(testBoard.kingWhite = new Piece(testBoard, settings.getPlayerWhite(),
+		testBoard.getSquares()[6][13].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
 				new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
-		testBoard.squares[6][0].setPiece(testBoard.kingBlack = new Piece(testBoard, settings.getPlayerBlack(),
+		testBoard.getSquares()[6][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(),
 				new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
 		// test Knight Movements
-		testBoard.squares[p1[0]][p1[1]].setPiece(
+		testBoard.getSquares()[p1[0]][p1[1]].setPiece(
 				new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { BishopBehaviour.getInstance() }, "Bishop"));
-		ArrayList<Square> testMoves = testBoard.squares[p1[0]][p1[1]].piece.allMoves();
+		ArrayList<Square> testMoves = testBoard.getSquares()[p1[0]][p1[1]].allMoves();
 		for (Square sq : testMoves) {
 			assertTrue(isSolution(sq, SolutionBishop1));
 		}
@@ -247,7 +301,7 @@ public class ChessboardTest {
 			new Square(5, 13, null)
 			};
 					
-	//Scenario1 KingTest1
+	//Scenario1 QueenTest1
 	/* X = Queen
 	 * o = movepoints
 	|-|-|-|_|_|o|_|K|_|_|_|-|-|-|00
@@ -277,14 +331,14 @@ public class ChessboardTest {
 		// knight position
 		int[] p1 = { 5, 7 };
 		// kings placen
-		testBoard.squares[6][13].setPiece(testBoard.kingWhite = new Piece(testBoard, settings.getPlayerWhite(),
+		testBoard.getSquares()[6][13].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
 				new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
-		testBoard.squares[6][0].setPiece(testBoard.kingBlack = new Piece(testBoard, settings.getPlayerBlack(),
+		testBoard.getSquares()[6][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(),
 				new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
 		// test Knight Movements
-		testBoard.squares[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
+		testBoard.getSquares()[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
 				new PieceBehaviour[] { BishopBehaviour.getInstance(), RookBehaviour.getInstance() }, "Queen"));
-		ArrayList<Square> testMoves = testBoard.squares[p1[0]][p1[1]].piece.allMoves();
+		ArrayList<Square> testMoves = testBoard.getSquares()[p1[0]][p1[1]].allMoves();
 		for (Square sq : testMoves) {
 			assertTrue(isSolution(sq, SolutionQueen1));
 		}
@@ -328,13 +382,13 @@ public class ChessboardTest {
 		// knight position
 		int[] p1 = { 4, 12 };
 		// kings placen
-		testBoard.squares[4][12].setPiece(testBoard.kingWhite = new Piece(testBoard, settings.getPlayerWhite(),
+		testBoard.getSquares()[4][12].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
 				new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
-		testBoard.squares[6][0].setPiece(testBoard.kingBlack = new Piece(testBoard, settings.getPlayerBlack(),
+		testBoard.getSquares()[6][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(),
 				new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
 		// test Knight Movements
 		//testBoard.squares[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { new QueenBehaviour() }, "Queen"));
-		ArrayList<Square> testMoves = testBoard.squares[p1[0]][p1[1]].piece.allMoves();
+		ArrayList<Square> testMoves = testBoard.getSquares()[p1[0]][p1[1]].allMoves();
 		for (Square sq : testMoves) {
 			assertTrue(isSolution(sq, SolutionKing1));
 		}

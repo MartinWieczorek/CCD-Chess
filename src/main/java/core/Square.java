@@ -20,6 +20,9 @@
  */
 package core;
 
+import java.util.ArrayList;
+
+import pieces.KingBehaviour;
 import pieces.Piece;
 
 /**
@@ -51,11 +54,19 @@ public class Square
     {
         return new Square(square);
     }
+    
+    public ArrayList<Square> allMoves(){
+    	return this.piece.allMoves(this);
+    }
+    
+    public boolean isChecked() {
+		return piece.isChecked(this);
+	}
 
     void setPiece(Piece piece)
     {
         this.piece = piece;
-        this.piece.square = this;
+        //this.piece.square = this;
     }
 
 

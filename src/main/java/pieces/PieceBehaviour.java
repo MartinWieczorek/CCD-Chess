@@ -16,7 +16,7 @@ public interface PieceBehaviour {
      * */
     static boolean enemyPieceOnPosition(int x, int y, Chessboard chessboard, Player player)
     {
-        Square square = chessboard.squares[x][y];
+        Square square = chessboard.getSquares()[x][y];
         if (square.piece == null)
         {
             return false;
@@ -30,18 +30,18 @@ public interface PieceBehaviour {
     
     static boolean checkSpaceAtPosition (int x, int y, Player player, Chessboard chessboard)
     {
-    	if(chessboard.squares[x][y].piece == null) return true;
+    	if(chessboard.getSquares()[x][y].piece == null) return true;
     	else return false;
     }
   
     static boolean checkPieceAtPosition(int x, int y, Player player, Chessboard chessboard)
     {
-        if (chessboard.squares[x][y].piece != null
-                && chessboard.squares[x][y].piece.name.equals("King"))
+        if (chessboard.getSquares()[x][y].piece != null
+                && chessboard.getSquares()[x][y].piece.name.equals("King"))
         {
             return false;
         }
-        Piece piece = chessboard.squares[x][y].piece;
+        Piece piece = chessboard.getSquares()[x][y].piece;
         if (piece == null || //if this square is empty
                 piece.player != player) //or piece is another player
         {

@@ -183,7 +183,7 @@ public class Moves extends AbstractTableModel
         
         if( game.settings.upsideDown )
         {
-            locMove += Character.toString((char) ( ( Chessboard.bottom - begin.getPozX()) + 97));//add letter of Square from which move was made
+            locMove += Character.toString((char) ( ( Chessboard.getBottom() - begin.getPozX()) + 97));//add letter of Square from which move was made
             locMove += Integer.toString( begin.getPozY() + 1 );//add number of Square from which move was made
         }
         else
@@ -203,7 +203,7 @@ public class Moves extends AbstractTableModel
         
         if ( game.settings.upsideDown )
         {
-            locMove += Character.toString((char) (( Chessboard.bottom - end.getPozX()) +  97));//add letter of Square to which move was made
+            locMove += Character.toString((char) (( Chessboard.getBottom() - end.getPozX()) +  97));//add letter of Square to which move was made
             locMove += Integer.toString( end.getPozY() + 1 );//add number of Square to which move was made
         }
         else
@@ -217,12 +217,12 @@ public class Moves extends AbstractTableModel
             locMove += "(e.p)";//pawn take down opponent en passant
             wasEnPassant = true;
         }
-        if ((!this.enterBlack && this.game.chessboard.kingBlack.isChecked())
-                || (this.enterBlack && this.game.chessboard.kingWhite.isChecked()))
+        if ((!this.enterBlack && this.game.chessboard.getKingBlack().isChecked())
+                || (this.enterBlack && this.game.chessboard.getKingWhite().isChecked()))
         {//if checked
 
-            if ((!this.enterBlack && this.game.chessboard.kingBlack.isCheckmatedOrStalemated() == 1)
-                    || (this.enterBlack && this.game.chessboard.kingWhite.isCheckmatedOrStalemated() == 1))
+            if ((!this.enterBlack && this.game.chessboard.getKingBlack().piece.isCheckmatedOrStalemated() == 1)
+                    || (this.enterBlack && this.game.chessboard.getKingWhite().piece.isCheckmatedOrStalemated() == 1))
             {//check if checkmated
                 locMove += "#";//check mate
             }
@@ -564,9 +564,9 @@ public class Moves extends AbstractTableModel
             boolean pieceFound = false;
             if(locMove.length() <= 3)
             {
-                Square[][] squares = this.game.chessboard.squares;
+                Square[][] squares = this.game.chessboard.getSquares();
                 xTo = locMove.charAt(from) - 97;//from ASCII
-                yTo = Chessboard.bottom - (locMove.charAt(from + 1) - 49);//from ASCII    
+                yTo = Chessboard.getBottom() - (locMove.charAt(from + 1) - 49);//from ASCII    
                 for(int i=0; i<squares.length && !pieceFound; i++)
                 {
                     for(int j=0; j<squares[i].length && !pieceFound; j++)
@@ -575,14 +575,14 @@ public class Moves extends AbstractTableModel
                         {
                             continue;
                         }
-                        ArrayList pieceMoves = squares[i][j].piece.allMoves();
+                        ArrayList pieceMoves = squares[i][j].allMoves();
                         for(Object square : pieceMoves)
                         {
                             Square currSquare = (Square)square;
                             if(currSquare.getPozX() == xTo && currSquare.getPozY() == yTo)
                             {
-                                xFrom = squares[i][j].piece.square.getPozX();
-                                yFrom = squares[i][j].piece.square.getPozY();
+                                xFrom = i;
+                                yFrom = j;
                                 pieceFound = true;
                             }
                         }
@@ -592,15 +592,15 @@ public class Moves extends AbstractTableModel
             else
             {
                 xFrom = locMove.charAt(from) - 97;//from ASCII
-                yFrom = Chessboard.bottom - (locMove.charAt(from + 1) - 49);//from ASCII
+                yFrom = Chessboard.getBottom() - (locMove.charAt(from + 1) - 49);//from ASCII
                 xTo = locMove.charAt(from + 3) - 97;//from ASCII
-                yTo = Chessboard.bottom - (locMove.charAt(from + 4) - 49);//from ASCII
+                yTo = Chessboard.getBottom() - (locMove.charAt(from + 4) - 49);//from ASCII
             }
             canMove = this.game.simulateMove(xFrom, yFrom, xTo, yTo);
             if (!canMove) //if move is illegal
             {
                 JOptionPane.showMessageDialog(this.game, Settings.lang("illegal_move_on") + locMove);
-                this.game.chessboard.activeSquare = null;
+                this.game.chessboard.setActiveSquare(null);
                 return;//finish reading game and show message
             }
         }

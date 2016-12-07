@@ -60,27 +60,27 @@ static private KnightBehaviour instance;
 			switch (player.getColor())
         	{
             	case white :
-            		if (chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[newX][newY]))
+            		if (chessboard.getKingWhite().piece.willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[newX][newY]))
                     {
-                        result.add(chessboard.squares[newX][newY]);
+                        result.add(chessboard.getSquares()[newX][newY]);
                     }
             		break;
             	case black :
-            		if (chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[newX][newY]))
+            		if (chessboard.getKingBlack().piece.willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[newX][newY]))
                     {
-                        result.add(chessboard.squares[newX][newY]);
+                        result.add(chessboard.getSquares()[newX][newY]);
                     }
             		break;
             	case red :
-            		if (chessboard.kingRed.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[newX][newY]))
+            		if (chessboard.getKingRed().piece.willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[newX][newY]))
                     {
-                        result.add(chessboard.squares[newX][newY]);
+                        result.add(chessboard.getSquares()[newX][newY]);
                     }
             		break;
             	case green :
-            		if (chessboard.kingGreen.willBeSafeWhenMoveOtherPiece(square, chessboard.squares[newX][newY]))
+            		if (chessboard.getKingGreen().piece.willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[newX][newY]))
                     {
-                        result.add(chessboard.squares[newX][newY]);
+                        result.add(chessboard.getSquares()[newX][newY]);
                     }
             		break;
         	}

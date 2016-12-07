@@ -61,7 +61,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
         settings = new Settings();
         chessboard = new Chessboard(this.settings, this.moves);
         chessboard.setVisible(true);
-        chessboard.setSize(Chessboard.img_height, Chessboard.img_widht);
+        chessboard.setSize(840, 840);
         chessboard.addMouseListener(this);
         chessboard.setLocation(new Point(0, 0));
         this.add(chessboard);
@@ -325,10 +325,10 @@ public class Game extends JPanel implements MouseListener, ComponentListener
     {
         try 
         {
-        	ChessboardLogic.getInstance().select(chessboard, chessboard.squares[beginX][beginY]);
-            if (chessboard.activeSquare.piece.allMoves().indexOf(chessboard.squares[endX][endY]) != -1) //move
+        	ChessboardLogic.getInstance().select(chessboard, chessboard.getSquares()[beginX][beginY]);
+            if (chessboard.getActiveSquare().allMoves().indexOf(chessboard.getSquares()[endX][endY]) != -1) //move
             {
-            	ChessboardLogic.getInstance().move(chessboard, chessboard.squares[beginX][beginY], chessboard.squares[endX][endY]);
+            	ChessboardLogic.getInstance().move(chessboard, chessboard.getSquares()[beginX][beginY], chessboard.getSquares()[endX][endY]);
             }
             else
             {
@@ -466,27 +466,29 @@ public class Game extends JPanel implements MouseListener, ComponentListener
                     int y = event.getY();//get Y position of mouse
 
                     Square sq = ChessboardLogic.getInstance().getSquare(chessboard, x, y);
-                    if ((sq == null && sq.piece == null && chessboard.activeSquare == null)
-                            || (this.chessboard.activeSquare == null && sq.piece != null && sq.piece.player != this.activePlayer))
+                    //Square sq = chessboard.getSquares()[x][y];
+                    
+                    if ((sq == null && chessboard.getActiveSquare() == null)
+                            || (this.chessboard.getActiveSquare() == null && sq.piece != null && sq.piece.player != this.activePlayer))
                     {
                         return;
                     }
 
-                    if (sq.piece != null && sq.piece.player == this.activePlayer && sq != chessboard.activeSquare)
+                    if (sq.piece != null && sq.piece.player == this.activePlayer && sq != chessboard.getActiveSquare())
                     {
                     	ChessboardLogic.getInstance().unselect(chessboard);
                     	ChessboardLogic.getInstance().select(chessboard, sq);
                     }
-                    else if (chessboard.activeSquare == sq) //unselect
+                    else if (chessboard.getActiveSquare() == sq) //unselect
                     {
                     	ChessboardLogic.getInstance().unselect(chessboard);
                     }
-                    else if (chessboard.activeSquare != null && chessboard.activeSquare.piece != null
-                            && chessboard.activeSquare.piece.allMoves().indexOf(sq) != -1) //move
+                    else if (chessboard.getActiveSquare() != null && chessboard.getActiveSquare().piece != null
+                            && chessboard.getActiveSquare().allMoves().indexOf(sq) != -1) //move
                     {
                         if (settings.gameType == Settings.gameTypes.local)
                         {
-                        	ChessboardLogic.getInstance().move(chessboard, chessboard.activeSquare, sq);
+                        	ChessboardLogic.getInstance().move(chessboard, chessboard.getActiveSquare(), sq);
                         }
 
                         ChessboardLogic.getInstance().unselect(chessboard);
@@ -498,11 +500,11 @@ public class Game extends JPanel implements MouseListener, ComponentListener
                         Piece king;
                         if (this.activePlayer == settings.getPlayerWhite())
                         {
-                            king = chessboard.kingWhite;
+                            king = chessboard.getKing(settings.getPlayerWhite()).piece;
                         }
                         else
                         {
-                            king = chessboard.kingBlack;
+                            king = chessboard.getKing(settings.getPlayerBlack()).piece;
                         }
 
                         switch (king.isCheckmatedOrStalemated())
