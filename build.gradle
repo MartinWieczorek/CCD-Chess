@@ -107,3 +107,7 @@ jar{
 	}
 }
 
+task myJavadocs(type: Javadoc) {
+   source = sourceSets.main.allJava
+}
+

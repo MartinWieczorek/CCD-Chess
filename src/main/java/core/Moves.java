@@ -35,12 +35,6 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import javax.swing.JOptionPane;
 
-/** Class representing the players moves, it's also checking
- * that the moves taken by player are correct.
- * All moves which was taken by current player are saving as List of Strings
- * The history of moves is printing in a table
- * @param game The current game
- */
 public class Moves extends AbstractTableModel
 {
 	private static final Logger logger = LogManager.getLogger(Moves.class);
@@ -65,7 +59,13 @@ public class Moves extends AbstractTableModel
         none, shortCastling, longCastling
     }
 
-    Moves(Game game)
+    /** Class representing the players moves, it's also checking
+     * that the moves taken by player are correct.
+     * All moves which was taken by current player are saving as List of Strings
+     * The history of moves is printing in a table
+     * @param game The current game
+     */
+    public Moves(Game game)
     {
     	super();
     	logger.info("Moves-constructor");
