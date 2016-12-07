@@ -182,47 +182,11 @@ public class Piece {
 	public boolean isChecked(Square sq) {
 		return !KingBehaviour.getInstance().isSafe(sq, this.chessboard, sq, this.player);
 	}
-
-	/**
-	 * Method to draw piece on chessboard
-	 * 
-	 * @graph : where to draw
-	 */
-	public final void draw(Graphics g, int posX, int posY) {
-		try {
-			Graphics2D g2d = (Graphics2D) g;
-			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			Point topLeft = this.chessboard.getTopLeftPoint();
-			int height = this.chessboard.get_square_height();
-//			int x = (this.square.getPozX() * height) + topLeft.x;
-//			int y = (this.square.getPozY() * height) + topLeft.y;
-			int x = (posX * height) + topLeft.x;
-			int y = (posY * height) + topLeft.y;
-			// float addX = (height - image.getWidth(null)) / 2;
-			// float addY = (height - image.getHeight(null)) / 2;
-			if (image != null && g != null) {
-				Image tempImage = orgImage;
-				BufferedImage resized = new BufferedImage(height, height, BufferedImage.TYPE_INT_ARGB_PRE);
-				Graphics2D imageGr = (Graphics2D) resized.createGraphics();
-				imageGr.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				imageGr.drawImage(tempImage, 0, 0, height, height, null);
-				imageGr.dispose();
-				image = resized.getScaledInstance(height, height, 0);
-				g2d.drawImage(image, x, y, null);
-			} else {
-				System.out.println("image is null!");
-			}
-        return ret;
-    }
-    
-    public boolean isChecked(){
-    	return !KingBehaviour.getInstance().isSafe(this.square, this.chessboard, this.square, this.player);
-    }
     
     /** Method to draw piece on chessboard
      * @param g : graph where to draw
      */
-    public final void draw(Graphics g)
+    public final void draw(Graphics g, int posX, int posY)
     {
         try
         {
@@ -230,8 +194,8 @@ public class Piece {
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             Point topLeft = this.chessboard.getTopLeftPoint();
             int height = this.chessboard.get_square_height();
-            int x = (this.square.getPozX() * height) + topLeft.x;
-            int y = (this.square.getPozY() * height) + topLeft.y;
+            int x = (posX * height) + topLeft.x;
+			int y = (posY * height) + topLeft.y;
             //float addX = (height - image.getWidth(null)) / 2;
             //float addY = (height - image.getHeight(null)) / 2;
             if (image != null && g != null)

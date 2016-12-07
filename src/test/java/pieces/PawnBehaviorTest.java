@@ -68,14 +68,14 @@ public class PawnBehaviorTest
 		int[] p1 = { 4, 11 };
 		
 		// set other pieces
-		testBoard.squares[6][13].setPiece(testBoard.kingWhite = new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
-		testBoard.squares[6][0].setPiece(testBoard.kingBlack = new Piece(testBoard, settings.getPlayerBlack(), new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
+		testBoard.getSquares()[6][13].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
+		testBoard.getSquares()[6][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(), new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
 		
 		// set Pawn 
-		testBoard.squares[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
+		testBoard.getSquares()[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
 		
 		// test movements
-		ArrayList<Square> testMoves = testBoard.squares[p1[0]][p1[1]].piece.allMoves();
+		ArrayList<Square> testMoves = testBoard.getSquares()[p1[0]][p1[1]].allMoves();
 		for (Square sq : testMoves) {
 			assertTrue(isSolution(sq, SolutionPawn1));
 		}
@@ -116,21 +116,21 @@ public class PawnBehaviorTest
 		int[] p1 = { 8, 12 };
 
 		// set other pieces
-		testBoard.squares[6][13].setPiece(testBoard.kingWhite = new Piece(testBoard, settings.getPlayerWhite(),
+		testBoard.getSquares()[6][13].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
 				new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
-		testBoard.squares[6][0].setPiece(testBoard.kingBlack = new Piece(testBoard, settings.getPlayerBlack(),
+		testBoard.getSquares()[6][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(),
 				new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
-		testBoard.squares[5][12].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
+		testBoard.getSquares()[5][12].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
 				new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
-		testBoard.squares[9][12].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
+		testBoard.getSquares()[9][12].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
 				new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
 
 		// set Pawn
-		testBoard.squares[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
+		testBoard.getSquares()[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
 				new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
 
 		// test movements
-		ArrayList<Square> testMoves = testBoard.squares[p1[0]][p1[1]].piece.allMoves();
+		ArrayList<Square> testMoves = testBoard.getSquares()[p1[0]][p1[1]].allMoves();
 		for (Square sq : testMoves) {
 			assertTrue(isSolution(sq, SolutionPawn));
 		}
@@ -171,21 +171,21 @@ public class PawnBehaviorTest
 		int[] p1 = { 5, 8 };
 
 		// set other pieces
-		testBoard.squares[6][13].setPiece(testBoard.kingWhite = new Piece(testBoard, settings.getPlayerWhite(),
+		testBoard.getSquares()[6][13].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
 				new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
-		testBoard.squares[6][0].setPiece(testBoard.kingBlack = new Piece(testBoard, settings.getPlayerBlack(),
+		testBoard.getSquares()[6][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(),
 				new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
-		testBoard.squares[4][7].setPiece(new Piece(testBoard, settings.getPlayerBlack(),
+		testBoard.getSquares()[4][7].setPiece(new Piece(testBoard, settings.getPlayerBlack(),
 				new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
-		testBoard.squares[6][7].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
+		testBoard.getSquares()[6][7].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
 				new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
 
 		// set Pawn
-		testBoard.squares[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
+		testBoard.getSquares()[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
 				new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
 
 		// test movements
-		ArrayList<Square> testMoves = testBoard.squares[p1[0]][p1[1]].piece.allMoves();
+		ArrayList<Square> testMoves = testBoard.getSquares()[p1[0]][p1[1]].allMoves();
 		for (Square sq : testMoves) {
 			assertTrue(isSolution(sq, SolutionPawn));
 		}
