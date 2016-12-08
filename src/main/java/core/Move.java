@@ -48,11 +48,11 @@ class Move
         this.castlingMove = castlingMove;
         this.wasEnPassant = wasEnPassant;
 
-        if (movedPiece.name.equals("Pawn") && Math.abs(to.getPozY() - from.getPozY()) == 2)
+        if (movedPiece.getName().equals("Pawn") && Math.abs(to.getPozY() - from.getPozY()) == 2)
         {
             this.wasPawnTwoFieldsMove = true;
         }
-        else if (movedPiece.name.equals("Pawn") && to.getPozY() == Chessboard.getBottom() || to.getPozY() == Chessboard.getTop() && promotedPiece != null)
+        else if (movedPiece.getName().equals("Pawn") && to.getPozY() == Chessboard.getBottom() || to.getPozY() == Chessboard.getTop() && promotedPiece != null)
         {
             this.promotedTo = promotedPiece;
         }

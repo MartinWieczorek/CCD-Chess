@@ -41,7 +41,7 @@ public class Player implements Serializable
     {
         localUser, networkUser, computer
     }
-    public playerTypes playerType;
+    private playerTypes playerType;
     private boolean goDown;
 
     public Player(String name, colors color)
@@ -72,7 +72,7 @@ public class Player implements Serializable
      */
     public void setType(playerTypes type)
     {
-        this.playerType = type;
+        this.setPlayerType(type);
     }
 
 	public colors getColor() {
@@ -89,5 +89,13 @@ public class Player implements Serializable
 
 	public void setGoDown(boolean goDown) {
 		this.goDown = goDown;
+	}
+
+	public playerTypes getPlayerType() {
+		return playerType;
+	}
+
+	public void setPlayerType(playerTypes playerType) {
+		this.playerType = playerType;
 	}
 }

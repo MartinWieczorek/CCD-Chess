@@ -181,7 +181,7 @@ public class Moves extends AbstractTableModel
         boolean wasCastling = castlingMove != castling.none;
         String locMove = new String(begin.piece.getSymbol());
         
-        if( game.settings.upsideDown )
+        if( game.getSettings().upsideDown )
         {
             locMove += Character.toString((char) ( ( Chessboard.getBottom() - begin.getPozX()) + 97));//add letter of Square from which move was made
             locMove += Integer.toString( begin.getPozY() + 1 );//add number of Square from which move was made
@@ -201,7 +201,7 @@ public class Moves extends AbstractTableModel
             locMove += "-";//normal move
         }
         
-        if ( game.settings.upsideDown )
+        if ( game.getSettings().upsideDown )
         {
             locMove += Character.toString((char) (( Chessboard.getBottom() - end.getPozX()) +  97));//add letter of Square to which move was made
             locMove += Integer.toString( end.getPozY() + 1 );//add number of Square to which move was made
@@ -217,12 +217,12 @@ public class Moves extends AbstractTableModel
             locMove += "(e.p)";//pawn take down opponent en passant
             wasEnPassant = true;
         }
-        if ((!this.enterBlack && this.game.chessboard.getKingBlack().isChecked())
-                || (this.enterBlack && this.game.chessboard.getKingWhite().isChecked()))
+        if ((!this.enterBlack && this.game.getChessboard().getKingBlack().isChecked())
+                || (this.enterBlack && this.game.getChessboard().getKingWhite().isChecked()))
         {//if checked
 
-            if ((!this.enterBlack && this.game.chessboard.getKingBlack().piece.isCheckmatedOrStalemated() == 1)
-                    || (this.enterBlack && this.game.chessboard.getKingWhite().piece.isCheckmatedOrStalemated() == 1))
+            if ((!this.enterBlack && this.game.getChessboard().getKingBlack().piece.isCheckmatedOrStalemated() == 1)
+                    || (this.enterBlack && this.game.getChessboard().getKingWhite().piece.isCheckmatedOrStalemated() == 1))
             {//check if checkmated
                 locMove += "#";//check mate
             }
@@ -301,7 +301,7 @@ public class Moves extends AbstractTableModel
             Move last = this.moveBackStack.pop();
             if (last != null)
             {
-                if( this.game.settings.gameType == Settings.gameTypes.local ) //moveForward / redo available only for local game
+                if( this.game.getSettings().gameType == Settings.gameTypes.local ) //moveForward / redo available only for local game
                 {
                     this.moveForwardStack.push(last);
                 }
@@ -342,7 +342,7 @@ public class Moves extends AbstractTableModel
     {
         try
         {
-            if( this.game.settings.gameType == Settings.gameTypes.local)
+            if( this.game.getSettings().gameType == Settings.gameTypes.local)
             {
                 Move first = this.moveForwardStack.pop();
                 this.moveBackStack.push(first);
@@ -564,14 +564,14 @@ public class Moves extends AbstractTableModel
             boolean pieceFound = false;
             if(locMove.length() <= 3)
             {
-                Square[][] squares = this.game.chessboard.getSquares();
+                Square[][] squares = this.game.getChessboard().getSquares();
                 xTo = locMove.charAt(from) - 97;//from ASCII
                 yTo = Chessboard.getBottom() - (locMove.charAt(from + 1) - 49);//from ASCII    
                 for(int i=0; i<squares.length && !pieceFound; i++)
                 {
                     for(int j=0; j<squares[i].length && !pieceFound; j++)
                     {
-                        if(squares[i][j].piece == null || this.game.getActivePlayer().getColor() != squares[i][j].piece.player.getColor())
+                        if(squares[i][j].piece == null || this.game.getActivePlayer().getColor() != squares[i][j].piece.getPlayer().getColor())
                         {
                             continue;
                         }
@@ -600,7 +600,7 @@ public class Moves extends AbstractTableModel
             if (!canMove) //if move is illegal
             {
                 JOptionPane.showMessageDialog(this.game, Settings.lang("illegal_move_on") + locMove);
-                this.game.chessboard.setActiveSquare(null);
+                this.game.getChessboard().setActiveSquare(null);
                 return;//finish reading game and show message
             }
         }

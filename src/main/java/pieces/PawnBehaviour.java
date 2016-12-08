@@ -59,22 +59,22 @@ static private PawnBehaviour instance;
 		if(player.getColor() != Player.colors.white)
 			{
 				result.addAll(computeMove(0, 1, square, chessboard, player));
-				if(!square.piece.wasMotion) result.addAll(computeMove(0, 2, square, chessboard, player));
+				if(!square.piece.isWasMotion()) result.addAll(computeMove(0, 2, square, chessboard, player));
 			}
 		if(player.getColor() != Player.colors.black)
 		{
 			result.addAll(computeMove(0, -1, square, chessboard, player));
-			if(!square.piece.wasMotion) result.addAll(computeMove(0, -2, square, chessboard, player));
+			if(!square.piece.isWasMotion()) result.addAll(computeMove(0, -2, square, chessboard, player));
 		}
 		if(player.getColor() != Player.colors.red)
 		{
 			result.addAll(computeMove(-1, 0, square, chessboard, player));
-			if(!square.piece.wasMotion) result.addAll(computeMove(-2, 0, square, chessboard, player));
+			if(!square.piece.isWasMotion()) result.addAll(computeMove(-2, 0, square, chessboard, player));
 		}
 		if(player.getColor() != Player.colors.green)
 		{
 			result.addAll(computeMove(1, 0, square, chessboard, player));
-			if(!square.piece.wasMotion) result.addAll(computeMove(2, 0, square, chessboard, player));
+			if(!square.piece.isWasMotion()) result.addAll(computeMove(2, 0, square, chessboard, player));
 		}
 		result.addAll(computeTake(1, 1, square, chessboard, player));
 		result.addAll(computeTake(1, -1, square, chessboard, player));

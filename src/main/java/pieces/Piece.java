@@ -43,23 +43,23 @@ import java.awt.image.BufferedImage;
  */
 public class Piece {
 	private Chessboard chessboard;
-	public boolean wasMotion;
+	private boolean wasMotion;
 	// public Square square;
-	public Player player;
-	public String name;
-	public String symbol;
+	private Player player;
+	private String name;
+	private String symbol;
 	protected PieceBehaviour[] behaviours;
-	public Image orgImage;
-	public Image image;
+	private Image orgImage;
+	private Image image;
 
 	public Piece(Chessboard chessboard, Player player, PieceBehaviour[] behaviours, String name) {
 		this.behaviours = behaviours;
 		this.chessboard = chessboard;
-		this.player = player;
-		this.name = name;
+		this.setPlayer(player);
+		this.setName(name);
 		this.setImage();
 		this.orgImage = image;
-		this.wasMotion = false;
+		this.setWasMotion(false);
 
 		switch (name) {
 		case "Bishop":
@@ -113,17 +113,17 @@ public class Piece {
 	}
 
 	public void setImage() {
-		if (this.player.getColor() == core.Player.colors.black) {
-			image = ui.GUI.loadImage(name + "-B.png");
+		if (this.getPlayer().getColor() == core.Player.colors.black) {
+			image = ui.GUI.loadImage(getName() + "-B.png");
 		} else {
-			image = ui.GUI.loadImage(name + "-W.png");
+			image = ui.GUI.loadImage(getName() + "-W.png");
 		}
 	}
 
 	public ArrayList<Square> allMoves(Square sq) {
 		ArrayList<Square> result = new ArrayList<Square>();
 		for (int i = 0; i < behaviours.length; ++i) {
-			result.addAll(behaviours[i].getMoves(chessboard, sq, player));
+			result.addAll(behaviours[i].getMoves(chessboard, sq, getPlayer()));
 		}
 		return result;
 	}
@@ -145,7 +145,7 @@ public class Piece {
 		int y = 0;
 		for (int i = 0; i < chessboard.getNumSquares(); ++i) {
 			for (int j = 0; j < chessboard.getNumSquares(); ++j) {
-				if (chessboard.getSquares()[i][j].piece != null && chessboard.getSquares()[i][j].piece.player == this.player
+				if (chessboard.getSquares()[i][j].piece != null && chessboard.getSquares()[i][j].piece.getPlayer() == this.getPlayer()
 						&& chessboard.getSquares()[i][j].piece.allMoves(chessboard.getSquares()[i][j]).size() != 0) {
 					return 0;
 				}
@@ -180,7 +180,7 @@ public class Piece {
 	}
 
 	public boolean isChecked(Square sq) {
-		return !KingBehaviour.getInstance().isSafe(sq, this.chessboard, sq, this.player);
+		return !KingBehaviour.getInstance().isSafe(sq, this.chessboard, sq, this.getPlayer());
 	}
     
     /** Method to draw piece on chessboard
@@ -217,5 +217,29 @@ public class Piece {
 		} catch (java.lang.NullPointerException exc) {
 			System.out.println("Something wrong when painting piece: " + exc.getMessage());
 		}
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+	public boolean isWasMotion() {
+		return wasMotion;
+	}
+
+	public void setWasMotion(boolean wasMotion) {
+		this.wasMotion = wasMotion;
 	}
 }
