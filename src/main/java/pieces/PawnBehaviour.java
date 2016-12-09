@@ -59,22 +59,22 @@ static private PawnBehaviour instance;
 		if(player.getColor() != Player.colors.white)
 			{
 				result.addAll(computeMove(0, 1, square, chessboard, player));
-				if(!square.piece.isWasMotion()) result.addAll(computeMove(0, 2, square, chessboard, player));
+				if(!square.getPiece().isWasMotion()) result.addAll(computeMove(0, 2, square, chessboard, player));
 			}
 		if(player.getColor() != Player.colors.black)
 		{
 			result.addAll(computeMove(0, -1, square, chessboard, player));
-			if(!square.piece.isWasMotion()) result.addAll(computeMove(0, -2, square, chessboard, player));
+			if(!square.getPiece().isWasMotion()) result.addAll(computeMove(0, -2, square, chessboard, player));
 		}
 		if(player.getColor() != Player.colors.red)
 		{
 			result.addAll(computeMove(-1, 0, square, chessboard, player));
-			if(!square.piece.isWasMotion()) result.addAll(computeMove(-2, 0, square, chessboard, player));
+			if(!square.getPiece().isWasMotion()) result.addAll(computeMove(-2, 0, square, chessboard, player));
 		}
 		if(player.getColor() != Player.colors.green)
 		{
 			result.addAll(computeMove(1, 0, square, chessboard, player));
-			if(!square.piece.isWasMotion()) result.addAll(computeMove(2, 0, square, chessboard, player));
+			if(!square.getPiece().isWasMotion()) result.addAll(computeMove(2, 0, square, chessboard, player));
 		}
 		result.addAll(computeTake(1, 1, square, chessboard, player));
 		result.addAll(computeTake(1, -1, square, chessboard, player));
@@ -94,25 +94,25 @@ static private PawnBehaviour instance;
         	switch (player.getColor())
         	{
             	case white :
-            		if (chessboard.getKingWhite().piece.willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[newX][newY]))
+            		if (chessboard.getKingWhite().getPiece().willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[newX][newY]))
                     {
                         result.add(chessboard.getSquares()[newX][newY]);
                     }
             		break;
             	case black :
-            		if (chessboard.getKingBlack().piece.willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[newX][newY]))
+            		if (chessboard.getKingBlack().getPiece().willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[newX][newY]))
                     {
                         result.add(chessboard.getSquares()[newX][newY]);
                     }
             		break;
             	case red :
-            		if (chessboard.getKingRed().piece.willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[newX][newY]))
+            		if (chessboard.getKingRed().getPiece().willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[newX][newY]))
                     {
                         result.add(chessboard.getSquares()[newX][newY]);
                     }
             		break;
             	case green :
-            		if (chessboard.getKingGreen().piece.willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[newX][newY]))
+            		if (chessboard.getKingGreen().getPiece().willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[newX][newY]))
                     {
                         result.add(chessboard.getSquares()[newX][newY]);
                     }
@@ -134,25 +134,25 @@ static private PawnBehaviour instance;
         	switch (player.getColor())
         	{
             	case white :
-            		if (chessboard.getKingWhite().piece.willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[newX][newY]))
+            		if (chessboard.getKingWhite().getPiece().willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[newX][newY]))
                     {
                         result.add(chessboard.getSquares()[newX][newY]);
                     }
             		break;
             	case black :
-            		if (chessboard.getKingBlack().piece.willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[newX][newY]))
+            		if (chessboard.getKingBlack().getPiece().willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[newX][newY]))
                     {
                         result.add(chessboard.getSquares()[newX][newY]);
                     }
             		break;
             	case red :
-            		if (chessboard.getKingRed().piece.willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[newX][newY]))
+            		if (chessboard.getKingRed().getPiece().willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[newX][newY]))
                     {
                         result.add(chessboard.getSquares()[newX][newY]);
                     }
             		break;
             	case green :
-            		if (chessboard.getKingGreen().piece.willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[newX][newY]))
+            		if (chessboard.getKingGreen().getPiece().willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[newX][newY]))
                     {
                         result.add(chessboard.getSquares()[newX][newY]);
                     }

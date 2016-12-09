@@ -217,9 +217,9 @@ public class Chessboard extends JPanel
         {
             for (int y = 0; y < numberSquares; y++)
             {
-                if (this.getSquares()[i][y].piece != null)
+                if (this.getSquares()[i][y].getPiece() != null)
                 {
-                    this.getSquares()[i][y].piece.draw(g, i, y);//draw image of Piece
+                    this.getSquares()[i][y].getPiece().draw(g, i, y);//draw image of Piece
                 }
             }
         }//--endOf--drawPiecesOnSquares
@@ -229,7 +229,7 @@ public class Chessboard extends JPanel
                             ((this.getActive_x_square() - 1) * (int) getSquare_height()) + topLeftPoint.x,
                             ((this.getActive_y_square() - 1) * (int) getSquare_height()) + topLeftPoint.y, null);//draw image of selected square
             Square tmpSquare = this.getSquares()[(int) (this.getActive_x_square() - 1)][(int) (this.getActive_y_square() - 1)];
-            if (tmpSquare.piece != null)
+            if (tmpSquare.getPiece() != null)
             {
                 this.moves = this.getSquares()[(int) (this.getActive_x_square() - 1)][(int) (this.getActive_y_square() - 1)].allMoves();
             }
@@ -429,7 +429,7 @@ public class Chessboard extends JPanel
 	public Square getKingBlack(){
 		for(int x = 0; x < squares.length; x++){
 			for(int y = 0; y < squares[x].length; y++){
-				if(squares[x][y].piece != null && squares[x][y].piece.getName().equals("King") && squares[x][y].piece.getPlayer() == settings.getPlayerBlack() ){
+				if(squares[x][y].getPiece() != null && squares[x][y].getPiece().getName().equals("King") && squares[x][y].getPiece().getPlayer() == settings.getPlayerBlack() ){
 					return squares[x][y];
 				}
 			}
@@ -440,7 +440,7 @@ public class Chessboard extends JPanel
 	public Square getKingWhite(){
 		for(int x = 0; x < squares.length; x++){
 			for(int y = 0; y < squares[x].length; y++){
-				if(squares[x][y].piece != null && squares[x][y].piece.getName().equals("King") && squares[x][y].piece.getPlayer() == settings.getPlayerWhite() ){
+				if(squares[x][y].getPiece() != null && squares[x][y].getPiece().getName().equals("King") && squares[x][y].getPiece().getPlayer() == settings.getPlayerWhite() ){
 					return squares[x][y];
 				}
 			}
@@ -451,7 +451,7 @@ public class Chessboard extends JPanel
 	public Square getKingGreen(){
 		for(int x = 0; x < squares.length; x++){
 			for(int y = 0; y < squares[x].length; y++){
-				if(squares[x][y].piece != null && squares[x][y].piece.getName().equals("King") && squares[x][y].piece.getPlayer() == settings.getPlayerGreen() ){
+				if(squares[x][y].getPiece() != null && squares[x][y].getPiece().getName().equals("King") && squares[x][y].getPiece().getPlayer() == settings.getPlayerGreen() ){
 					return squares[x][y];
 				}
 			}
@@ -462,7 +462,7 @@ public class Chessboard extends JPanel
 	public Square getKingRed(){
 		for(int x = 0; x < squares.length; x++){
 			for(int y = 0; y < squares[x].length; y++){
-				if(squares[x][y].piece != null && squares[x][y].piece.getName().equals("King") && squares[x][y].piece.getPlayer() == settings.getPlayerRed() ){
+				if(squares[x][y].getPiece() != null && squares[x][y].getPiece().getName().equals("King") && squares[x][y].getPiece().getPlayer() == settings.getPlayerRed() ){
 					return squares[x][y];
 				}
 			}
@@ -473,7 +473,7 @@ public class Chessboard extends JPanel
 	public Square getKing(Player pl){
 		for(int x = 0; x < squares.length; x++){
 			for(int y = 0; y < squares[x].length; y++){
-				if(squares[x][y].piece != null && squares[x][y].piece.getName().equals("King") && squares[x][y].piece.getPlayer() == pl ){
+				if(squares[x][y].getPiece() != null && squares[x][y].getPiece().getName().equals("King") && squares[x][y].getPiece().getPlayer() == pl ){
 					return squares[x][y];
 				}
 			}

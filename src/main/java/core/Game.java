@@ -469,12 +469,12 @@ public class Game extends JPanel implements MouseListener, ComponentListener
                     //Square sq = chessboard.getSquares()[x][y];
                     
                     if ((sq == null && getChessboard().getActiveSquare() == null)
-                            || (this.getChessboard().getActiveSquare() == null && sq.piece != null && sq.piece.getPlayer() != this.activePlayer))
+                            || (this.getChessboard().getActiveSquare() == null && sq.getPiece() != null && sq.getPiece().getPlayer() != this.activePlayer))
                     {
                         return;
                     }
 
-                    if (sq.piece != null && sq.piece.getPlayer() == this.activePlayer && sq != getChessboard().getActiveSquare())
+                    if (sq.getPiece() != null && sq.getPiece().getPlayer() == this.activePlayer && sq != getChessboard().getActiveSquare())
                     {
                     	ChessboardLogic.getInstance().unselect(getChessboard());
                     	ChessboardLogic.getInstance().select(getChessboard(), sq);
@@ -483,7 +483,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
                     {
                     	ChessboardLogic.getInstance().unselect(getChessboard());
                     }
-                    else if (getChessboard().getActiveSquare() != null && getChessboard().getActiveSquare().piece != null
+                    else if (getChessboard().getActiveSquare() != null && getChessboard().getActiveSquare().getPiece() != null
                             && getChessboard().getActiveSquare().allMoves().indexOf(sq) != -1) //move
                     {
                         if (getSettings().gameType == Settings.gameTypes.local)
@@ -500,11 +500,11 @@ public class Game extends JPanel implements MouseListener, ComponentListener
                         Piece king;
                         if (this.activePlayer == getSettings().getPlayerWhite())
                         {
-                            king = getChessboard().getKing(getSettings().getPlayerWhite()).piece;
+                            king = getChessboard().getKing(getSettings().getPlayerWhite()).getPiece();
                         }
                         else
                         {
-                            king = getChessboard().getKing(getSettings().getPlayerBlack()).piece;
+                            king = getChessboard().getKing(getSettings().getPlayerBlack()).getPiece();
                         }
 
                         switch (king.isCheckmatedOrStalemated())

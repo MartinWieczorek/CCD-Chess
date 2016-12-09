@@ -145,8 +145,8 @@ public class Piece {
 		int y = 0;
 		for (int i = 0; i < chessboard.getNumSquares(); ++i) {
 			for (int j = 0; j < chessboard.getNumSquares(); ++j) {
-				if (chessboard.getSquares()[i][j].piece != null && chessboard.getSquares()[i][j].piece.getPlayer() == this.getPlayer()
-						&& chessboard.getSquares()[i][j].piece.allMoves(chessboard.getSquares()[i][j]).size() != 0) {
+				if (chessboard.getSquares()[i][j].getPiece() != null && chessboard.getSquares()[i][j].getPiece().getPlayer() == this.getPlayer()
+						&& chessboard.getSquares()[i][j].getPiece().allMoves(chessboard.getSquares()[i][j]).size() != 0) {
 					return 0;
 				}
 				y = j;
@@ -167,14 +167,14 @@ public class Piece {
 	 */
 	public boolean willBeSafeWhenMoveOtherPiece(Square sqIsHere, Square sqWillBeThere) 
 	{
-		Piece tmp = sqWillBeThere.piece;
-		sqWillBeThere.piece = sqIsHere.piece; // move without redraw
-		sqIsHere.piece = null;
+		Piece tmp = sqWillBeThere.getPiece();
+		sqWillBeThere.setPiece(sqIsHere.getPiece()); // move without redraw
+		sqIsHere.setPiece(null);
 
 		boolean ret = !this.isChecked(sqIsHere);
 
-		sqIsHere.piece = sqWillBeThere.piece;
-		sqWillBeThere.piece = tmp;
+		sqIsHere.setPiece(sqWillBeThere.getPiece());
+		sqWillBeThere.setPiece(tmp);
 
 		return ret;
 	}

@@ -55,25 +55,25 @@ static private BishopBehaviour instance;
 	            	switch (player.getColor())
 	            	{
 		            	case white :
-		            		if (chessboard.getKingWhite().piece.willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[x][y]))
+		            		if (chessboard.getKingWhite().getPiece().willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[x][y]))
 		                    {
 		                        result.add(chessboard.getSquares()[x][y]);
 		                    }
 		            		break;
 		            	case black :
-		            		if (chessboard.getKingBlack().piece.willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[x][y]))
+		            		if (chessboard.getKingBlack().getPiece().willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[x][y]))
 		                    {
 		                        result.add(chessboard.getSquares()[x][y]);
 		                    }
 		            		break;
 		            	case red :
-		            		if (chessboard.getKingRed().piece.willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[x][y]))
+		            		if (chessboard.getKingRed().getPiece().willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[x][y]))
 		                    {
 		                        result.add(chessboard.getSquares()[x][y]);
 		                    }
 		            		break;
 		            	case green :
-		            		if (chessboard.getKingGreen().piece.willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[x][y]))
+		            		if (chessboard.getKingGreen().getPiece().willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[x][y]))
 		                    {
 		                        result.add(chessboard.getSquares()[x][y]);
 		                    }

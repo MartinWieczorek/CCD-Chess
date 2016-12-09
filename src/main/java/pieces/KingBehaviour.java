@@ -69,9 +69,9 @@ static private KingBehaviour instance;
 	private ArrayList<Square> castlingMoves(int offX, int offY, Chessboard chessboard, Square square, Player player) 
 	{
 		ArrayList<Square> result = new ArrayList<Square>();
-		if (!square.piece.isWasMotion() && isSafe(square, chessboard, square, player)) //check if king was not moved before
+		if (!square.getPiece().isWasMotion() && isSafe(square, chessboard, square, player)) //check if king was not moved before
         {
-			Piece rook = chessboard.getSquares()[square.getPozX() + offX * 3][square.getPozY() + offY * 3].piece;
+			Piece rook = chessboard.getSquares()[square.getPozX() + offX * 3][square.getPozY() + offY * 3].getPiece();
 			Square square1 = chessboard.getSquares()[square.getPozX() + offX][square.getPozY() + offY];
 			Square square2 = chessboard.getSquares()[square.getPozX() + offX * 2][square.getPozY() + offY * 2];
 			boolean canCastling;
@@ -82,7 +82,7 @@ static private KingBehaviour instance;
                 {
                     for (int x = square.getPozX() + offX, y = square.getPozY() + offY; !PieceBehaviour.isout(x, y, chessboard); x = x + offX, y = y + offY)
                     {
-                        if (chessboard.getSquares()[x][y].piece != null && chessboard.getSquares()[x][y].piece.getName() != "Rook") //if square is not empty and no rook
+                        if (chessboard.getSquares()[x][y].getPiece() != null && chessboard.getSquares()[x][y].getPiece().getName() != "Rook") //if square is not empty and no rook
                         {
                             canCastling = false;
                             break;
@@ -94,7 +94,7 @@ static private KingBehaviour instance;
                     }
                 }
             }
-            rook = chessboard.getSquares()[square.getPozX() - offX * 3][square.getPozY() - offY * 3].piece;
+            rook = chessboard.getSquares()[square.getPozX() - offX * 3][square.getPozY() - offY * 3].getPiece();
 			square1 = chessboard.getSquares()[square.getPozX() - offX][square.getPozY() - offY];
 			square2 = chessboard.getSquares()[square.getPozX() - offX * 2][square.getPozY() - offY * 2];
 			
@@ -105,7 +105,7 @@ static private KingBehaviour instance;
                 {
                 	for (int x = square.getPozX() - offX, y = square.getPozY() - offY; !PieceBehaviour.isout(x, y, chessboard); x = x - offX, y = y - offY)
                     {
-                        if (chessboard.getSquares()[x][y].piece != null  && chessboard.getSquares()[x][y].piece.getName() != "Rook") //if square is not empty and no rook
+                        if (chessboard.getSquares()[x][y].getPiece() != null  && chessboard.getSquares()[x][y].getPiece().getName() != "Rook") //if square is not empty and no rook
                         {
                             canCastling = false;
                             break;
@@ -161,14 +161,14 @@ static private KingBehaviour instance;
 	{
 		for (int x = s.getPozX() + offX, y = s.getPozY() + offY; !PieceBehaviour.isout(x, y, chessboard); x = x + offX, y = y + offY)
         {
-            if (chessboard.getSquares()[x][y].piece == null || chessboard.getSquares()[x][y] == square) //if on this square isn't piece
+            if (chessboard.getSquares()[x][y].getPiece() == null || chessboard.getSquares()[x][y] == square) //if on this square isn't piece
             {
                 continue;
             }
-            else if (chessboard.getSquares()[x][y].piece.getPlayer() != player) //if isn't our piece
+            else if (chessboard.getSquares()[x][y].getPiece().getPlayer() != player) //if isn't our piece
             {
-                if (chessboard.getSquares()[x][y].piece.getName().equals("Rook")
-                        || chessboard.getSquares()[x][y].piece.getName().equals("Queen"))
+                if (chessboard.getSquares()[x][y].getPiece().getName().equals("Rook")
+                        || chessboard.getSquares()[x][y].getPiece().getName().equals("Queen"))
                 {
                     return false;
                 }
@@ -189,14 +189,14 @@ static private KingBehaviour instance;
 	{
 		for (int x = s.getPozX() + offX, y = s.getPozY() + offY; !PieceBehaviour.isout(x, y, chessboard); x = x + offX, y = y + offY)
         {
-            if (chessboard.getSquares()[x][y].piece == null || chessboard.getSquares()[x][y] == square) //if on this square isn't piece
+            if (chessboard.getSquares()[x][y].getPiece() == null || chessboard.getSquares()[x][y] == square) //if on this square isn't piece
             {
                 continue;
             }
-            else if (chessboard.getSquares()[x][y].piece.getPlayer() != player) //if isn't our piece
+            else if (chessboard.getSquares()[x][y].getPiece().getPlayer() != player) //if isn't our piece
             {
-                if (chessboard.getSquares()[x][y].piece.getName().equals("Bishop")
-                        || chessboard.getSquares()[x][y].piece.getName().equals("Queen"))
+                if (chessboard.getSquares()[x][y].getPiece().getName().equals("Bishop")
+                        || chessboard.getSquares()[x][y].getPiece().getName().equals("Queen"))
                 {
                     return false;
                 }
@@ -219,9 +219,9 @@ static private KingBehaviour instance;
 		int newY = s.getPozY() + offY;
 		 if (!PieceBehaviour.isout(newX, newY, chessboard))
 	        {
-	            if (chessboard.getSquares()[newX][newY].piece == null) return true; //if on this square isn't piece
-	            else if (chessboard.getSquares()[newX][newY].piece.getPlayer() == player) return true; //if is our piece
-	            else if (chessboard.getSquares()[newX][newY].piece.getName().equals("Knight"))return false;
+	            if (chessboard.getSquares()[newX][newY].getPiece() == null) return true; //if on this square isn't piece
+	            else if (chessboard.getSquares()[newX][newY].getPiece().getPlayer() == player) return true; //if is our piece
+	            else if (chessboard.getSquares()[newX][newY].getPiece().getName().equals("Knight"))return false;
 	        }
 		return true;
 	}
@@ -234,7 +234,7 @@ static private KingBehaviour instance;
 	            {
 	                if (!PieceBehaviour.isout(x, y, chessboard)) //out of bounds protection
 	                {
-	                	Piece piece = chessboard.getSquares()[x][y].piece;
+	                	Piece piece = chessboard.getSquares()[x][y].getPiece();
 	                    if(piece != null && piece.getName() == "King" && piece.getPlayer() != player) return false;
 	                }
 	            }
@@ -246,7 +246,7 @@ static private KingBehaviour instance;
 	{
 		if(!PieceBehaviour.isout(s.getPozX() + offX, s.getPozY() + offY, chessboard))
 		{
-			Piece piece = chessboard.getSquares()[s.getPozX() + offX][s.getPozY() + offY].piece;
+			Piece piece = chessboard.getSquares()[s.getPozX() + offX][s.getPozY() + offY].getPiece();
 			if(piece != null && piece.getName() == "Pawn" && piece.getPlayer() != player) return false;
 		}
 		return true;

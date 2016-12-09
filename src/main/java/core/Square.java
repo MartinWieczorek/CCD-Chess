@@ -33,13 +33,13 @@ public class Square
 
     private int pozX; // 0-7, becouse 8 squares for row/column
     private int pozY; // 0-7, becouse 8 squares for row/column
-    public Piece piece = null;//object Piece on square (and extending Piecie)
+    private Piece piece = null;//object Piece on square (and extending Piecie)
 
     public Square(int pozX, int pozY, Piece piece)
     {
         this.setPozX(pozX);
         this.setPozY(pozY);
-        this.piece = piece;
+        this.setPiece(piece);
     }/*--endOf-Square--*/
 
 
@@ -47,7 +47,7 @@ public class Square
     {
         this.setPozX(square.getPozX());
         this.setPozY(square.getPozY());
-        this.piece = square.piece;
+        this.setPiece(square.getPiece());
     }
 
     public Square clone(Square square)
@@ -56,11 +56,11 @@ public class Square
     }
     
     public ArrayList<Square> allMoves(){
-    	return this.piece.allMoves(this);
+    	return this.getPiece().allMoves(this);
     }
     
     public boolean isChecked() {
-		return piece.isChecked(this);
+		return getPiece().isChecked(this);
 	}
 
     public void setPiece(Piece piece)
@@ -87,5 +87,10 @@ public class Square
 
 	public void setPozY(int pozY) {
 		this.pozY = pozY;
+	}
+
+
+	public Piece getPiece() {
+		return piece;
 	}
 }
