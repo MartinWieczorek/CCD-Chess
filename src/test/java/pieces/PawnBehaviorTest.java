@@ -62,7 +62,7 @@ public class PawnBehaviorTest
 		initTest();
 
 		// create solution
-		Square[] SolutionPawn1 = { new Square(4, 10, null), new Square(3, 11, null), new Square(5, 11, null) };
+		Square[] SolutionPawn = { new Square(4, 10, null), new Square(3, 11, null), new Square(5, 11, null) };
 		
 		// Pawn position
 		int[] p1 = { 4, 11 };
@@ -77,7 +77,7 @@ public class PawnBehaviorTest
 		// test movements
 		ArrayList<Square> testMoves = testBoard.getSquares()[p1[0]][p1[1]].allMoves();
 		for (Square sq : testMoves) {
-			assertTrue(isSolution(sq, SolutionPawn1));
+			assertTrue(isSolution(sq, SolutionPawn));
 		}
 
 	}
