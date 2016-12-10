@@ -138,22 +138,21 @@ public class Piece {
 
 	/**
 	 * 
-	 * @return
-	 */
-	public int isCheckmatedOrStalemated() {
-		int x = 0;
-		int y = 0;
+	 * @return 0 - when nothing <br>
+	 *         1 - when checkmate <br>
+	 *         2 - when stalemate <br>
+	 */  
+	public int isCheckmatedOrStalemated() 
+	{
 		for (int i = 0; i < chessboard.getNumSquares(); ++i) {
 			for (int j = 0; j < chessboard.getNumSquares(); ++j) {
 				if (chessboard.getSquares()[i][j].getPiece() != null && chessboard.getSquares()[i][j].getPiece().getPlayer() == this.getPlayer()
 						&& chessboard.getSquares()[i][j].getPiece().allMoves(chessboard.getSquares()[i][j]).size() != 0) {
 					return 0;
 				}
-				y = j;
 			}
-			x = i;
 		}
-		if (this.isChecked(chessboard.getSquares()[x][y])) {
+		if (this.isChecked(chessboard.getKing(this.player)) ) {
 			return 1;
 		} else {
 			return 2;
