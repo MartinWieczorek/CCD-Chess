@@ -16,14 +16,22 @@ import core.Square;
 // |_|_|7|_|6|_|_|_|1
 // |_|_|_|_|_|_|_|_|0
 //X:0 1 2 3 4 5 6 7
-//
 
+/**
+ * represents the possible movements a Knight can perform
+ * @author Patrick
+ *
+ */
 public class KnightBehaviour implements PieceBehaviour {
 	
 static private KnightBehaviour instance;
 	
 	private KnightBehaviour(){}
 	
+	/**
+	 * Instance getter for singleton
+	 * @return instance of singleton
+	 */
 	static public KnightBehaviour getInstance()
 	{
 		if(instance == null){

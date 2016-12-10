@@ -318,6 +318,7 @@ public class ChessboardLogic {
 	 * @param clearForwardHistory
 	 */
 	public void move(Chessboard chessboard, Square begin, Square end, boolean refresh, boolean clearForwardHistory) {
+		begin.getPiece().setWasMotion(true);
 		castling wasCastling = Moves.castling.none;
 		Piece promotedPiece = null;
 		boolean wasEnPassant = false;

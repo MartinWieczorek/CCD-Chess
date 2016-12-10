@@ -5,7 +5,7 @@ import core.Chessboard;
 import core.Player;
 import core.Square;
 
-/**
+/*
  * Bishop can move:
 |_|_|_|_|_|_|_|X|7
 |X|_|_|_|_|_|X|_|6
@@ -18,12 +18,21 @@ import core.Square;
 0 1 2 3 4 5 6 7
  */
 
+/**
+ * represents the possible movements a Bishop can perform
+ * @author Patrick
+ *
+ */
 public class BishopBehaviour implements PieceBehaviour {
 
 static private BishopBehaviour instance;
 	
 	private BishopBehaviour(){}
 	
+	/**
+	 * Instance getter for singleton
+	 * @return instance of singleton
+	 */
 	static public BishopBehaviour getInstance()
 	{
 		if(instance == null){

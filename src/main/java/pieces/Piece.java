@@ -36,6 +36,7 @@ import pieces.PieceBehaviour;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
 
 /**
  * Class to represent a piece (any kind) - this class should be extended to
@@ -44,14 +45,21 @@ import java.awt.image.BufferedImage;
 public class Piece {
 	private Chessboard chessboard;
 	private boolean wasMotion;
-	// public Square square;
 	private Player player;
 	private String name;
 	private String symbol;
 	protected PieceBehaviour[] behaviours;
 	private Image orgImage;
 	private Image image;
+	private float[] imageColorScales;
+    private float[] imageColorOffsets;
+    private RescaleOp imageColorRescaleOperator;
 
+	/**
+	 * Construct a new Piece on given chessboard for given player with given behaviors.
+	 * @param name the name of the type of the piece specifies the symbol of the pie and the way other pieces interact with this one.
+	 * 	only Bishop, Knight, Pawn, Queen, Rook or King should be used.
+	 */
 	public Piece(Chessboard chessboard, Player player, PieceBehaviour[] behaviours, String name) {
 		this.behaviours = behaviours;
 		this.chessboard = chessboard;
@@ -60,6 +68,9 @@ public class Piece {
 		this.setImage();
 		this.orgImage = image;
 		this.setWasMotion(false);
+		setImageColorScales();
+		this.imageColorOffsets = new float[4];
+		this.imageColorRescaleOperator = new RescaleOp(imageColorScales, imageColorOffsets, null);
 
 		switch (name) {
 		case "Bishop":
@@ -83,15 +94,26 @@ public class Piece {
 		}
 	}
 
-	// public void setSquare(Square square)
-	// {
-	// this.square = square;
-	// }
-	//
-	// public Square getSquare()
-	// {
-	// return this.square;
-	// }
+	private void setImageColorScales() {
+		switch(this.getPlayer().getColor())
+		{
+		case black:
+			imageColorScales = new float[]{ 1f, 1f, 1f, 1f };
+			break;
+		case green:
+			imageColorScales = new float[]{ 0f, 1f, 0f, 1f };
+			break;
+		case red:
+			imageColorScales = new float[]{ 1f, 0f, 0f, 1f };
+			break;
+		case white:
+			imageColorScales = new float[]{ 1f, 1f, 1f, 1f };
+			break;
+		default:
+			break;
+			
+		}
+	}
 
 	/**
 	 * method check if Piece can move to given square
@@ -112,6 +134,10 @@ public class Piece {
 		return false;// if not, piece cannot move
 	}
 
+	/**
+	 * Sets the image which is used for representation on the board.
+	 * Image name is specified by Piece name and player color.
+	 */
 	public void setImage() {
 		if (this.getPlayer().getColor() == core.Player.colors.black) {
 			image = ui.GUI.loadImage(getName() + "-B.png");
@@ -120,6 +146,11 @@ public class Piece {
 		}
 	}
 
+	/**
+	 * computes all current possible moves of the piece
+	 * @param sq squarePosition of calling piece
+	 * @return ArrayList<Square> of all possible movement destinations 
+	 */
 	public ArrayList<Square> allMoves(Square sq) {
 		ArrayList<Square> result = new ArrayList<Square>();
 		for (int i = 0; i < behaviours.length; ++i) {
@@ -128,32 +159,31 @@ public class Piece {
 		return result;
 	}
 
+	/**
+	 * Overrides current PieceBehaviours
+	 * @param behaviours new behaviors
+	 */
 	public void changeBehaviour(PieceBehaviour[] behaviours) {
 		this.behaviours = behaviours;
 	}
 
-	public String getSymbol() {
-		return this.symbol;
-	}
-
 	/**
-	 * 
-	 * @return
-	 */
-	public int isCheckmatedOrStalemated() {
-		int x = 0;
-		int y = 0;
+	 * checks if piece is check- or stalemate.
+	 * @return 0 - when nothing <br>
+	 *         1 - when checkmate <br>
+	 *         2 - when stalemate <br>
+	 */  
+	public int isCheckmatedOrStalemated() 
+	{
 		for (int i = 0; i < chessboard.getNumSquares(); ++i) {
 			for (int j = 0; j < chessboard.getNumSquares(); ++j) {
 				if (chessboard.getSquares()[i][j].getPiece() != null && chessboard.getSquares()[i][j].getPiece().getPlayer() == this.getPlayer()
 						&& chessboard.getSquares()[i][j].getPiece().allMoves(chessboard.getSquares()[i][j]).size() != 0) {
 					return 0;
 				}
-				y = j;
 			}
-			x = i;
 		}
-		if (this.isChecked(chessboard.getSquares()[x][y])) {
+		if (this.isChecked(chessboard.getKing(this.player)) ) {
 			return 1;
 		} else {
 			return 2;
@@ -206,8 +236,8 @@ public class Piece {
                 imageGr.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 imageGr.drawImage(tempImage, 0, 0, height, height, null);
                 imageGr.dispose();
-                image = resized.getScaledInstance(height, height, 0);
-                g2d.drawImage(image, x, y, null);
+                g2d.drawImage(resized, imageColorRescaleOperator, x, y);
+                
             }
             else
             {
@@ -219,6 +249,11 @@ public class Piece {
 		}
 	}
 
+
+	public String getSymbol() {
+		return this.symbol;
+	}
+    
 	public String getName() {
 		return name;
 	}
