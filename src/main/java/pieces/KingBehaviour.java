@@ -17,12 +17,21 @@ import core.Square;
 0 1 2 3 4 5 6 7
 */
 
+/**
+ * represents the possible movements a King can perform
+ * @author Patrick
+ *
+ */
 public class KingBehaviour implements PieceBehaviour {
 	
 static private KingBehaviour instance;
 	
 	private KingBehaviour(){}
 	
+	/**
+	 * Instance getter for singleton
+	 * @return instance of singleton
+	 */
 	static public KingBehaviour getInstance()
 	{
 		if(instance == null){
