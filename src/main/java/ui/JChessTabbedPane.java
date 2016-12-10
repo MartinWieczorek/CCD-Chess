@@ -30,6 +30,9 @@ import java.awt.image.ImageObserver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**Class responsible for drawing the tabs for the different chessboards.
+ * 
+ */
 public class JChessTabbedPane extends JTabbedPane implements MouseListener, ImageObserver
 {
 	private static final Logger logger = LogManager.getLogger(JChessTabbedPane.class);
@@ -40,6 +43,8 @@ public class JChessTabbedPane extends JTabbedPane implements MouseListener, Imag
     private Image unclickedAddIcon = null;
     private Rectangle addIconRect = null;
 
+    /** Constructor to create a new JChessTabbedPane
+     */
     JChessTabbedPane()
     {
         super();
@@ -52,12 +57,21 @@ public class JChessTabbedPane extends JTabbedPane implements MouseListener, Imag
         super.addMouseListener(this);
     }
 
+    /** Wrapper method for adding a tab
+     * @param title Name that the tab will get
+     * @param component 
+     */
     @Override
     public void addTab(String title, Component component)
     {
         this.addTab(title, component, null);
     }
-
+    
+    /** Method for adding a tab
+     * @param title Name that the tab will get
+     * @param component 
+     * @param closeIcon The Icon for the tab
+     */
     public void addTab(String title, Component component, Icon closeIcon)
     {
         super.addTab(title, new TabbedPaneIcon(closeIcon), component);
@@ -82,6 +96,9 @@ public class JChessTabbedPane extends JTabbedPane implements MouseListener, Imag
         JChessApp.getApplication().show(JChessApp.getJcv().newGameFrame);
     }
 
+    /** Method to perform action when a mouseclick on a tab was recognized
+     * @param e The event which occurs through the mouseclick
+     */
     @Override
     public void mouseClicked(MouseEvent e)
     {
@@ -176,7 +193,7 @@ class TabbedPaneIcon implements Icon
         width = 16;
         height = 16;
     }//--endOf-TabbedPaneIcon--
-
+    
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y)
     {

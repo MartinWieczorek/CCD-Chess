@@ -31,14 +31,11 @@ import core.Game;
 import core.JChessApp;
 import core.Player;
 import core.Settings;
-import core.Player.playerTypes;
-import core.Settings.gameModes;
-import core.Settings.gameTypes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Class responsible for drawing the fold with local game settings
+ * Class responsible for drawing the panel of local game settings
  */
 public class DrawLocalSettings extends JPanel implements ActionListener, TextListener
 {
@@ -76,8 +73,8 @@ public class DrawLocalSettings extends JPanel implements ActionListener, TextLis
     ;
         
         
-    /** Method witch is checking correction of edit tables
-     * @param e Object where is saving this what contents edit tables
+    /** Method which is checking correction of edit tables
+     * @param e Object which is saving this what contents edit tables
     */
     public void textValueChanged(TextEvent e)
     {
@@ -109,9 +106,9 @@ public class DrawLocalSettings extends JPanel implements ActionListener, TextLis
         }
     }
 
-    /** Method responsible for changing the options which can make a player
-     * when he want to start new local game
-     * @param e where is saving data of performed action
+    /** Method responsible for changing the options which a player can make
+     * when he wants to start new local game
+     * @param e Object which is saving data of performed action
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -200,6 +197,9 @@ public class DrawLocalSettings extends JPanel implements ActionListener, TextLis
 
     }
 
+    /** Constructor to create the panel where the user can change the options for the next game
+     * @param parent Information about the frame in which this window will be created
+     */
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	DrawLocalSettings(JDialog parent)
     {
@@ -298,10 +298,10 @@ public class DrawLocalSettings extends JPanel implements ActionListener, TextLis
     }
 
     /**
-     * Method responsible for triming white symbols from strings
-     * @param txt Where is capt value to equal
-     * @param length How long is the string
-     * @return result trimmed String
+     * Method responsible for trimming white symbols from strings
+     * @param txt The JTextField which should be trimmed
+     * @param length The length the string will be trimmed to
+     * @return result The trimmed String
      */
     public String trimString(JTextField txt, int length)
     {

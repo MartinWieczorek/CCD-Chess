@@ -30,15 +30,12 @@ import core.Settings;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
-import javax.swing.text.View;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.File;
-import java.applet.*;
-import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -54,13 +51,20 @@ public class JChessView extends FrameView implements ActionListener, ComponentLi
     static GUI gui = null;
     GUI activeGUI;//in future it will be reference to active tab
 
+    /** Method to create a new game in a new tab.
+     * @param title Title of the new game
+     * @return Instance of the new game
+     */
     public Game addNewTab(String title)
     {
         Game newGUI = new Game();
         this.gamesPane.addTab(title, newGUI);
         return newGUI;
     }
-
+    
+	/** Eventhandler to differentiate the action for different clicked buttons.
+	 * @param event
+	 */
     public void actionPerformed(ActionEvent event)
     {
         Object target = event.getSource();
@@ -151,7 +155,9 @@ public class JChessView extends FrameView implements ActionListener, ComponentLi
  
     ///--endOf- don't delete, becouse they're interfaces for MouseEvent
         
-
+	/**Constructor to create the main window of the program.
+	 * @param app 
+	 */
     public JChessView(SingleFrameApplication app) {
         super(app);
         
@@ -229,6 +235,10 @@ public class JChessView extends FrameView implements ActionListener, ComponentLi
         JChessApp.getApplication().show(aboutBox);
     }
 
+    /**
+     * @param color Color of the owner of the pawn that will be promoted
+     * @return
+     */
     public String showPawnPromotionBox(String color) {
         if (promotionBox == null) {
             JFrame mainFrame = JChessApp.getApplication().getMainFrame();
@@ -242,7 +252,7 @@ public class JChessView extends FrameView implements ActionListener, ComponentLi
 
         return promotionBox.result;
     }
-
+    
     public String showSaveWindow() {
 
         return "";

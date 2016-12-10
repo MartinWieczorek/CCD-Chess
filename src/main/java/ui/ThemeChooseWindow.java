@@ -33,10 +33,11 @@ import javax.swing.event.ListSelectionEvent;
 import java.io.File;
 import java.util.Properties;
 import java.io.FileOutputStream;
-import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/** Class responsible for creating the window where the user can switch between themes for new games
+ */
 public class ThemeChooseWindow extends JDialog implements ActionListener, ListSelectionListener
 {
 	private static final Logger logger = LogManager.getLogger(ThemeChooseWindow.class);
@@ -49,12 +50,16 @@ public class ThemeChooseWindow extends JDialog implements ActionListener, ListSe
     JButton themePreviewButton;
     JButton okButton;
 
+    /** Constructor to create a ThemeChooseWindow
+     * @param parent Information about the frame in which this window will be created
+     * @throws Exception 
+     */
     @SuppressWarnings("unchecked")
 	ThemeChooseWindow(Frame parent) throws Exception
     {
         super(parent);
         logger.info("ThemeChooseWindow-constructor");
-
+        
         File dir = new File(GUI.getJarPath() + File.separator + "ui/resources/theme" + File.separator);
 
         File[] files = dir.listFiles();
@@ -111,7 +116,10 @@ public class ThemeChooseWindow extends JDialog implements ActionListener, ListSe
         }
 
     }
-
+    
+    /** Method for selecting the theme that will be used for new games out of a list
+     * @param event Capt information about performed action e.g. mouseclick
+     */
     @Override
     public void valueChanged(ListSelectionEvent event)
     {
@@ -123,8 +131,8 @@ public class ThemeChooseWindow extends JDialog implements ActionListener, ListSe
         this.themePreviewButton.setIcon(this.themePreview);
     }
 
-    /** Method wich is changing a pawn into queen, rook, bishop or knight
-     * @param evt Capt information about performed action
+    /** Method which is changing the used theme for new games
+     * @param evt Capt information about performed action e.g. mouseclick
      */
     public void actionPerformed(ActionEvent evt)
     {
@@ -133,7 +141,7 @@ public class ThemeChooseWindow extends JDialog implements ActionListener, ListSe
             Properties prp = GUI.getConfigFile();
             int element = this.themesList.getSelectedIndex();
             String name = this.themesList.getModel().getElementAt(element).toString();
-            if (GUI.themeIsValid(name))
+            if (themeIsValid(name))
             {
                 prp.setProperty("THEME", name);
                 try
@@ -153,5 +161,16 @@ public class ThemeChooseWindow extends JDialog implements ActionListener, ListSe
             }
             logger.debug(prp.getProperty("THEME"));
         }
+    }
+    
+
+
+    /**Method to validate the theme (doesn't do anything atm.)
+     * @param name Name of the theme
+     * @return True if theme is valid
+     */
+    private static boolean themeIsValid(String name)
+    {
+        return true;
     }
 }
