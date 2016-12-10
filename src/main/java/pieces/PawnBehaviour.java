@@ -5,45 +5,22 @@ import core.Chessboard;
 import core.Player;
 import core.Square;
 
-/*
-|_|_|_|_|_|_|_|_|7
-|_|_|_|_|_|_|_|_|6
-|_|_|_|X|_|_|_|_|5
-|_|_|_|X|_|_|_|_|4
-|_|_|_|P|_|_|_|_|3
-|_|_|_|_|_|_|_|_|2
-|_|_|_|_|_|_|_|_|1
-|_|_|_|_|_|_|_|_|0
-0 1 2 3 4 5 6 7
+/**
+ * represents the possible movements a Pawn can perform
+ * @author Patrick
  *
- * Move of a pawn:
-|_|_|_|_|_|_|_|_|7
-|_|_|_|_|_|_|_|_|6
-|_|_|_|_|_|_|_|_|5
-|_|_|_|X|_|_|_|_|4
-|_|_|_|P|_|_|_|_|3
-|_|_|_|_|_|_|_|_|2
-|_|_|_|_|_|_|_|_|1
-|_|_|_|_|_|_|_|_|0
-0 1 2 3 4 5 6 7
- * Beats with can take pawn:
-|_|_|_|_|_|_|_|_|7
-|_|_|_|_|_|_|_|_|6
-|_|_|_|_|_|_|_|_|5
-|_|_|X|_|X|_|_|_|4
-|_|_|_|P|_|_|_|_|3
-|_|_|_|_|_|_|_|_|2
-|_|_|_|_|_|_|_|_|1
-|_|_|_|_|_|_|_|_|0
-0 1 2 3 4 5 6 7
  */
-
 public class PawnBehaviour implements PieceBehaviour {
 	
 static private PawnBehaviour instance;
 	
 	private PawnBehaviour(){}
 	
+	
+	/**
+	 * Instance getter for singleton
+	 * @return instance of singleton
+	 */
 	static public PawnBehaviour getInstance()
 	{
 		if(instance == null){
@@ -57,10 +34,10 @@ static private PawnBehaviour instance;
 	public ArrayList<Square> getMoves(Chessboard chessboard, Square square, Player player) {
 		ArrayList<Square> result = new ArrayList<Square>();
 		if(player.getColor() != Player.colors.white)
-			{
-				result.addAll(computeMove(0, 1, square, chessboard, player));
-				if(!square.getPiece().isWasMotion()) result.addAll(computeMove(0, 2, square, chessboard, player));
-			}
+		{
+			result.addAll(computeMove(0, 1, square, chessboard, player));
+			if(!square.getPiece().isWasMotion()) result.addAll(computeMove(0, 2, square, chessboard, player));
+		}
 		if(player.getColor() != Player.colors.black)
 		{
 			result.addAll(computeMove(0, -1, square, chessboard, player));
