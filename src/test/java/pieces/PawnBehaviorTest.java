@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 import core.Chessboard;
+import core.ChessboardLogic;
 import core.Game;
 import core.Moves;
 import core.Settings;
@@ -21,9 +22,9 @@ public class PawnBehaviorTest
 	
 	private void initTest() {
 		game = new Game();
-		settings = new Settings();
+		settings = game.getSettings();
 		moves_history = new Moves(game);
-		testBoard = new Chessboard(settings, moves_history);
+		testBoard = game.getChessboard();
 	}
 	
 	// um strin des szenarios erweitern
@@ -38,8 +39,9 @@ public class PawnBehaviorTest
 	}
 
 	//Scenario testPawnMovement1
-		/* X = Pawn
-		 * o = movepoints
+		/* X = Pawn Startposition
+		 * x = Pawn position after first step
+		 * o = movepoints for second step
 		|-|-|-|_|_|_|_|K|_|_|_|-|-|-|00
 		|-|-|-|_|_|_|_|_|_|_|_|-|-|-|01
 		|-|-|-|_|_|_|_|_|_|_|_|-|-|-|02
@@ -51,8 +53,8 @@ public class PawnBehaviorTest
 		|_|_|_|_|_|_|_|_|_|_|_|_|_|_|08
 		|_|_|_|_|_|_|_|_|_|_|_|_|_|_|09
 		|_|_|_|_|o|_|_|_|_|_|_|_|_|_|10
-		|-|-|-|o|X|o|_|_|_|_|_|-|-|-|11
-		|-|-|-|_|_|_|_|_|_|_|_|-|-|-|12
+		|-|-|-|o|x|o|_|_|_|_|_|-|-|-|11
+		|-|-|-|_|X|_|_|_|_|_|_|-|-|-|12
 		|-|-|-|_|_|_|K|_|_|_|_|-|-|-|13
 		0 1 2 3 4 5 6 7 8 9 10  12 
 		                      11  13  
@@ -65,7 +67,7 @@ public class PawnBehaviorTest
 		Square[] SolutionPawn = { new Square(4, 10, null), new Square(3, 11, null), new Square(5, 11, null) };
 		
 		// Pawn position
-		int[] p1 = { 4, 11 };
+		int[] p1 = { 4, 10 };
 		
 		// set other pieces
 		testBoard.getSquares()[6][13].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
@@ -74,8 +76,11 @@ public class PawnBehaviorTest
 		// set Pawn 
 		testBoard.getSquares()[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
 		
+		// first move of pawn to cancel twoSteps
+		ChessboardLogic.getInstance().move(testBoard, testBoard.getSquares()[p1[0]][p1[1]], testBoard.getSquares()[p1[0]][p1[1] + 1], false, false);
+		
 		// test movements
-		ArrayList<Square> testMoves = testBoard.getSquares()[p1[0]][p1[1]].allMoves();
+		ArrayList<Square> testMoves = testBoard.getSquares()[p1[0]][p1[1] + 1].allMoves();
 		for (Square sq : testMoves) {
 			assertTrue(isSolution(sq, SolutionPawn));
 		}
@@ -100,7 +105,7 @@ public class PawnBehaviorTest
 		|_|_|_|_|_|_|_|_|_|_|_|_|_|_|09
 		|_|_|_|_|_|_|_|_|o|_|_|_|_|_|10
 		|-|-|-|_|_|_|_|_|o|_|_|-|-|-|11
-		|-|-|-|_|_|P|o|o|X|P|_|-|-|-|12
+		|-|-|-|_|_|P|o|o|X|P|o|-|-|-|12
 		|-|-|-|_|_|_|K|_|_|_|_|-|-|-|13
 		0 1 2 3 4 5 6 7 8 9 10  12 
 		                      11  13  
@@ -110,7 +115,7 @@ public class PawnBehaviorTest
 		initTest();
 
 		// create solution
-		Square[] SolutionPawn = { new Square(6, 12, null), new Square(7, 12, null), new Square(8, 11, null), new Square(8, 10, null) };
+		Square[] SolutionPawn = { new Square(6, 12, null), new Square(7, 12, null), new Square(8, 11, null), new Square(8, 10, null), new Square(10, 12, null) };
 
 		// Pawn position
 		int[] p1 = { 8, 12 };
