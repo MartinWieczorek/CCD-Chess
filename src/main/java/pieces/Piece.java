@@ -44,7 +44,6 @@ import java.awt.image.BufferedImage;
 public class Piece {
 	private Chessboard chessboard;
 	private boolean wasMotion;
-	// public Square square;
 	private Player player;
 	private String name;
 	private String symbol;
@@ -52,6 +51,11 @@ public class Piece {
 	private Image orgImage;
 	private Image image;
 
+	/**
+	 * Construct a new Piece on given chessboard for given player with given behaviors.
+	 * @param name the name of the type of the piece specifies the symbol of the pie and the way other pieces interact with this one.
+	 * 	only Bishop, Knight, Pawn, Queen, Rook or King should be used.
+	 */
 	public Piece(Chessboard chessboard, Player player, PieceBehaviour[] behaviours, String name) {
 		this.behaviours = behaviours;
 		this.chessboard = chessboard;
@@ -83,16 +87,6 @@ public class Piece {
 		}
 	}
 
-	// public void setSquare(Square square)
-	// {
-	// this.square = square;
-	// }
-	//
-	// public Square getSquare()
-	// {
-	// return this.square;
-	// }
-
 	/**
 	 * method check if Piece can move to given square
 	 * 
@@ -112,6 +106,10 @@ public class Piece {
 		return false;// if not, piece cannot move
 	}
 
+	/**
+	 * Sets the image which is used for representation on the board.
+	 * Image name is specified by Piece name and player color.
+	 */
 	public void setImage() {
 		if (this.getPlayer().getColor() == core.Player.colors.black) {
 			image = ui.GUI.loadImage(getName() + "-B.png");
@@ -120,6 +118,11 @@ public class Piece {
 		}
 	}
 
+	/**
+	 * computes all current possible moves of the piece
+	 * @param sq squarePosition of calling piece
+	 * @return ArrayList<Square> of all possible movement destinations 
+	 */
 	public ArrayList<Square> allMoves(Square sq) {
 		ArrayList<Square> result = new ArrayList<Square>();
 		for (int i = 0; i < behaviours.length; ++i) {
@@ -128,16 +131,16 @@ public class Piece {
 		return result;
 	}
 
+	/**
+	 * Overrides current PieceBehaviours
+	 * @param behaviours new behaviors
+	 */
 	public void changeBehaviour(PieceBehaviour[] behaviours) {
 		this.behaviours = behaviours;
 	}
 
-	public String getSymbol() {
-		return this.symbol;
-	}
-
 	/**
-	 * 
+	 * checks if piece is check- or stalemate.
 	 * @return 0 - when nothing <br>
 	 *         1 - when checkmate <br>
 	 *         2 - when stalemate <br>
@@ -218,6 +221,11 @@ public class Piece {
 		}
 	}
 
+
+	public String getSymbol() {
+		return this.symbol;
+	}
+    
 	public String getName() {
 		return name;
 	}

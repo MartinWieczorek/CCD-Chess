@@ -5,7 +5,7 @@ import core.Chessboard;
 import core.Player;
 import core.Square;
 
-/**
+/*
  * Rook can move:
 |_|_|_|X|_|_|_|_|7
 |_|_|_|X|_|_|_|_|6
@@ -19,12 +19,21 @@ import core.Square;
  *
  */
 
+/**
+ * represents the possible movements a Rook can perform
+ * @author Patrick
+ *
+ */
 public class RookBehaviour implements PieceBehaviour {
 	
 	static private RookBehaviour instance;
 	
 	private RookBehaviour(){}
 	
+	/**
+	 * Instance getter for singleton
+	 * @return instance of singleton
+	 */
 	static public RookBehaviour getInstance()
 	{
 		if(instance == null){
