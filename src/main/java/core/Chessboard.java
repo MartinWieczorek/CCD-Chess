@@ -73,10 +73,6 @@ public class Chessboard extends JPanel
     private static final int img_height = img_widht;//image height
     private ArrayList<Square> moves;
     private Settings settings;
-//    private Square kingWhite;
-//    private Square kingBlack;
-//    private Square kingRed;
-//    private Square kingGreen;
     //For En passant:
     //|-> Pawn whose in last turn moved two square
     private Square twoSquareMovedPawn = null;
@@ -161,9 +157,14 @@ public class Chessboard extends JPanel
         return this.getHeight();
     }/*--endOf-get_widht--*/
 
+    /**
+     * Contributes the Pixel Height of the Chessboard
+     * @param includeLabels
+     * @return
+     */
     int get_height(boolean includeLabels)
     {
-        if (this.settings.renderLabels)
+        if (this.settings.isRenderLabels())
         {
             return Chessboard.image.getHeight(null) + getUpDownLabel().getHeight(null);
         }
@@ -187,7 +188,7 @@ public class Chessboard extends JPanel
 
     public Point getTopLeftPoint()
     {
-        if (this.settings.renderLabels)
+        if (this.settings.isRenderLabels())
         {
             return new Point(this.topLeft.x + this.getUpDownLabel().getHeight(null), this.topLeft.y + this.getUpDownLabel().getHeight(null));
         }
@@ -201,7 +202,7 @@ public class Chessboard extends JPanel
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Point topLeftPoint = this.getTopLeftPoint();
-        if (this.settings.renderLabels)
+        if (this.settings.isRenderLabels())
         {
             if(topLeftPoint.x <= 0 && topLeftPoint.y <= 0) //if renderLabels and (0,0), than draw it! (for first run)
             {
@@ -253,7 +254,7 @@ public class Chessboard extends JPanel
         Chessboard.image = resized.getScaledInstance(height, height, 0);
         //this.square_height = (float) (height / 8);
         this.square_height = (float) (height / numberSquares);
-        if (this.settings.renderLabels)
+        if (this.settings.isRenderLabels())
         {
             height += 2 * (this.getUpDownLabel().getHeight(null));
         }
@@ -294,7 +295,7 @@ public class Chessboard extends JPanel
         uDL2D.setColor(Color.black);
         uDL2D.setFont(new Font("Arial", Font.BOLD, 12));
         int addX = (square_height / 2);
-        if (this.settings.renderLabels)
+        if (this.settings.isRenderLabels())
         {
             addX += labelHeight;
         }
@@ -303,7 +304,7 @@ public class Chessboard extends JPanel
         {
             "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"
         };
-        if (!this.settings.upsideDown)
+        if (!this.settings.isUpsideDown())
         {
             for (int i = 1; i <= letters.length; i++)
             {
@@ -330,7 +331,7 @@ public class Chessboard extends JPanel
         uDL2D.setColor(Color.black);
         uDL2D.setFont(new Font("Arial", Font.BOLD, 12));
 
-        if (this.settings.upsideDown)
+        if (this.settings.isUpsideDown())
         {
             for (int i = 1; i <= numberSquares; i++)
             {
@@ -426,6 +427,10 @@ public class Chessboard extends JPanel
 		this.squares = squares;
 	}
 	
+	/**
+	 * Returns the Square where the black King is
+	 * @return Current Square with black King
+	 */
 	public Square getKingBlack(){
 		for(int x = 0; x < squares.length; x++){
 			for(int y = 0; y < squares[x].length; y++){
@@ -436,7 +441,10 @@ public class Chessboard extends JPanel
 		}
 		return null;
 	}
-	
+	/**
+	 * Returns the Square where the White King is
+	 * @return Current Square with White King
+	 */
 	public Square getKingWhite(){
 		for(int x = 0; x < squares.length; x++){
 			for(int y = 0; y < squares[x].length; y++){
@@ -447,7 +455,10 @@ public class Chessboard extends JPanel
 		}
 		return null;
 	}
-	
+	/**
+	 * Returns the Square where the green King is
+	 * @return Current Square with green King
+	 */
 	public Square getKingGreen(){
 		for(int x = 0; x < squares.length; x++){
 			for(int y = 0; y < squares[x].length; y++){
@@ -458,7 +469,10 @@ public class Chessboard extends JPanel
 		}
 		return null;
 	}
-	
+	/**
+	 * Returns the Square where the Red King is
+	 * @return Current Square with Red King
+	 */
 	public Square getKingRed(){
 		for(int x = 0; x < squares.length; x++){
 			for(int y = 0; y < squares[x].length; y++){
@@ -470,6 +484,11 @@ public class Chessboard extends JPanel
 		return null;
 	}
 	
+	/**
+	 * Returns the Square where the King of given Player stands
+	 * @param pl reference to the desired Player
+	 * @return Square with King of the Player
+	 */
 	public Square getKing(Player pl){
 		for(int x = 0; x < squares.length; x++){
 			for(int y = 0; y < squares[x].length; y++){
