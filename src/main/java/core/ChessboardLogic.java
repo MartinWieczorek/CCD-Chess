@@ -25,6 +25,10 @@ public class ChessboardLogic {
 	private ChessboardLogic() {
 	}
 
+	/**
+	 * Method to return Instance of the Class to warok with
+	 * @return
+	 */
 	public static ChessboardLogic getInstance() {
 		if (chessboardLogic == null) {
 			chessboardLogic = new ChessboardLogic();
@@ -34,6 +38,13 @@ public class ChessboardLogic {
 		}
 	}
 
+	/**
+	 * set a Piece on given chessboard with specified Position
+	 * @param chessboard to set Piece on
+	 * @param piece Piece that has to be placed
+	 * @param x coordinate on chessboard
+	 * @param y coordinate on chessboard
+	 */
 	public void setPiece(Chessboard chessboard, Piece piece, int x, int y) {
 		chessboard.getSquares()[x][y].setPiece(piece);
 	}
@@ -52,7 +63,7 @@ public class ChessboardLogic {
 			Player plGreen) {
 		if (places.equals("")) // if newGame
 		{
-			if (chessboard.getSettings().upsideDown) {
+			if (chessboard.getSettings().isUpsideDown()) {
 				setPieces4NewGame(chessboard, true, plWhite, plBlack, plRed, plGreen);
 			} else {
 				setPieces4NewGame(chessboard, false, plWhite, plBlack, plRed, plGreen);
@@ -77,13 +88,6 @@ public class ChessboardLogic {
 			player = plWhite;
 			player1 = plBlack;
 		}
-		// this.setFigures4NewGame(top, player, upsideDown);
-		// this.setPawns4NewGame(top + 1, player);
-		// this.setFigures4NewGame(bottom, player1, upsideDown);
-		// this.setPawns4NewGame(bottom - 1, player1);
-
-		// setFigures4NewGame(int row, Player player, boolean invertOrder,
-		// boolean switchRowCol)
 
 		setFigures4NewGame(chessboard, Chessboard.getTop(), player, true, false);
 		setPawns4NewGame(chessboard, Chessboard.getTop() + 1, player, false);
@@ -192,18 +196,12 @@ public class ChessboardLogic {
 	 * @return reference to searched square
 	 */
 	public Square getSquare(Chessboard chessboard, int x, int y) {
-		if ((x > chessboard.get_height()) || (y > chessboard.get_widht())) // test
-																			// if
-																			// click
-																			// is
-																			// out
-																			// of
-																			// chessboard
+		if ((x > chessboard.get_height()) || (y > chessboard.get_widht())) 
 		{
 			logger.info("click out of chessboard.");
 			return null;
 		}
-		if (chessboard.getSettings().renderLabels) {
+		if (chessboard.getSettings().isRenderLabels()) {
 			x -= chessboard.getUpDownLabel().getHeight(null);
 			y -= chessboard.getUpDownLabel().getHeight(null);
 		}
@@ -236,9 +234,9 @@ public class ChessboardLogic {
 	}
 	
 	/**
-	 * 
-	 * @param chessboard
-	 * @param sq
+	 * activate a Square
+	 * @param chessboard reference to chessboard
+	 * @param sq Square that was selected
 	 */
 	public void select(Chessboard chessboard, Square sq) {
 		chessboard.setActiveSquare(sq);
@@ -252,8 +250,8 @@ public class ChessboardLogic {
 	}/*--endOf-select--*/
 
 	/**
-	 * 
-	 * @param chessboard
+	 * Unselect the current active Square
+	 * @param chessboard reference to working chessboard
 	 */
 	public void unselect(Chessboard chessboard) {
 		chessboard.setActive_x_square(0);
@@ -473,12 +471,13 @@ public class ChessboardLogic {
 		return end.getPiece();
 	}
 
-	public boolean redo(Chessboard chessboard, boolean refresh) {
-		if (chessboard.getSettings().gameType == Settings.gameTypes.local) // redo
-																			// only
-																			// for
-																			// local
-																			// game
+	/**
+	 * Method to redo last Step
+	 * @param chessboard working chessboard
+	 * @return true if Step was redone
+	 */
+	public boolean redo(Chessboard chessboard) {
+		if (chessboard.getSettings().getGameType() == Settings.gameTypes.local) 
 		{
 			Move first = chessboard.getMoves_history().redo();
 

@@ -29,7 +29,7 @@ import java.io.Serializable;
 public class Player implements Serializable
 {
 
-    String name;
+    private String name;
     private colors color;
 
     public enum colors

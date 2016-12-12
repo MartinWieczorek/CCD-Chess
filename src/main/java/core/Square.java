@@ -34,7 +34,13 @@ public class Square
     private int pozX; // 0-7, becouse 8 squares for row/column
     private int pozY; // 0-7, becouse 8 squares for row/column
     private Piece piece = null;//object Piece on square (and extending Piecie)
-
+    
+    /**
+     * Constructor with position
+     * @param pozX x coordinate 
+     * @param pozY y coordinate
+     * @param piece reference to piece
+     */
     public Square(int pozX, int pozY, Piece piece)
     {
         this.setPozX(pozX);
@@ -42,27 +48,32 @@ public class Square
         this.setPiece(piece);
     }/*--endOf-Square--*/
 
-
-    Square(Square square)
+    /**
+     * Copy Constructor
+     * @param square
+     */
+    public Square(Square square)
     {
         this.setPozX(square.getPozX());
         this.setPozY(square.getPozY());
         this.setPiece(square.getPiece());
     }
-
-    public Square clone(Square square)
-    {
-        return new Square(square);
-    }
     
+    /**
+     * Wrapper Method to call alMoves
+     * @return all Possible Moves, of the current Piece
+     */
     public ArrayList<Square> allMoves(){
     	return this.getPiece().allMoves(this);
     }
-    
+    //Wrapper Method for is checked
     public boolean isChecked() {
 		return getPiece().isChecked(this);
 	}
-
+    /**
+     * Sets the associated Piece
+     * @param piece
+     */
     public void setPiece(Piece piece)
     {
         this.piece = piece;

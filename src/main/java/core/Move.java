@@ -12,10 +12,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-/*
- * Author: Mateusz Sławomir Lach ( matlak, msl )
- */
 package core;
 
 import core.Moves.castling;
@@ -23,6 +19,11 @@ import pieces.Piece;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Class to encapsulate a made Move on the chessboard
+ * @author matlak
+ *
+ */
 class Move
 {
 	private static final Logger logger = LogManager.getLogger(Move.class);
@@ -36,7 +37,17 @@ class Move
     protected castling castlingMove = castling.none;
     protected boolean wasPawnTwoFieldsMove = false;
 
-    Move(Square from, Square to, Piece movedPiece, Piece takenPiece, castling castlingMove, boolean wasEnPassant, Piece promotedPiece)
+    /**
+     * Constructor for Move
+     * @param from Square with start Positon
+     * @param to Destination Square
+     * @param movedPiece Piece that was moved 
+     * @param takenPiece Piece that was taken by the moved Piece
+     * @param castlingMove constant value for a castlingMove
+     * @param wasEnPassant true if Move was en Passant
+     * @param promotedPiece Piece that was promoted
+     */
+    public Move(Square from, Square to, Piece movedPiece, Piece takenPiece, castling castlingMove, boolean wasEnPassant, Piece promotedPiece)
     {
     	logger.info("Move-constructor");
         this.from = from;
