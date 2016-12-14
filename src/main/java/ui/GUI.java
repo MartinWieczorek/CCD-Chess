@@ -36,9 +36,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
-/** Class representing the game interface which is seen by a player and
- * where are lockated available for player opptions, current games and where
- * can he start a new game (load it or save it)
+/** Class representing the game interface which is seen by a player.
+ * Enables the player to start new games, save and load games, change options etc.
  */
 public class GUI
 {
@@ -54,11 +53,10 @@ public class GUI
         //this.drawGUI();
     }/*--endOf-GUI--*/
 
-    /*Method load image by a given name with extension
-     * @name     : string of image to load for ex. "chessboard.jpg"
-     * @returns  : image or null if cannot load
-     * */
-
+    /**Method to load an image by a given name with extension
+     * @param name The string of the image to load. For ex. "chessboard.jpg"
+     * @return Image or null if cannot load
+     */
     public static Image loadImage(String name)
     {
         if (configFile == null)
@@ -91,12 +89,9 @@ public class GUI
         return img;
     }/*--endOf-loadImage--*/
 
-
-    static boolean themeIsValid(String name)
-    {
-        return true;
-    }
-
+    /** Method to get the path of the game folder
+     * @return The path as a string
+     */
     static String getJarPath()
     {
         String path = GUI.class.getProtectionDomain().getCodeSource().getLocation().getFile();  
@@ -110,7 +105,10 @@ public class GUI
         path = path.replace("%20", " ");
         return path;
     }
-
+    
+    /** Method to get the config file of the game
+     * @return The config file
+     */
     static Properties getConfigFile()
     {
         Properties defConfFile = new Properties();

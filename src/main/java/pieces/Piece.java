@@ -36,6 +36,7 @@ import pieces.PieceBehaviour;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
 
 /**
  * Class to represent a piece (any kind) - this class should be extended to
@@ -50,6 +51,9 @@ public class Piece {
 	protected PieceBehaviour[] behaviours;
 	private Image orgImage;
 	private Image image;
+	private float[] imageColorScales;
+    private float[] imageColorOffsets;
+    private RescaleOp imageColorRescaleOperator;
 
 	/**
 	 * Construct a new Piece on given chessboard for given player with given behaviors.
@@ -64,6 +68,9 @@ public class Piece {
 		this.setImage();
 		this.orgImage = image;
 		this.setWasMotion(false);
+		setImageColorScales();
+		this.imageColorOffsets = new float[4];
+		this.imageColorRescaleOperator = new RescaleOp(imageColorScales, imageColorOffsets, null);
 
 		switch (name) {
 		case "Bishop":
@@ -84,6 +91,28 @@ public class Piece {
 		case "King":
 			this.symbol = "K";
 			break;
+		}
+	}
+
+
+	private void setImageColorScales() {
+		switch(this.getPlayer().getColor())
+		{
+		case black:
+			imageColorScales = new float[]{ 1f, 1f, 1f, 1f };
+			break;
+		case green:
+			imageColorScales = new float[]{ 0f, 1f, 0f, 1f };
+			break;
+		case red:
+			imageColorScales = new float[]{ 1f, 0f, 0f, 1f };
+			break;
+		case white:
+			imageColorScales = new float[]{ 1f, 1f, 1f, 1f };
+			break;
+		default:
+			break;
+			
 		}
 	}
 
@@ -208,8 +237,8 @@ public class Piece {
                 imageGr.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 imageGr.drawImage(tempImage, 0, 0, height, height, null);
                 imageGr.dispose();
-                image = resized.getScaledInstance(height, height, 0);
-                g2d.drawImage(image, x, y, null);
+                g2d.drawImage(resized, imageColorRescaleOperator, x, y);
+                
             }
             else
             {

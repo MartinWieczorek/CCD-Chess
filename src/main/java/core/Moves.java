@@ -83,10 +83,6 @@ public class Moves extends AbstractTableModel
         this.scrollPane.setAutoscrolls(true);
     }
 
-    public void draw()
-    {
-    }
-
     @Override
     public String getValueAt(int x, int y)
     {
@@ -176,12 +172,21 @@ public class Moves extends AbstractTableModel
 
     }
 
+    /**
+     * add a Move to the Object
+     * @param begin
+     * @param end
+     * @param registerInHistory
+     * @param castlingMove
+     * @param wasEnPassant
+     * @param promotedPiece
+     */
     public void addMove(Square begin, Square end, boolean registerInHistory, castling castlingMove, boolean wasEnPassant, Piece promotedPiece)
     {
         boolean wasCastling = castlingMove != castling.none;
         String locMove = new String(begin.getPiece().getSymbol());
         
-        if( game.getSettings().upsideDown )
+        if( game.getSettings().isUpsideDown() )
         {
             locMove += Character.toString((char) ( ( Chessboard.getBottom() - begin.getPozX()) + 97));//add letter of Square from which move was made
             locMove += Integer.toString( begin.getPozY() + 1 );//add number of Square from which move was made
@@ -201,7 +206,7 @@ public class Moves extends AbstractTableModel
             locMove += "-";//normal move
         }
         
-        if ( game.getSettings().upsideDown )
+        if ( game.getSettings().isUpsideDown() )
         {
             locMove += Character.toString((char) (( Chessboard.getBottom() - end.getPozX()) +  97));//add letter of Square to which move was made
             locMove += Integer.toString( end.getPozY() + 1 );//add number of Square to which move was made
@@ -251,7 +256,10 @@ public class Moves extends AbstractTableModel
             this.moveBackStack.add(new Move(new Square(begin), new Square(end), begin.getPiece(), end.getPiece(), castlingMove, wasEnPassant, promotedPiece));
         }
     }
-
+    
+    /**
+     * 
+     */
     public void clearMoveForwardStack()
     {
         this.moveForwardStack.clear();
@@ -266,7 +274,10 @@ public class Moves extends AbstractTableModel
     {
         return this.move;
     }
-
+    /**
+     * 
+     * @return
+     */
     public synchronized Move getLastMoveFromHistory()
     {
         try
@@ -279,7 +290,10 @@ public class Moves extends AbstractTableModel
             return null;
         }
     }
-    
+    /**
+     * 
+     * @return
+     */
     public synchronized Move getNextMoveFromHistory()
     {
         try
@@ -293,7 +307,10 @@ public class Moves extends AbstractTableModel
         }
         
     }
-
+    /**
+     * 
+     * @return
+     */
     public synchronized Move undo()
     {
         try
@@ -301,7 +318,7 @@ public class Moves extends AbstractTableModel
             Move last = this.moveBackStack.pop();
             if (last != null)
             {
-                if( this.game.getSettings().gameType == Settings.gameTypes.local ) //moveForward / redo available only for local game
+                if( this.game.getSettings().getGameType() == Settings.gameTypes.local ) //moveForward / redo available only for local game
                 {
                     this.moveForwardStack.push(last);
                 }
@@ -337,12 +354,16 @@ public class Moves extends AbstractTableModel
             return null;
         }
     }
-
+    
+    /**
+     * 
+     * @return
+     */
     public synchronized Move redo()
     {
         try
         {
-            if( this.game.getSettings().gameType == Settings.gameTypes.local)
+            if( this.game.getSettings().getGameType() == Settings.gameTypes.local)
             {
                 Move first = this.moveForwardStack.pop();
                 this.moveBackStack.push(first);
@@ -419,7 +440,10 @@ public class Moves extends AbstractTableModel
 
         return true;
     }
-
+    /**
+     * add a List of Moves
+     * @param list 
+     */
     public void addMoves(ArrayList<String> list)
     {
         for (String singleMove : list)

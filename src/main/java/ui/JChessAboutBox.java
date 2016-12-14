@@ -19,13 +19,15 @@ import org.jdesktop.application.Action;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import core.Game;
-import core.JChessApp;
-
+/** Class responsible for creating the window with the about information of the program
+ */
 public class JChessAboutBox extends javax.swing.JDialog {
 	
 	private static final Logger logger = LogManager.getLogger(JChessAboutBox.class);
 
+	/** Constructor to create a JChessAboutBox
+	 * @param parent Information about the frame in which this window will be created
+	 */
     public JChessAboutBox(java.awt.Frame parent) {
         super(parent);
         logger.info("JChessAboutBox-constructor");

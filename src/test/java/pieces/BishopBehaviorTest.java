@@ -194,7 +194,7 @@ public class BishopBehaviorTest {
 			testBoard.getSquares()[7][4].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { KnightBehaviour.getInstance() }, "Knight"));
 			testBoard.getSquares()[8][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(), new PieceBehaviour[] { KnightBehaviour.getInstance() }, "Knight"));
 			// set rook 
-			testBoard.getSquares()[3][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(), new PieceBehaviour[] { RookBehaviour.getInstance() }, "Rock"));
+			testBoard.getSquares()[3][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(), new PieceBehaviour[] { RookBehaviour.getInstance() }, "Rook"));
 			// set bishop 
 			testBoard.getSquares()[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { BishopBehaviour.getInstance() }, "Bishop"));
 			

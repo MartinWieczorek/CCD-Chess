@@ -21,9 +21,9 @@ public class KingBehaviorTest {
 	
 	private void initTest() {
 		game = new Game();
-		settings = new Settings();
+		settings = game.getSettings();
 		moves_history = new Moves(game);
-		testBoard = new Chessboard(settings, moves_history);
+		testBoard = game.getChessboard();
 	}
 	
 	// um strin des szenarios erweitern

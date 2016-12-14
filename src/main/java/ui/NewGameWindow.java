@@ -24,16 +24,10 @@ import javax.swing.*;
 
 import core.Settings;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.*;
-import java.util.ResourceBundle;
-import java.util.PropertyResourceBundle;
-import java.util.Locale;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
+/** Class responsible for drawing the window where the settings for a new game will be made
  *
  * @author donmateo
  */
@@ -41,7 +35,8 @@ public class NewGameWindow extends JDialog {
 	
 	private static final Logger logger = LogManager.getLogger(NewGameWindow.class);
 
-    /** Creates new form NewGameWindow */
+    /** Constructor to create a NewGameWindow
+     */
     public NewGameWindow() {
     	logger.info("NewGameWindow-constructor");
         initComponents();

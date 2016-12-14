@@ -34,29 +34,37 @@ public class Settings implements Serializable
 	private static final Logger logger = LogManager.getLogger(Settings.class);
 
     private static ResourceBundle loc = null;
-    public int timeForGame;
-    public boolean runningChat;
-    public boolean runningGameClock;
-    public boolean timeLimitSet;//tell us if player choose time 4 game or it's infinity
-    public boolean upsideDown;
+    private int timeForGame;
+    private boolean runningChat;
+    private boolean runningGameClock;
+    private boolean timeLimitSet;//tell us if player choose time 4 game or it's infinity
+    private boolean upsideDown;
 
     public enum gameModes
     {
         newGame, loadGame
     }
-    public gameModes gameMode;
+    private gameModes gameMode;
     private Player playerWhite;
     private Player playerBlack;
     private Player playerRed;
     private Player playerGreen;
 
+    /**
+     * 
+     * @author Felix
+     *
+     */
     public enum gameTypes
     {
         local
     }
-    public gameTypes gameType;
-    public boolean renderLabels = true;
-
+    private gameTypes gameType;
+    private boolean renderLabels = true;
+    
+    /**
+     * 
+     */
     public Settings()
     {
         //temporally
@@ -65,9 +73,9 @@ public class Settings implements Serializable
         this.setPlayerBlack(new Player("", Player.colors.black));
         this.setPlayerRed(new Player("", Player.colors.red));
         this.setPlayerGreen(new Player("", Player.colors.green));
-        this.timeLimitSet = false;
+        this.setTimeLimitSet(false);
 
-        gameMode = gameModes.newGame;
+        setGameMode(gameModes.newGame);
     }
 
     /** Method to get game time set by player
@@ -77,7 +85,12 @@ public class Settings implements Serializable
     {
         return this.timeForGame;
     }
-
+	
+    /**
+     * 
+     * @param key
+     * @return
+     */
     public static String lang(String key)
     {
         if (Settings.loc == null)
@@ -128,5 +141,49 @@ public class Settings implements Serializable
 
 	public void setPlayerGreen(Player playerGreen) {
 		this.playerGreen = playerGreen;
+	}
+
+	public boolean isTimeLimitSet() {
+		return timeLimitSet;
+	}
+
+	public void setTimeLimitSet(boolean timeLimitSet) {
+		this.timeLimitSet = timeLimitSet;
+	}
+
+	public boolean isUpsideDown() {
+		return upsideDown;
+	}
+
+	public void setUpsideDown(boolean upsideDown) {
+		this.upsideDown = upsideDown;
+	}
+
+	public void setTimeForGame(int timeForGame) {
+		this.timeForGame = timeForGame;
+	}
+
+	public gameModes getGameMode() {
+		return gameMode;
+	}
+
+	public void setGameMode(gameModes gameMode) {
+		this.gameMode = gameMode;
+	}
+
+	public gameTypes getGameType() {
+		return gameType;
+	}
+
+	public void setGameType(gameTypes gameType) {
+		this.gameType = gameType;
+	}
+
+	public boolean isRenderLabels() {
+		return renderLabels;
+	}
+
+	public void setRenderLabels(boolean renderLabels) {
+		this.renderLabels = renderLabels;
 	}
 }
