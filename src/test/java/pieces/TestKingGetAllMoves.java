@@ -6,36 +6,9 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import core.Chessboard;
-import core.Game;
-import core.Moves;
-import core.Settings;
 import core.Square;
 
-public class KingBehaviorTest {
-
-	Game game;
-	Settings settings;
-	Moves moves_history;
-	Chessboard testBoard;
-	
-	private void initTest() {
-		game = new Game();
-		settings = game.getSettings();
-		moves_history = new Moves(game);
-		testBoard = game.getChessboard();
-	}
-	
-	// um strin des szenarios erweitern
-	private boolean isSolution(Square sq, Square[] Solution) {
-		// System.out.println("x: " + sq.getPozX() + " y: " + sq.getPozY());
-		for (int i = 0; i < Solution.length; i++) {
-			if (Solution[i].getPozX() == sq.getPozX() && Solution[i].getPozY() == sq.getPozY())
-				return true;
-		}
-		System.out.println("First error on Pos x: " + sq.getPozX() + " y: " + sq.getPozY());
-		return false;
-	}
+public class TestKingGetAllMoves extends TestGetAllMoves{
 
 	//Scenario testKingMovement1
 		/* X = King white
@@ -59,15 +32,14 @@ public class KingBehaviorTest {
 		                      11  13  
 		*/
 	@Test
-	public void testKingMovement1() {
-		initTest();
+	public void testKingStandartMovement() {
 
 		// create solution
 		Square[] SolutionKing = { new Square(5, 7, null), new Square(6, 7, null), new Square(6, 8, null),
 				new Square(6, 9, null), new Square(5, 9, null), new Square(4, 9, null), new Square(4, 8, null),
 				new Square(4, 7, null) };
 		
-		// Pawn position
+		// King position
 		int[] p1 = { 5, 8 };
 		
 		// set other pieces
@@ -110,14 +82,13 @@ public class KingBehaviorTest {
 		                      11  13  
 		*/
 	@Test
-	public void testKingMovement2() {
-		initTest();
+	public void testKingMovementInCorner() {
 
 		// create solution
 		Square[] SolutionKing = { new Square(10, 13, null), new Square(9, 12, null), new Square(9, 11, null),
 				new Square(10, 11, null) };
 		
-		// Pawn position
+		// King position
 		int[] p1 = { 10, 12 };
 		
 		// set other pieces
@@ -125,7 +96,7 @@ public class KingBehaviorTest {
 		testBoard.getSquares()[9][13].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
 		
 		
-		// set King white ip
+		// set King white
 		testBoard.getSquares()[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
 		
 		// test movements
@@ -164,7 +135,6 @@ public class KingBehaviorTest {
 		*/
 	@Test
 	public void testKingAttack() {
-		initTest();
 
 		// create solution
 		Square[] SolutionKing = { new Square(7, 10, null), new Square(7, 8, null) };

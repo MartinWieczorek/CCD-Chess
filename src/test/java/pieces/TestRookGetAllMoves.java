@@ -6,35 +6,10 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import core.Chessboard;
-import core.Game;
-import core.Moves;
-import core.Settings;
 import core.Square;
 
-public class RookBehaviorTest {
+public class TestRookGetAllMoves extends TestGetAllMoves{
 
-	Game game;
-	Settings settings;
-	Moves moves_history;
-	Chessboard testBoard;
-	
-	private void initTest() {
-		game = new Game();
-		settings = game.getSettings();
-		moves_history = new Moves(game);
-		testBoard = game.getChessboard();
-	}
-	
-	// um string des szenarios erweitern
-	private boolean isSolution(Square sq, Square[] Solution) {
-		for (int i = 0; i < Solution.length; i++) {
-			if (Solution[i].getPozX() == sq.getPozX() && Solution[i].getPozY() == sq.getPozY())
-				return true;
-		}
-		System.out.println("First error on Pos x: " + sq.getPozX() + " y: " + sq.getPozY());
-		return false;
-	}
 
 	//Scenario testRookMovement1
 		/* X = Rook
@@ -57,7 +32,7 @@ public class RookBehaviorTest {
 		                      11  13  
 		*/
 	@Test
-	public void testRookMovement1() {
+	public void testRookStandartMovement() {
 		initTest();
 
 		// create solution
@@ -109,7 +84,7 @@ public class RookBehaviorTest {
 			                      11  13  
 			*/
 		@Test
-		public void testRookMovement2() {
+		public void testRookMovementInCorner() {
 			initTest();
 
 		// create solution

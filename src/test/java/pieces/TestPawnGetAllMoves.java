@@ -6,37 +6,11 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import core.Chessboard;
 import core.ChessboardLogic;
-import core.Game;
-import core.Moves;
-import core.Settings;
 import core.Square;
 
-public class PawnBehaviorTest 
+public class TestPawnGetAllMoves extends TestGetAllMoves
 {
-	Game game;
-	Settings settings;
-	Moves moves_history;
-	Chessboard testBoard;
-	
-	private void initTest() {
-		game = new Game();
-		settings = game.getSettings();
-		moves_history = new Moves(game);
-		testBoard = game.getChessboard();
-	}
-	
-	// um strin des szenarios erweitern
-	private boolean isSolution(Square sq, Square[] Solution) {
-		// System.out.println("x: " + sq.getPozX() + " y: " + sq.getPozY());
-		for (int i = 0; i < Solution.length; i++) {
-			if (Solution[i].getPozX() == sq.getPozX() && Solution[i].getPozY() == sq.getPozY())
-				return true;
-		}
-		System.out.println("First error on Pos x: " + sq.getPozX() + " y: " + sq.getPozY());
-		return false;
-	}
 
 	//Scenario testPawnMovement1
 		/* X = Pawn Startposition
@@ -60,9 +34,8 @@ public class PawnBehaviorTest
 		                      11  13  
 		*/
 	@Test
-	public void testPawnMovement1() {
-		initTest();
-
+	public void testPawnMovementOneStep() {
+		
 		// create solution
 		Square[] SolutionPawn = { new Square(4, 10, null), new Square(3, 11, null), new Square(5, 11, null) };
 		
@@ -143,7 +116,7 @@ public class PawnBehaviorTest
 	
 	
 
-	//Scenario testPawnMovementTwoSteps
+	//Scenario testPawnMovementAttack
 		/* X = Pawn-white
 		 * o = movepoints
 		 * B = black piece to attack
@@ -166,7 +139,7 @@ public class PawnBehaviorTest
 		                      11  13  
 		*/
 	@Test
-	public void testPawnMovementAttack() {
+	public void testPawnMovementAttackFront() {
 		initTest();
 
 		// create solution

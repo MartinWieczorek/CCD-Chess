@@ -9,40 +9,15 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import core.Chessboard;
-import core.Game;
-import core.Moves;
-import core.Settings;
 import core.Square;
 
 /** fundamental test cases for behavior of bishop
  * @author peter
  * @version Dec 10/2016
  */
-public class BishopBehaviorTest {
 
-		Game game;
-		Settings settings;
-		Moves moves_history;
-		Chessboard testBoard;
-		
-		private void initTest() {
-			game = new Game();
-			settings = new Settings();
-			moves_history = new Moves(game);
-			testBoard = new Chessboard(settings, moves_history);
-		}
-		
-		// um string des szenarios erweitern
-		private boolean isSolution(Square sq, Square[] Solution) {
-			for (int i = 0; i < Solution.length; i++) {
-				if (Solution[i].getPozX() == sq.getPozX() && Solution[i].getPozY() == sq.getPozY())
-					return true;
-			}
-			System.out.println("First error on Pos x: " + sq.getPozX() + " y: " + sq.getPozY());
-			return false;
-		}
-
+public class TestBishopGetAllMoves extends TestGetAllMoves 
+{
 		//Scenario testBishopMovement1
 			/* X = Bishop
 			 * o = movepoints		
@@ -63,8 +38,7 @@ public class BishopBehaviorTest {
 			 0 1 2 3 4 5 6 7 8 9 10  12 
 			*/
 		@Test
-		public void testBishopMovement1() {
-			initTest();
+		public void testBishopStandartMovement() {
 
 			// create solution
 			Square[] SolutionBishop = { new Square(4, 8, null), new Square(3, 9, null), new Square(2, 10, null),
@@ -115,9 +89,8 @@ public class BishopBehaviorTest {
 				                       11  13  
 				*/
 			@Test
-			public void testBishopMovement2() {
-				initTest();
-
+			public void testBishopMovementOnBorder() {
+				
 			// create solution
 			Square[] SolutionBishop = { new Square(4, 12, null), new Square(6, 12, null), new Square(3, 11, null) };
 				
@@ -135,7 +108,7 @@ public class BishopBehaviorTest {
 				// set black Knight
 				testBoard.getSquares()[3][11].setPiece(new Piece(testBoard, settings.getPlayerBlack(),new PieceBehaviour[] { KnightBehaviour.getInstance() }, "Knight"));				
 				// set Bishop 
-				testBoard.getSquares()[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { RookBehaviour.getInstance() }, "Bishop"));
+				testBoard.getSquares()[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { BishopBehaviour.getInstance() }, "Bishop"));
 				
 				// test movements
 				ArrayList<Square> testMoves = testBoard.getSquares()[p1[0]][p1[1]].allMoves();
@@ -172,15 +145,14 @@ public class BishopBehaviorTest {
 			                       11  13  
 			*/
 		@Test
-		public void testBishopAttack() {
-			initTest();
-
+		public void testBishopAttackInAllDirections() {
+			
 		// create solution
 		Square[] SolutionBishop = { new Square(4, 1, null), new Square(6, 1, null), new Square(6, 3, null),
 				new Square(3, 0, null), new Square(7, 0, null) };
 			
 			// Bishop position
-			int[] p1 = { 11, 4 };
+			int[] p1 = { 5, 2 };
 			
 			// set kings
 			testBoard.getSquares()[6][13].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
