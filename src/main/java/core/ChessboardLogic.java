@@ -91,16 +91,21 @@ public class ChessboardLogic {
 
 		setFigures4NewGame(chessboard, Chessboard.getTop(), player, true, false);
 		setPawns4NewGame(chessboard, Chessboard.getTop() + 1, player, false);
+		setWalls4NewGame(chessboard, Chessboard.getTop() + 2, player, false);
 
 		setFigures4NewGame(chessboard, Chessboard.getBottom(), player1, false, false);
 		setPawns4NewGame(chessboard, Chessboard.getBottom() - 1, player1, false);
+		setWalls4NewGame(chessboard, Chessboard.getBottom() - 2, player1, false);
 
 		setFigures4NewGame(chessboard, Chessboard.getTop(), plRed, true, true);
 		setPawns4NewGame(chessboard, Chessboard.getTop() + 1, plRed, true);
+		setWalls4NewGame(chessboard, Chessboard.getTop() + 2, plRed, true);
 
 		setFigures4NewGame(chessboard, Chessboard.getBottom(), plGreen, false, true);
 		setPawns4NewGame(chessboard, Chessboard.getBottom() - 1, plGreen, true);
+		setWalls4NewGame(chessboard, Chessboard.getBottom() - 2, plGreen, true);
 	}/*--endOf-setPieces(boolean upsideDown)--*/
+
 
 	private void setFigures4NewGame(Chessboard chessboard, int row, Player player, boolean invertOrder,
 			boolean switchRowCol) {
@@ -183,6 +188,23 @@ public class ChessboardLogic {
 						new Piece(chessboard, player, new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
 
 			logger.debug("set pawn on pos: (" + x + "," + row + ") for player: " + player.getName());
+		}
+	}
+	
+	private void setWalls4NewGame(Chessboard chessboard, int row, Player player, boolean switchRowCol) 
+	{
+		//TODO: ersetze Pawns durch Wall sobald implementiert
+		if(switchRowCol){
+			chessboard.getSquares()[row][6].setPiece(
+					new Piece(chessboard, player, new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
+			chessboard.getSquares()[row][7].setPiece(
+					new Piece(chessboard, player, new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
+		}
+		else{
+			chessboard.getSquares()[6][row].setPiece(
+					new Piece(chessboard, player, new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
+			chessboard.getSquares()[7][row].setPiece(
+					new Piece(chessboard, player, new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
 		}
 	}
 

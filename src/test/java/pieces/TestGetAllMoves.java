@@ -10,10 +10,10 @@ import core.Square;
 
 public class TestGetAllMoves {
 
-	Game game;
-	Settings settings;
-	Moves moves_history;
-	Chessboard testBoard;
+	protected Game game;
+	protected Settings settings;
+	protected Moves moves_history;
+	protected Chessboard testBoard;
 	
 	@Before
 	public void initTest() {
