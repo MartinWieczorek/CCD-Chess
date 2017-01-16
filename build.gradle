@@ -117,7 +117,7 @@ clover {
     classesBackupDir = file("${sourceSets.main.java}-backup")
     licenseLocation = '/home/bamboo/clover.license'
     excludes = ['**/SynchronizedMultiValueMap.java']
-    targetPercentage = '85%'
+//    targetPercentage = '85%'
 
     contexts {
         statement {
