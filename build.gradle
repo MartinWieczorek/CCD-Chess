@@ -17,10 +17,12 @@ buildscript{
 
 	repositories {
         jcenter()
+        mavenCentral()
 	}
 
 	dependencies {
 		classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
+		classpath 'com.bmuschko:gradle-clover-plugin:2.0.1'
 	}
 
 }
@@ -29,12 +31,14 @@ buildscript{
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'com.bmuschko.clover'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
     // Use 'jcenter' for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
 
+	jcenter()
     mavenCentral()
 
     maven{
@@ -60,6 +64,8 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.7'
     
     compile group: 'junit', name: 'junit', version: '4.12'
+    
+    clover 'com.cenqua.clover:clover:3.2.0'
 
     // Declare the dependency for your favourite test framework you want to use in your tests.
     // TestNG is also supported by the Gradle Test task. Just change the
@@ -105,6 +111,38 @@ jar{
 			'Class-Path': manifestClasspath
 		)
 	}
+}
+
+clover {
+    classesBackupDir = file("${sourceSets.main.java}-backup")
+    licenseLocation = '/home/bamboo/clover.license'
+    excludes = ['**/SynchronizedMultiValueMap.java']
+    targetPercentage = '85%'
+
+    contexts {
+        statement {
+            name = 'log'
+            regexp = '^.*LOG\\..*'
+        }
+
+        method {
+            name = 'main'
+            regexp = 'public static void main\\(String args\\[\\]\\).*'
+        }
+    }
+
+    compiler {
+        encoding = 'UTF-8'
+
+        // if the javac executable used by ant should be the same as the one used elsewhere.
+        executable = file('/usr/local/java/jdk1.8.0_05') 
+    }
+
+    report {
+        html = true
+        pdf = true
+        filter = 'log,if,else'
+    }
 }
 
 task myJavadocs(type: Javadoc) {
