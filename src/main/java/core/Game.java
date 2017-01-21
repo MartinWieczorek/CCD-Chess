@@ -522,7 +522,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
                         //switch player
                         this.nextMove();
 
-                        //wenn nur noch 2 Spieler übrig sind, nach einem Zug auf Schacmatt und Unentschieden prüfen
+                        //wenn nur noch 2 Spieler uebrig sind, nach einem Zug auf Schacmatt und Unentschieden pruefen
                         if(settings.getActivePlayers().size() <= 2){
                         	gameState state =  chessboard.getKing(activePlayer).getPiece().isCheckmatedOrStalemated();
                         	switch (state)
@@ -536,7 +536,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
                             }
                         	
                         }else{
-                        	// spieler eliminieren (3-4) wenn er keinen gültigen Zug machen kannn
+                        	// spieler eliminieren (3-4) wenn er keinen gueltigen Zug machen kannn
                         	if(Settings.gameState.normal != chessboard.getKing(activePlayer).getPiece().isCheckmatedOrStalemated()){
                         		chessboard.getKing(activePlayer).setPiece(null);
                         		Player playerToRemove = activePlayer;
