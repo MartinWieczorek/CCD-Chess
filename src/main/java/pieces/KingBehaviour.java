@@ -130,7 +130,7 @@ static private KingBehaviour instance;
 		return result;
 	}
 	
-	  /** Method to check is the king is checked by an opponent
+	  /** Method to check if the king is checked by an opponent
      * @param s Square for testing
      * @return bool true if king is save, else returns false
      */

@@ -202,7 +202,8 @@ public class Piece {
 		sqWillBeThere.setPiece(sqIsHere.getPiece()); // move without redraw
 		sqIsHere.setPiece(null);
 
-		boolean ret = !this.isChecked(sqIsHere);
+		//boolean ret = !this.isChecked(sqIsHere);
+		boolean ret = !this.isChecked(chessboard.getKing( sqWillBeThere.getPiece().getPlayer()) );
 
 		sqIsHere.setPiece(sqWillBeThere.getPiece());
 		sqWillBeThere.setPiece(tmp);
