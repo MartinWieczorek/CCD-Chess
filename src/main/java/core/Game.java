@@ -158,13 +158,17 @@ public class Game extends JPanel implements MouseListener, ComponentListener
             return;
         }
         Game newGUI = JChessApp.getJcv().addNewTab(whiteName + " vs. " + blackName);
-        Settings locSetts = newGUI.getSettings();
-        locSetts.getPlayerBlack().setName(blackName);
-        locSetts.getPlayerWhite().setName(whiteName);
-        locSetts.getPlayerBlack().setType(Player.playerTypes.localUser);
-        locSetts.getPlayerWhite().setType(Player.playerTypes.localUser);
-        locSetts.setGameMode(Settings.gameModes.loadGame);
-        locSetts.setGameType(Settings.gameTypes.local);
+//        Settings locSetts = newGUI.getSettings();
+//        locSetts.getPlayerBlack().setName(blackName);
+//        locSetts.getPlayerWhite().setName(whiteName);
+//        locSetts.getPlayerBlack().setType(Player.playerTypes.localUser);
+//        locSetts.getPlayerWhite().setType(Player.playerTypes.localUser);
+//        locSetts.getPlayerGreen().setName(blackName);
+//        locSetts.getPlayerRed().setName(whiteName);
+//        locSetts.getPlayerGreen().setType(Player.playerTypes.localUser);
+//        locSetts.getPlayerRed().setType(Player.playerTypes.localUser);
+//        locSetts.setGameMode(Settings.gameModes.loadGame);
+//        locSetts.setGameType(Settings.gameTypes.local);
 
         newGUI.newGame();
         newGUI.blockedChessboard = true;
@@ -519,7 +523,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
                         this.nextMove();
 
                         //wenn nur noch 2 Spieler übrig sind, nach einem Zug auf Schacmatt und Unentschieden prüfen
-                        if(settings.getActivePlayers().size() == 2){
+                        if(settings.getActivePlayers().size() <= 2){
                         	gameState state =  chessboard.getKing(activePlayer).getPiece().isCheckmatedOrStalemated();
                         	switch (state)
                             {
@@ -531,6 +535,14 @@ public class Game extends JPanel implements MouseListener, ComponentListener
                                     break;
                             }
                         	
+                        }else{
+                        	// spieler eliminieren (3-4) wenn er keinen gültigen Zug machen kannn
+                        	if(Settings.gameState.normal != chessboard.getKing(activePlayer).getPiece().isCheckmatedOrStalemated()){
+                        		chessboard.getKing(activePlayer).setPiece(null);
+                        		Player playerToRemove = activePlayer;
+                        		this.nextMove();
+                        		settings.removeActivePlayer(playerToRemove);
+                        	}
                         }
 //                        Piece king;
 //                        if (this.activePlayer == getSettings().getPlayerWhite())

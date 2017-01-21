@@ -129,8 +129,8 @@ public class TestPawnGetAllMoves extends TestGetAllMoves
 		|_|_|_|_|_|_|_|_|_|_|_|_|_|_|05
 		|_|_|_|_|_|_|_|_|_|_|_|_|_|_|06
 		|_|_|_|_|B|o|W|_|_|_|_|_|_|_|07
-		|_|_|_|_|o|X|o|_|_|_|_|_|_|_|08
-		|_|_|_|_|_|_|_|_|_|_|_|_|_|_|09
+		|_|_|_|_|o|x|o|_|_|_|_|_|_|_|08
+		|_|_|_|_|_|X|_|_|_|_|_|_|_|_|09
 		|_|_|_|_|_|_|_|_|_|_|_|_|_|_|10
 		|-|-|-|_|_|_|_|_|_|_|_|-|-|-|11
 		|-|-|-|_|_|_|_|_|_|_|_|-|-|-|12
@@ -146,7 +146,7 @@ public class TestPawnGetAllMoves extends TestGetAllMoves
 		Square[] SolutionPawn = { new Square(4, 8, null), new Square(6, 8, null), new Square(5, 7, null), new Square(4, 7, null) };
 
 		// Pawn position
-		int[] p1 = { 5, 8 };
+		int[] p1 = { 5, 9 };
 
 		// set other pieces
 		testBoard.getSquares()[6][13].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
@@ -161,9 +161,13 @@ public class TestPawnGetAllMoves extends TestGetAllMoves
 		// set Pawn
 		testBoard.getSquares()[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
 				new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
+		
+		// first move of pawn to cancel twoSteps
+		ChessboardLogic.getInstance().move(testBoard, testBoard.getSquares()[p1[0]][p1[1]], testBoard.getSquares()[p1[0]][p1[1] - 1], false, false);
+				
 
 		// test movements
-		ArrayList<Square> testMoves = testBoard.getSquares()[p1[0]][p1[1]].allMoves();
+		ArrayList<Square> testMoves = testBoard.getSquares()[p1[0]][p1[1] - 1].allMoves();
 		for (Square sq : testMoves) {
 			assertTrue(isSolution(sq, SolutionPawn));
 		}

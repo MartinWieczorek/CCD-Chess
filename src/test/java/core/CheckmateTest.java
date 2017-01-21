@@ -67,7 +67,7 @@ public class CheckmateTest {
         Piece king;
         king = game.getChessboard().getKing(settings.getPlayerWhite()).getPiece();
         
-        assertEquals(1, king.isCheckmatedOrStalemated());
+        assertEquals(Settings.gameState.chekmate, king.isCheckmatedOrStalemated());
 
 	}
 	
@@ -115,7 +115,7 @@ public class CheckmateTest {
         Piece king;
         king = game.getChessboard().getKing(settings.getPlayerWhite()).getPiece();
         
-        assertEquals(2, king.isCheckmatedOrStalemated());
+        assertEquals(Settings.gameState.stalemate, king.isCheckmatedOrStalemated());
 
 	}
 

@@ -49,6 +49,7 @@ public class Player implements Serializable
         this.name = name;
         this.setColor(color);
         this.setGoDown(false);
+        this.setPlayerType(playerTypes.localUser);
     }
 
     /** Method setting the players name
