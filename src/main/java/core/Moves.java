@@ -29,6 +29,7 @@ import javax.swing.table.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import core.Settings.gameState;
 import pieces.Piece;
 
 import java.awt.Dimension;
@@ -226,8 +227,8 @@ public class Moves extends AbstractTableModel
                 || (this.enterBlack && this.game.getChessboard().getKingWhite().isChecked()))
         {//if checked
 
-            if ((!this.enterBlack && this.game.getChessboard().getKingBlack().getPiece().isCheckmatedOrStalemated() == 1)
-                    || (this.enterBlack && this.game.getChessboard().getKingWhite().getPiece().isCheckmatedOrStalemated() == 1))
+            if ((!this.enterBlack && this.game.getChessboard().getKingBlack().getPiece().isCheckmatedOrStalemated() == gameState.chekmate)
+                    || (this.enterBlack && this.game.getChessboard().getKingWhite().getPiece().isCheckmatedOrStalemated() == gameState.chekmate))
             {//check if checkmated
                 locMove += "#";//check mate
             }

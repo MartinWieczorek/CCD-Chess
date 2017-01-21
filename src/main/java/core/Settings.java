@@ -44,7 +44,13 @@ public class Settings implements Serializable
     public enum gameModes
     {
         newGame, loadGame
+    } 
+    
+    public enum gameState
+    {
+        normal, chekmate, stalemate
     }
+    
     private gameModes gameMode;
     private Player playerWhite;
     private Player playerBlack;

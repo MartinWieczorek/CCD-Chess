@@ -38,6 +38,8 @@ import java.awt.event.ComponentListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import core.Settings.gameState;
+
 /** Class responsible for the starts of new games, loading games,
  * saving it, and for ending it.
  * This class is also responsible for appoing player with have
@@ -516,26 +518,31 @@ public class Game extends JPanel implements MouseListener, ComponentListener
                         //switch player
                         this.nextMove();
 
-                        //checkmate or stalemate
-                        Piece king;
-                        if (this.activePlayer == getSettings().getPlayerWhite())
-                        {
-                            king = getChessboard().getKing(getSettings().getPlayerWhite()).getPiece();
+                        //wenn nur noch 2 Spieler übrig sind, nach einem Zug auf Schacmatt und Unentschieden prüfen
+                        if(settings.getActivePlayers().size() == 2){
+                        	gameState state =  chessboard.getKing(activePlayer).getPiece().isCheckmatedOrStalemated();
+                        	switch (state)
+                            {
+                                case chekmate:
+                                    this.endGame("Checkmate! " + activePlayer.getColor().toString() + " player lose!");
+                                    break;
+                                case stalemate:
+                                    this.endGame("Stalemate! Draw!");
+                                    break;
+                            }
+                        	
                         }
-                        else
-                        {
-                            king = getChessboard().getKing(getSettings().getPlayerBlack()).getPiece();
-                        }
+//                        Piece king;
+//                        if (this.activePlayer == getSettings().getPlayerWhite())
+//                        {
+//                            king = getChessboard().getKing(getSettings().getPlayerWhite()).getPiece();
+//                        }
+//                        else
+//                        {
+//                            king = getChessboard().getKing(getSettings().getPlayerBlack()).getPiece();
+//                        }
 
-                        switch (king.isCheckmatedOrStalemated())
-                        {
-                            case 1:
-                                this.endGame("Checkmate! " + king.getPlayer().getColor().toString() + " player lose!");
-                                break;
-                            case 2:
-                                this.endGame("Stalemate! Draw!");
-                                break;
-                        }
+                        
                     }
                     
                 } 

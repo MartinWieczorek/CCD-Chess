@@ -28,6 +28,8 @@ import java.util.Iterator;
 
 import core.Chessboard;
 import core.Player;
+import core.Settings;
+import core.Settings.gameState;
 import core.Square;
 import pieces.KingBehaviour;
 import pieces.Piece;
@@ -174,20 +176,20 @@ public class Piece {
 	 *         1 - when checkmate <br>
 	 *         2 - when stalemate <br>
 	 */  
-	public int isCheckmatedOrStalemated() 
+	public gameState isCheckmatedOrStalemated() 
 	{
 		for (int i = 0; i < chessboard.getNumSquares(); ++i) {
 			for (int j = 0; j < chessboard.getNumSquares(); ++j) {
 				if (chessboard.getSquares()[i][j].getPiece() != null && chessboard.getSquares()[i][j].getPiece().getPlayer() == this.getPlayer()
 						&& chessboard.getSquares()[i][j].getPiece().allMoves(chessboard.getSquares()[i][j]).size() != 0) {
-					return 0;
+					return Settings.gameState.normal;
 				}
 			}
 		}
 		if (this.isChecked(chessboard.getKing(this.player)) ) {
-			return 1;
+			return Settings.gameState.chekmate;
 		} else {
-			return 2;
+			return Settings.gameState.stalemate;
 		}
 	}
 
