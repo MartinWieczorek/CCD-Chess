@@ -21,6 +21,7 @@
 package core;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
@@ -50,11 +51,8 @@ public class Settings implements Serializable
     private Player playerRed;
     private Player playerGreen;
 
-    /**
-     * 
-     * @author Felix
-     *
-     */
+    private ArrayList<Player>activePlayers;
+    
     public enum gameTypes
     {
         local
@@ -76,6 +74,12 @@ public class Settings implements Serializable
         this.setTimeLimitSet(false);
 
         setGameMode(gameModes.newGame);
+        
+        this.activePlayers = new ArrayList<>();
+        this.activePlayers.add(playerWhite);
+        this.activePlayers.add(playerRed);
+        this.activePlayers.add(playerBlack);
+        this.activePlayers.add(playerGreen);
     }
 
     /** Method to get game time set by player
@@ -186,4 +190,20 @@ public class Settings implements Serializable
 	public void setRenderLabels(boolean renderLabels) {
 		this.renderLabels = renderLabels;
 	}
+	/**
+	 * 
+	 * @param pl
+	 */
+	public void removeActivePlayer(Player pl){
+		for(int i = 0; i < getActivePlayers().size(); i++){
+			if(pl == getActivePlayers().get(i)){
+				getActivePlayers().remove(i);
+			}
+		}
+	}
+
+	public ArrayList<Player> getActivePlayers() {
+		return activePlayers;
+	}
+	
 }

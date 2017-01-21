@@ -350,6 +350,11 @@ public class ChessboardLogic {
 		Square tempBegin = new Square(begin);// 4 moves history
 		Square tempEnd = new Square(end); // 4 moves history
 
+		//Schlagen eines Königs -> entfernen eines Spielers
+		if(end.getPiece() != null && end.getPiece().getName().equals("King")){
+			chessboard.getSettings().removeActivePlayer(end.getPiece().getPlayer());
+		}
+		
 		// begin = end;//set square of piece to ending
 		end.setPiece(begin.getPiece());// for ending square set piece from beginin
 								// square

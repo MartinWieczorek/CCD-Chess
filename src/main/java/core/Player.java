@@ -34,7 +34,7 @@ public class Player implements Serializable
 
     public enum colors
     {
-        white, black, red, green
+        white, red, black, green
     }
    
     public enum playerTypes
@@ -98,4 +98,5 @@ public class Player implements Serializable
 	public void setPlayerType(playerTypes playerType) {
 		this.playerType = playerType;
 	}
+
 }

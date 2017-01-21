@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.awt.event.ComponentListener;
 import org.apache.logging.log4j.LogManager;
@@ -270,22 +271,33 @@ public class Game extends JPanel implements MouseListener, ComponentListener
      */
     public void switchActive()
     {
-        if (activePlayer == getSettings().getPlayerWhite())
-        {
-            activePlayer = getSettings().getPlayerRed();
-        }
-        else  if (activePlayer == getSettings().getPlayerRed())
-        {
-            activePlayer = getSettings().getPlayerBlack();
-        }
-        else  if (activePlayer == getSettings().getPlayerBlack())
-        {
-            activePlayer = getSettings().getPlayerGreen();
-        }
-        else  if (activePlayer == getSettings().getPlayerGreen())
-        {
-            activePlayer = getSettings().getPlayerWhite();
-        }
+    	ArrayList<Player> activePlayers = getSettings().getActivePlayers();
+    	
+    	for (int i = 0; i < activePlayers.size(); i++)
+    	{
+    		if( activePlayer == activePlayers.get(i))
+    		{
+    			activePlayer = activePlayers.get( (i + 1) % activePlayers.size()); 
+    			break;
+    		}
+    	}
+//    	
+//        if (activePlayer == getSettings().getPlayerWhite())
+//        {
+//            activePlayer = getSettings().getPlayerRed();
+//        }
+//        else  if (activePlayer == getSettings().getPlayerRed())
+//        {
+//            activePlayer = getSettings().getPlayerBlack();
+//        }
+//        else  if (activePlayer == getSettings().getPlayerBlack())
+//        {
+//            activePlayer = getSettings().getPlayerGreen();
+//        }
+//        else  if (activePlayer == getSettings().getPlayerGreen())
+//        {
+//            activePlayer = getSettings().getPlayerWhite();
+//        }
 
         this.getGameClock().switch_clocks();
     }
