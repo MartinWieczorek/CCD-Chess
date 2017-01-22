@@ -1,6 +1,7 @@
 package core;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import javax.sql.rowset.CachedRowSet;
 
@@ -8,13 +9,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import core.Moves.castling;
-import pieces.BishopBehaviour;
 import pieces.KingBehaviour;
-import pieces.KnightBehaviour;
-import pieces.PawnBehaviour;
+import pieces.MoveStraight;
+import pieces.MoveTwoDirections;
 import pieces.Piece;
 import pieces.PieceBehaviour;
-import pieces.RookBehaviour;
 
 public class ChessboardLogic {
 
@@ -136,38 +135,37 @@ public class ChessboardLogic {
 			}
 		}
 	}
-
+	
 	private void setFigure(Chessboard chessboard, int row, int col, Player player, String pieceName) {
+		ArrayList<PieceBehaviour> tmp = new ArrayList<PieceBehaviour>();
 		switch (pieceName) {
 		case "Rook":
-			chessboard.getSquares()[col][row].setPiece(
-					new Piece(chessboard, player, new PieceBehaviour[] { RookBehaviour.getInstance() }, "Rook"));
+			tmp.add(new MoveStraight(Integer.MAX_VALUE, true, true, true, true, true, true, true, false, false, false, false));
+			chessboard.getSquares()[col][row].setPiece(new Piece(chessboard, player, tmp, "Rook", "R"));
 			break;
 		case "Knight":
-			chessboard.getSquares()[col][row].setPiece(
-					new Piece(chessboard, player, new PieceBehaviour[] { KnightBehaviour.getInstance() }, "Knight"));
+			tmp.add(new MoveTwoDirections(2 ,1 , true, true, false, true, true, true, true));
+			chessboard.getSquares()[col][row].setPiece(new Piece(chessboard, player, tmp, "Knight", "N"));
 			break;
 		case "Bishop":
-			chessboard.getSquares()[col][row].setPiece(
-					new Piece(chessboard, player, new PieceBehaviour[] { BishopBehaviour.getInstance() }, "Bishop"));
+			tmp.add(new MoveStraight(Integer.MAX_VALUE, true, true, true, false, false, false, false, true, true, true, true));
+			chessboard.getSquares()[col][row].setPiece( new Piece(chessboard, player, tmp, "Bishop", "B"));
 			break;
 		case "Queen":
-			chessboard.getSquares()[col][row].setPiece(new Piece(chessboard, player,
-					new PieceBehaviour[] { BishopBehaviour.getInstance(), RookBehaviour.getInstance() }, "Queen"));
+			tmp.add(new MoveStraight(Integer.MAX_VALUE, true, true, true, true, true, true, true, false, false, false, false));
+			tmp.add(new MoveStraight(Integer.MAX_VALUE, true, true, true, false, false, false, false, true, true, true, true));
+			chessboard.getSquares()[col][row].setPiece(new Piece(chessboard, player, tmp, "Queen", "Q"));
 			break;
 		case "King":
+			tmp.add(KingBehaviour.getInstance());
 			if (player.getColor() == Player.colors.black)
-				chessboard.getSquares()[col][row].setPiece(
-						new Piece(chessboard, player, new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
+				chessboard.getSquares()[col][row].setPiece(new Piece(chessboard, player, tmp, "King", "K"));
 			else if (player.getColor() == Player.colors.white)
-				chessboard.getSquares()[col][row].setPiece(
-						new Piece(chessboard, player, new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
+				chessboard.getSquares()[col][row].setPiece(new Piece(chessboard, player, tmp, "King", "K"));
 			else if (player.getColor() == Player.colors.red)
-				chessboard.getSquares()[col][row].setPiece(
-						new Piece(chessboard, player, new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
+				chessboard.getSquares()[col][row].setPiece(new Piece(chessboard, player, tmp, "King", "K"));
 			else
-				chessboard.getSquares()[col][row].setPiece(
-						new Piece(chessboard, player, new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
+				chessboard.getSquares()[col][row].setPiece(new Piece(chessboard, player, tmp, "King", "K"));
 			break;
 		}
 		logger.debug("set " + pieceName + " on pos: (" + row + "," + col + ") for player: " + player.getName());
@@ -178,14 +176,34 @@ public class ChessboardLogic {
 			logger.error("error setting pawns etc.");
 			return;
 		}
+		
+		ArrayList<PieceBehaviour> tmp = new ArrayList<PieceBehaviour>();
+		switch (player.getColor())
+    	{
+        	case white :
+        		tmp.add(new MoveStraight(1, true, false, true, true, true, false, true, false, false, false, false));
+        		tmp.add(new MoveStraight(2, true, false, true, true, true, false, true, false, false, false, false));
+        		break;
+        	case black :
+        		tmp.add(new MoveStraight(1, true, false, true, false, true, true, true, false, false, false, false));
+        		tmp.add(new MoveStraight(2, true, false, true, false, true, true, true, false, false, false, false));
+        		break;
+        	case red :
+        		tmp.add(new MoveStraight(1, true, false, true, true, true, true, false, false, false, false, false));
+        		tmp.add(new MoveStraight(2, true, false, true, true, true, true, false, false, false, false, false));
+        		break;
+        	case green :
+        		tmp.add(new MoveStraight(1, true, false, true, true, false, true, true, false, false, false, false));
+        		tmp.add(new MoveStraight(2, true, false, true, true, false, true, true, false, false, false, false));
+        		break;
+    	}
+		tmp.add(new MoveStraight(1, false, true, true, false, false, false, false, true, true, true, true));
 		for (int x = Chessboard.getTop() + chessboard.getCornerSquares(); x < chessboard.getNumSquares()
 				- chessboard.getCornerSquares(); x++) {
 			if (switchRowCol)
-				chessboard.getSquares()[row][x].setPiece(
-						new Piece(chessboard, player, new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
+				chessboard.getSquares()[row][x].setPiece(new Piece(chessboard, player, tmp, "Pawn", "P"));
 			else
-				chessboard.getSquares()[x][row].setPiece(
-						new Piece(chessboard, player, new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
+				chessboard.getSquares()[x][row].setPiece(new Piece(chessboard, player, tmp, "Pawn", "P"));
 
 			logger.debug("set pawn on pos: (" + x + "," + row + ") for player: " + player.getName());
 		}
@@ -193,18 +211,15 @@ public class ChessboardLogic {
 	
 	private void setWalls4NewGame(Chessboard chessboard, int row, Player player, boolean switchRowCol) 
 	{
-		//TODO: ersetze Pawns durch Wall sobald implementiert
+		ArrayList<PieceBehaviour> tmp = new ArrayList<PieceBehaviour>();
+		tmp.add(new MoveStraight(1, true, false, true, true, true, true, true, false, false, false, false));
 		if(switchRowCol){
-			chessboard.getSquares()[row][6].setPiece(
-					new Piece(chessboard, player, new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
-			chessboard.getSquares()[row][7].setPiece(
-					new Piece(chessboard, player, new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
+			chessboard.getSquares()[row][6].setPiece(new Piece(chessboard, player, tmp, "Wall", "W"));
+			chessboard.getSquares()[row][7].setPiece(new Piece(chessboard, player, tmp, "Wall", "W"));
 		}
 		else{
-			chessboard.getSquares()[6][row].setPiece(
-					new Piece(chessboard, player, new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
-			chessboard.getSquares()[7][row].setPiece(
-					new Piece(chessboard, player, new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
+			chessboard.getSquares()[6][row].setPiece(new Piece(chessboard, player, tmp, "Wall", "W"));
+			chessboard.getSquares()[7][row].setPiece(new Piece(chessboard, player, tmp, "Wall", "W"));
 		}
 	}
 
@@ -464,35 +479,32 @@ public class ChessboardLogic {
 			color = "B";
 		}
 
-		String newPiece = JChessApp.getJcv().showPawnPromotionBox(color); // return
-																			// name
-																			// of
-																			// new
-																			// piece
+		String newPiece = JChessApp.getJcv().showPawnPromotionBox(color); // return name of new piece
 
+		ArrayList<PieceBehaviour> tmp = new ArrayList<PieceBehaviour>();
+		
 		if (newPiece.equals("Queen")) // transform pawn to queen
 		{
-			Piece queen = new Piece(chessboard, end.getPiece().getPlayer(),
-					new PieceBehaviour[] { RookBehaviour.getInstance(), BishopBehaviour.getInstance() }, "Queen");
-			// queen.square = end;
+			tmp.add(new MoveStraight(Integer.MAX_VALUE, true, true, true, true, true, true, true, false, false, false, false));
+			tmp.add(new MoveStraight(Integer.MAX_VALUE, true, true, true, false, false, false, false, true, true, true, true));
+			Piece queen = new Piece(chessboard, end.getPiece().getPlayer(), tmp, "Queen", "Q");
+
 			end.setPiece(queen);
 		} else if (newPiece.equals("Rook")) // transform pawn to rook
 		{
-			Piece rook = new Piece(chessboard, end.getPiece().getPlayer(), new PieceBehaviour[] { RookBehaviour.getInstance() },
-					"Rook");
-			// rook.square = end;
+			tmp.add(new MoveStraight(Integer.MAX_VALUE, true, true, true, true, true, true, true, false, false, false, false));
+			Piece rook = new Piece(chessboard, end.getPiece().getPlayer(), tmp, "Rook", "R");
 			end.setPiece(rook);
 		} else if (newPiece.equals("Bishop")) // transform pawn to bishop
 		{
-			Piece bishop = new Piece(chessboard, end.getPiece().getPlayer(),
-					new PieceBehaviour[] { BishopBehaviour.getInstance() }, "Bishop");
-			// bishop.square = end;
+			tmp.add(new MoveStraight(Integer.MAX_VALUE, true, true, true, false, false, false, false, true, true, true, true));
+			Piece bishop = new Piece(chessboard, end.getPiece().getPlayer(), tmp, "Bishop", "B");
+
 			end.setPiece(bishop);
 		} else // transform pawn to knight
 		{
-			Piece knight = new Piece(chessboard, end.getPiece().getPlayer(),
-					new PieceBehaviour[] { KnightBehaviour.getInstance() }, "Knight");
-			// knight.square = end;
+			tmp.add(new MoveTwoDirections(2 ,1 , true, true, false, true, true, true, true));
+			Piece knight = new Piece(chessboard, end.getPiece().getPlayer(), tmp, "Knight", "K");
 			end.setPiece(knight);
 		}
 		return end.getPiece();

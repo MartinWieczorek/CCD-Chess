@@ -22,7 +22,7 @@ import core.Square;
  * @author Patrick
  *
  */
-public class KingBehaviour implements PieceBehaviour {
+public class KingBehaviour extends PieceBehaviour {
 	
 static private KingBehaviour instance;
 	
@@ -51,7 +51,7 @@ static private KingBehaviour instance;
                 if (!PieceBehaviour.isout(x, y, chessboard)) //out of bounds protection
                 {
                     if (square == chessboard.getSquares()[x][y]) continue; //if we're checking square on which is King
-                    if (PieceBehaviour.checkPieceAtPosition(x, y, player, chessboard)) //if square is empty
+                    if (PieceBehaviour.enemyPieceOnPosition(x, y, chessboard, player)) //if square is empty
                     {
                         if (isSafe(chessboard.getSquares()[x][y], chessboard, square, player))
                         {

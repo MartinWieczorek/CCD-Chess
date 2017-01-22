@@ -23,7 +23,6 @@ package core;
 import java.awt.*;
 import java.awt.Graphics;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,14 +30,6 @@ import javax.swing.JPanel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import core.Moves.castling;
-import pieces.PawnBehaviour;
-import pieces.KingBehaviour;
-import pieces.BishopBehaviour;
-import pieces.KnightBehaviour;
-import pieces.RookBehaviour;
-import pieces.Piece;
-import pieces.PieceBehaviour;
 import ui.GUI;
 
 /** Class to represent chessboard. Chessboard is made from squares.

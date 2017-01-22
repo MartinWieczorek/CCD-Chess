@@ -10,7 +10,7 @@ import core.Square;
  * @author Patrick
  *
  */
-public interface PieceBehaviour {
+public abstract class PieceBehaviour {
 	
 	/**
 	 * Function for computing all possible position a given piece can reach on a given cheesboard with this behavior.
@@ -31,12 +31,10 @@ public interface PieceBehaviour {
     static boolean enemyPieceOnPosition(int x, int y, Chessboard chessboard, Player player)
     {
         Square square = chessboard.getSquares()[x][y];
-        if (square.getPiece() == null)
-        {
+        if (square.getPiece() == null) {
             return false;
         }
-        if (player != square.getPiece().getPlayer())
-        {
+        if (player != square.getPiece().getPlayer()) {
             return true;
         }
         return false;
@@ -54,33 +52,7 @@ public interface PieceBehaviour {
     {
     	if(chessboard.getSquares()[x][y].getPiece() == null) return true;
     	else return false;
-    }
-  
-    
-    /**
-     * checks if given position on given chessboard is empty of occupied by an enemy or own piece
-     * @param x x position on chessboard
-     * @param y y position on chessboard
-     * @param player owning player of calling piece
-     * @param chessboard chessboard of the Game
-     * @return true if given square is empty or other player piece
-     */
-    static boolean checkPieceAtPosition(int x, int y, Player player, Chessboard chessboard)
-    {
-        if (chessboard.getSquares()[x][y].getPiece() != null
-                && chessboard.getSquares()[x][y].getPiece().getName().equals("King"))
-        {
-            return false;
-        }
-        Piece piece = chessboard.getSquares()[x][y].getPiece();
-        if (piece == null || //if this square is empty
-                piece.getPlayer() != player) //or piece is another player
-        {
-            return true;
-        }
-        return false;
-    }
-    
+    }  
 
     /** Method is useful for out of bounds protection
      * @param x x position on chessboard

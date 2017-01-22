@@ -50,7 +50,7 @@ public class Piece {
 	private Player player;
 	private String name;
 	private String symbol;
-	protected PieceBehaviour[] behaviours;
+	protected ArrayList<PieceBehaviour> behaviours;
 	private Image orgImage;
 	private Image image;
 	private float[] imageColorScales;
@@ -62,7 +62,7 @@ public class Piece {
 	 * @param name the name of the type of the piece specifies the symbol of the pie and the way other pieces interact with this one.
 	 * 	only Bishop, Knight, Pawn, Queen, Rook or King should be used.
 	 */
-	public Piece(Chessboard chessboard, Player player, PieceBehaviour[] behaviours, String name) {
+	public Piece(Chessboard chessboard, Player player, ArrayList<PieceBehaviour> behaviours, String name, String symbol) {
 		this.behaviours = behaviours;
 		this.chessboard = chessboard;
 		this.setPlayer(player);
@@ -73,27 +73,7 @@ public class Piece {
 		setImageColorScales();
 		this.imageColorOffsets = new float[4];
 		this.imageColorRescaleOperator = new RescaleOp(imageColorScales, imageColorOffsets, null);
-
-		switch (name) {
-		case "Bishop":
-			this.symbol = "B";
-			break;
-		case "Knight":
-			this.symbol = "N";
-			break;
-		case "Pawn":
-			this.symbol = "P";
-			break;
-		case "Queen":
-			this.symbol = "Q";
-			break;
-		case "Rook":
-			this.symbol = "R";
-			break;
-		case "King":
-			this.symbol = "K";
-			break;
-		}
+		this.symbol = symbol;
 	}
 
 
@@ -156,18 +136,18 @@ public class Piece {
 	 */
 	public ArrayList<Square> allMoves(Square sq) {
 		ArrayList<Square> result = new ArrayList<Square>();
-		for (int i = 0; i < behaviours.length; ++i) {
-			result.addAll(behaviours[i].getMoves(chessboard, sq, getPlayer()));
+		for (int i = 0; i < behaviours.size(); ++i) {
+			result.addAll(behaviours.get(i).getMoves(chessboard, sq, getPlayer()));
 		}
 		return result;
 	}
 
-	/**
-	 * Overrides current PieceBehaviours
-	 * @param behaviours new behaviors
-	 */
-	public void changeBehaviour(PieceBehaviour[] behaviours) {
+	public void setBehaviours(ArrayList<PieceBehaviour> behaviours) {
 		this.behaviours = behaviours;
+	}
+	
+	public ArrayList<PieceBehaviour> getBehaviours() {
+		return behaviours;
 	}
 
 	/**
@@ -205,7 +185,7 @@ public class Piece {
 		sqIsHere.setPiece(null);
 
 		//boolean ret = !this.isChecked(sqIsHere);
-		boolean ret = !this.isChecked(chessboard.getKing( sqWillBeThere.getPiece().getPlayer()) );
+		boolean ret = !this.isChecked(chessboard.getKing( sqWillBeThere.getPiece().getPlayer()));
 
 		sqIsHere.setPiece(sqWillBeThere.getPiece());
 		sqWillBeThere.setPiece(tmp);
