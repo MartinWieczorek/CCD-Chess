@@ -20,4 +20,11 @@ public class RochadeMove extends PieceBehaviour {
 		return new ArrayList<Square>();
 	}
 
+	public PieceBehaviour moveTo(Chessboard chessboard, Square startSquare, Square endSquare, Player player){
+		if(startSquare.getPiece() != null){
+			endSquare.setPiece(startSquare.getPiece());
+			startSquare.setPiece(null);
+		}
+		return this;
+	}
 }

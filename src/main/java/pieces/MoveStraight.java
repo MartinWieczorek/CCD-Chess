@@ -141,4 +141,12 @@ public class MoveStraight extends PieceBehaviour {
 	        }
 		return result;
 	}
+	
+	public PieceBehaviour moveTo(Chessboard chessboard, Square startSquare, Square endSquare, Player player){
+		if(startSquare.getPiece() != null) {
+			endSquare.setPiece(startSquare.getPiece());
+			startSquare.setPiece(null);
+		}
+		return null;
+	}
 }

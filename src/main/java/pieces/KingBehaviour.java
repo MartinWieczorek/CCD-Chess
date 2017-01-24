@@ -134,4 +134,8 @@ static private KingBehaviour instance;
         }
 		return result;
 	}
+	
+	public PieceBehaviour moveTo(Chessboard chessboard, Square startSquare, Square endSquare, Player player) {
+		return null;
+	}
 }

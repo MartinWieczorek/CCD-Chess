@@ -18,4 +18,8 @@ public class RochadeStay extends PieceBehaviour {
 		return new ArrayList<Square>();
 	}
 
+	public PieceBehaviour moveTo(Chessboard chessboard, Square startSquare, Square endSquare, Player player){
+		return null;
+	}
+	
 }

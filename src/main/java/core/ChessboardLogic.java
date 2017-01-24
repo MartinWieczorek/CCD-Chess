@@ -357,10 +357,7 @@ public class ChessboardLogic {
 		castling wasCastling = Moves.castling.none;
 		Piece promotedPiece = null;
 		boolean wasEnPassant = false;
-		// if (end.piece != null)
-		// {
-		// end.piece.square = null;
-		// }
+		Piece usedPiece = begin.getPiece();
 
 		Square tempBegin = new Square(begin);// 4 moves history
 		Square tempEnd = new Square(end); // 4 moves history
@@ -370,10 +367,13 @@ public class ChessboardLogic {
 			chessboard.getSettings().removeActivePlayer(end.getPiece().getPlayer());
 		}
 		
-		// begin = end;//set square of piece to ending
-		end.setPiece(begin.getPiece());// for ending square set piece from beginin
-								// square
-		begin.setPiece(null);// make null piece for begining square
+		//call all moveTo methods of piece
+		/*for (PieceBehaviour behaviour : usedPiece.getBehaviours()) {
+			behaviour.moveTo(chessboard, begin, end, begin.getPiece().getPlayer());
+		}*/
+		for(int i = 0; i < usedPiece.getBehaviours().size(); ++i){
+			usedPiece.getBehaviours().get(i).moveTo(chessboard, begin, end, begin.getPiece().getPlayer());
+		}
 
 		if (end.getPiece().getName().equals("King")) {
 			wasCastling = specialKingMovement(chessboard, begin, end);
@@ -381,31 +381,7 @@ public class ChessboardLogic {
 			if (!(end.getPiece()).isWasMotion()) {
 				(end.getPiece()).setWasMotion(true);
 			}
-		} else if (end.getPiece().getName().equals("Pawn")) {
-			// en passant
-			if (isEnpassant(begin, end, chessboard)) // en																											
-			{
-				tempEnd.setPiece(chessboard.getSquares()[end.getPozX()][begin.getPozY()].getPiece()); 
-				chessboard.getSquares()[end.getPozX()][begin.getPozY()].setPiece(null);
-				wasEnPassant = true;
-			}
-
-			if (begin.getPozY() - end.getPozY() == 2 || end.getPozY() - begin.getPozY() == 2) // moved two square																							
-			{
-				chessboard.setTwoSquareMovedPawn(end);
-			} else {
-				chessboard.setTwoSquareMovedPawn(null); // erase last saved move
-														// (for En passant)
-			}
-			// en passant end
-				if (isPawnPromotion(end) && clearForwardHistory) {
-					promotedPiece = this.promotePawn(chessboard, end);
-				}
-		} else if (!end.getPiece().getName().equals("Pawn")) {
-			chessboard.setTwoSquareMovedPawn(null); // erase last saved move
-													// (for En passant)
 		}
-		// }
 		if (refresh) {
 			this.unselect(chessboard);// unselect square
 			chessboard.repaint();
