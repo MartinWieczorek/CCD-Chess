@@ -8,8 +8,6 @@ import core.Square;
 
 /**
  * Enables a variety of horizontal, vertical and diagonal movement patterns
- * @author Patrick
- *
  */
 
 public class MoveStraight extends PieceBehaviour {
@@ -61,7 +59,7 @@ public class MoveStraight extends PieceBehaviour {
 	}
 	
 	@Override
-	public ArrayList<Square> getMoves(Chessboard chessboard, Square square, Player player) {
+	public ArrayList<Square> getUnsaveMoves(Chessboard chessboard, Square square, Player player) {
 
 		ArrayList<Square> result = new ArrayList<Square>();
 		ArrayList<int[]> direktions = new ArrayList<int[]>();
@@ -82,44 +80,56 @@ public class MoveStraight extends PieceBehaviour {
 		return result;
 	}
 	
+	@Override
+	public ArrayList<Square> getMoves(Chessboard chessboard, Square square, Player player) {
+		ArrayList<Square> posibilities = getUnsaveMoves(chessboard, square, player);
+		ArrayList<Square> result = new ArrayList<Square>();
+		
+		for (Square posibility : posibilities) {
+			switch (player.getColor())
+	    	{
+	        	case white :
+	        		if (chessboard.getKingWhite().getPiece().willBeSafeWhenMoveOtherPiece(square, posibility))
+	                {
+	                    result.add(posibility);
+	                }
+	        		break;
+	        	case black :
+	        		if (chessboard.getKingBlack().getPiece().willBeSafeWhenMoveOtherPiece(square, posibility))
+	                {
+	                    result.add(posibility);
+	                }
+	        		break;
+	        	case red :
+	        		if (chessboard.getKingRed().getPiece().willBeSafeWhenMoveOtherPiece(square, posibility))
+	                {
+	                    result.add(posibility);
+	                }
+	        		break;
+	        	case green :
+	        		if (chessboard.getKingGreen().getPiece().willBeSafeWhenMoveOtherPiece(square, posibility))
+	                {
+	                    result.add(posibility);
+	                }
+	        		break;
+	    	}
+		}
+		return result;
+	}
+	
 	private ArrayList<Square> computeDirektion(int xDir, int yDir, Square square, Chessboard chessboard, Player player)
 	{
 		ArrayList<Square> result = new ArrayList<Square>();
 		 for (int x = square.getPozX() + xDir, y = square.getPozY() + yDir, distanz = 1;
-				 !PieceBehaviour.isout(x, y, chessboard) && distanz <= range;
+				 !BehaviourFunktions.isout(x, y, chessboard) && distanz <= range;
 				 x=x+xDir, y=y+yDir, ++distanz)
 	        {
-	            if (PieceBehaviour.checkSpaceAtPosition(x, y, player, chessboard) && canMoveOnEmpty ||
-	            		PieceBehaviour.enemyPieceOnPosition(x, y, chessboard, player) && canMoveOnEnemy)
+	            if (BehaviourFunktions.checkSpaceAtPosition(x, y, player, chessboard) && canMoveOnEmpty ||
+	            		BehaviourFunktions.enemyPieceOnPosition(x, y, chessboard, player) && canMoveOnEnemy)
 	            {
-	            	switch (player.getColor())
-	            	{
-		            	case white :
-		            		if (chessboard.getKingWhite().getPiece().willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[x][y]))
-		                    {
-		                        result.add(chessboard.getSquares()[x][y]);
-		                    }
-		            		break;
-		            	case black :
-		            		if (chessboard.getKingBlack().getPiece().willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[x][y]))
-		                    {
-		                        result.add(chessboard.getSquares()[x][y]);
-		                    }
-		            		break;
-		            	case red :
-		            		if (chessboard.getKingRed().getPiece().willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[x][y]))
-		                    {
-		                        result.add(chessboard.getSquares()[x][y]);
-		                    }
-		            		break;
-		            	case green :
-		            		if (chessboard.getKingGreen().getPiece().willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[x][y]))
-		                    {
-		                        result.add(chessboard.getSquares()[x][y]);
-		                    }
-		            		break;
-	            	}
-	            	if (!PieceBehaviour.checkSpaceAtPosition(x, y, player, chessboard) && blockedByPieces)
+	            	result.add(chessboard.getSquares()[x][y]);
+	            	 
+	            	if (!BehaviourFunktions.checkSpaceAtPosition(x, y, player, chessboard) && blockedByPieces)
 		            {
 		                break; //we've to break because we cannot go beside other piece!!
 		            }

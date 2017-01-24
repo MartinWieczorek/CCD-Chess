@@ -8,8 +8,6 @@ import core.Square;
 
 /**
  * Enables a variety of movement patterns with goes in one direction first and than in another.
- * @author Patrick
- *
  */
 
 public class MoveTwoDirections extends PieceBehaviour {
@@ -51,7 +49,7 @@ public class MoveTwoDirections extends PieceBehaviour {
 	}
 	
 	@Override
-	public ArrayList<Square> getMoves(Chessboard chessboard, Square square, Player player) {
+	public ArrayList<Square> getUnsaveMoves(Chessboard chessboard, Square square, Player player) {
 
 		ArrayList<Square> result = new ArrayList<Square>();
 		ArrayList<int[]> direktions = new ArrayList<int[]>();
@@ -62,66 +60,106 @@ public class MoveTwoDirections extends PieceBehaviour {
 		if(canMoveLeft) direktions.add(new int[]{-1,0});
 		
 		for (int[] direktion : direktions) {
-			result.addAll(computeDirektion(0, 0, direktion[0], direktion[1], square, chessboard, player));
+			if(computeDirektion(0, 0, direktion[0], direktion[1], square, chessboard, player))
 			if(direktion[0] != 0) {
-    			result.addAll(computeDirektion(range1 * direktion[0], 0, 0, -1, square, chessboard, player));
-    			result.addAll(computeDirektion(range1 * direktion[0], 0, 0, 1, square, chessboard, player));
+				
+				int x = square.getPozX() + range1 * direktion[0];
+				int y = square.getPozY() - range2;
+				if(computeDirektion(range1 * direktion[0], 0, 0, -1, square, chessboard, player) &&
+    					!BehaviourFunktions.isout(x, y, chessboard) &&
+    					(BehaviourFunktions.checkSpaceAtPosition(x, y, player, chessboard) && canMoveOnEmpty ||
+    		            		BehaviourFunktions.enemyPieceOnPosition(x, y, chessboard, player) && canMoveOnEnemy)){
+					result.add(chessboard.getSquares()[x][y]);
+				}
+				
+				x = square.getPozX() + range1 * direktion[0];
+				y = square.getPozY() + range2;
+				if(computeDirektion(range1 * direktion[0], 0, 0, 1, square, chessboard, player) &&
+    					!BehaviourFunktions.isout(x, y, chessboard) &&
+    					(BehaviourFunktions.checkSpaceAtPosition(x, y, player, chessboard) && canMoveOnEmpty ||
+    							BehaviourFunktions.enemyPieceOnPosition(x, y, chessboard, player) && canMoveOnEnemy)){
+					result.add(chessboard.getSquares()[x][y]);
+				}
     		}
     		if(direktion[1] != 0) {
-    			result.addAll(computeDirektion(0, range1 * direktion[1], -1, 0, square, chessboard, player));
-    			result.addAll(computeDirektion(0, range1 * direktion[1], 1, 0, square, chessboard, player));
+    			
+    			int x =square.getPozX() - range2;
+				int y = square.getPozY() + range1 * direktion[1];
+    			if(computeDirektion(0, range1 * direktion[1], -1, 0, square, chessboard, player) &&
+    					!BehaviourFunktions.isout(x, y, chessboard) &&
+    					(BehaviourFunktions.checkSpaceAtPosition(x, y, player, chessboard) && canMoveOnEmpty ||
+    							BehaviourFunktions.enemyPieceOnPosition(x, y, chessboard, player) && canMoveOnEnemy)){
+					result.add(chessboard.getSquares()[x][y]);
+				}
+    			x = square.getPozX() + range2;
+				y = square.getPozY() + range1 * direktion[1];
+    			if(computeDirektion(0, range1 * direktion[1], 1, 0, square, chessboard, player) &&
+    					!BehaviourFunktions.isout(x, y, chessboard) &&
+    					(BehaviourFunktions.checkSpaceAtPosition(x, y, player, chessboard) && canMoveOnEmpty ||
+    							BehaviourFunktions.enemyPieceOnPosition(x, y, chessboard, player) && canMoveOnEnemy)){
+					result.add(chessboard.getSquares()[x][y]);
+				}
     		}
 		}
 		return result;
 	}
 	
-	private ArrayList<Square> computeDirektion(int offsetX, int offsetY, int xDir, int yDir,
+	@Override
+	public ArrayList<Square> getMoves(Chessboard chessboard, Square square, Player player) {
+		ArrayList<Square> posibilities = getUnsaveMoves(chessboard, square, player);
+		ArrayList<Square> result = new ArrayList<Square>();
+		
+		for (Square posibility : posibilities) {
+			switch (player.getColor())
+	    	{
+	        	case white :
+	        		if (chessboard.getKingWhite().getPiece().willBeSafeWhenMoveOtherPiece(square, posibility))
+	                {
+	                    result.add(posibility);
+	                }
+	        		break;
+	        	case black :
+	        		if (chessboard.getKingBlack().getPiece().willBeSafeWhenMoveOtherPiece(square, posibility))
+	                {
+	                    result.add(posibility);
+	                }
+	        		break;
+	        	case red :
+	        		if (chessboard.getKingRed().getPiece().willBeSafeWhenMoveOtherPiece(square, posibility))
+	                {
+	                    result.add(posibility);
+	                }
+	        		break;
+	        	case green :
+	        		if (chessboard.getKingGreen().getPiece().willBeSafeWhenMoveOtherPiece(square, posibility))
+	                {
+	                    result.add(posibility);
+	                }
+	        		break;
+	    	}
+		}
+		return result;
+	}
+	
+	private boolean computeDirektion(int offsetX, int offsetY, int xDir, int yDir,
 			Square square, Chessboard chessboard, Player player) {
 		
-		ArrayList<Square> result = new ArrayList<Square>();
 		for (int x = square.getPozX() + offsetX + xDir, y = square.getPozY() + offsetY + yDir, distanz = 0;
-				 !PieceBehaviour.isout(x, y, chessboard) && distanz < range2; x=x+xDir, y=y+yDir, ++distanz)
+				 !BehaviourFunktions.isout(x, y, chessboard) && distanz < range2; x=x+xDir, y=y+yDir, ++distanz)
         {
-            if (PieceBehaviour.checkSpaceAtPosition(x, y, player, chessboard) && canMoveOnEmpty ||
-            		PieceBehaviour.enemyPieceOnPosition(x, y, chessboard, player) && canMoveOnEnemy)
+            if (BehaviourFunktions.checkSpaceAtPosition(x, y, player, chessboard) && canMoveOnEmpty ||
+            		BehaviourFunktions.enemyPieceOnPosition(x, y, chessboard, player) && canMoveOnEnemy)
             {
-            	switch (player.getColor())
-        		{
-        	    	case white :
-        	    		if (chessboard.getKingWhite().getPiece().willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[x][y]))
-        	            {
-        	                result.add(chessboard.getSquares()[x][y]);
-        	            }
-        	    		break;
-        	    	case black :
-        	    		if (chessboard.getKingBlack().getPiece().willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[x][y]))
-        	            {
-        	    			result.add(chessboard.getSquares()[x][y]);
-        	            }
-        	    		break;
-        	    	case red :
-        	    		if (chessboard.getKingRed().getPiece().willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[x][y]))
-        	            {
-        	    			result.add(chessboard.getSquares()[x][y]);
-        	            }
-        	    		break;
-        	    	case green :
-        	    		if (chessboard.getKingGreen().getPiece().willBeSafeWhenMoveOtherPiece(square, chessboard.getSquares()[x][y]))
-        	            {
-        	    			result.add(chessboard.getSquares()[x][y]);
-        	            }
-        	    		break;
-        		}
-            	if (!PieceBehaviour.checkSpaceAtPosition(x, y, player, chessboard) && blockedByPieces)
+            	if (!BehaviourFunktions.checkSpaceAtPosition(x, y, player, chessboard) && blockedByPieces)
 	            {
-	                break; //we've to break because we cannot go beside other piece!!
+	                return false; //we've to break because we cannot go beside other piece!!
 	            }
             }
             else if (blockedByPieces)
             {
-                break; //we've to break because we cannot go beside other piece!!
+                return false; //we've to break because we cannot go beside other piece!!
             }
         }
-		return result;
+		return true;
 	}
 }

@@ -184,7 +184,6 @@ public class Piece {
 		sqWillBeThere.setPiece(sqIsHere.getPiece()); // move without redraw
 		sqIsHere.setPiece(null);
 
-		//boolean ret = !this.isChecked(sqIsHere);
 		boolean ret = !this.isChecked(chessboard.getKing( sqWillBeThere.getPiece().getPlayer()));
 
 		sqIsHere.setPiece(sqWillBeThere.getPiece());
@@ -194,7 +193,7 @@ public class Piece {
 	}
 
 	public boolean isChecked(Square sq) {
-		return !KingBehaviour.getInstance().isSafe(sq, this.chessboard, sq, this.getPlayer());
+		return !BehaviourFunktions.isSafe(this.chessboard, sq, this.getPlayer());
 	}
     
     /** Method to draw piece on chessboard
