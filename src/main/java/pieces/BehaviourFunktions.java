@@ -15,10 +15,9 @@ public class BehaviourFunktions {
 		for(int x = 0; x < chessboard.getNumSquares(); ++x){
 			for(int y = 0; y < chessboard.getNumSquares(); ++y){
 				Square originSquare = chessboard.getSquares()[x][y];
-				if(originSquare.getPiece() != null &&
-						originSquare.getPiece().getPlayer() != player){
+				if(originSquare.getPiece() != null && originSquare.getPiece().getPlayer() != player){
 					for (PieceBehaviour behaviour : originSquare.getPiece().getBehaviours()) {
-						if(behaviour.getUnsaveMoves(chessboard, originSquare, player).contains(square)) {
+						if(behaviour.getUnsaveMoves(chessboard, originSquare, originSquare.getPiece().getPlayer()).contains(square)) {
 							return false;
 						}
 					}

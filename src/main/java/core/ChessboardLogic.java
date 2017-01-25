@@ -10,10 +10,14 @@ import org.apache.logging.log4j.Logger;
 
 import core.Moves.castling;
 import pieces.KingBehaviour;
+import pieces.MoveOnesStraight;
+import pieces.MoveSaveStraight;
 import pieces.MoveStraight;
 import pieces.MoveTwoDirections;
 import pieces.Piece;
 import pieces.PieceBehaviour;
+import pieces.RochadeMove;
+import pieces.RochadeStay;
 
 public class ChessboardLogic {
 
@@ -141,6 +145,7 @@ public class ChessboardLogic {
 		switch (pieceName) {
 		case "Rook":
 			tmp.add(new MoveStraight(Integer.MAX_VALUE, true, true, true, true, true, true, true, false, false, false, false));
+			tmp.add(new RochadeStay());
 			chessboard.getSquares()[col][row].setPiece(new Piece(chessboard, player, tmp, "Rook", "R"));
 			break;
 		case "Knight":
@@ -152,12 +157,12 @@ public class ChessboardLogic {
 			chessboard.getSquares()[col][row].setPiece( new Piece(chessboard, player, tmp, "Bishop", "B"));
 			break;
 		case "Queen":
-			tmp.add(new MoveStraight(Integer.MAX_VALUE, true, true, true, true, true, true, true, false, false, false, false));
-			tmp.add(new MoveStraight(Integer.MAX_VALUE, true, true, true, false, false, false, false, true, true, true, true));
+			tmp.add(new MoveStraight(Integer.MAX_VALUE, true, true, true, true, true, true, true, true, true, true, true));
 			chessboard.getSquares()[col][row].setPiece(new Piece(chessboard, player, tmp, "Queen", "Q"));
 			break;
 		case "King":
-			tmp.add(KingBehaviour.getInstance());
+			tmp.add(new MoveSaveStraight(1, true, true, true, true, true, true, true, true, true, true, true));
+			tmp.add(new RochadeMove());
 			if (player.getColor() == Player.colors.black)
 				chessboard.getSquares()[col][row].setPiece(new Piece(chessboard, player, tmp, "King", "K"));
 			else if (player.getColor() == Player.colors.white)
@@ -176,30 +181,29 @@ public class ChessboardLogic {
 			logger.error("error setting pawns etc.");
 			return;
 		}
-		
+		for (int x = Chessboard.getTop() + chessboard.getCornerSquares(); x < chessboard.getNumSquares() - chessboard.getCornerSquares(); x++) {
 		ArrayList<PieceBehaviour> tmp = new ArrayList<PieceBehaviour>();
 		switch (player.getColor())
     	{
         	case white :
         		tmp.add(new MoveStraight(1, true, false, true, true, true, false, true, false, false, false, false));
-        		tmp.add(new MoveStraight(2, true, false, true, true, true, false, true, false, false, false, false));
+        		tmp.add(new MoveOnesStraight(2, true, false, true, true, true, false, true, false, false, false, false));
         		break;
         	case black :
         		tmp.add(new MoveStraight(1, true, false, true, false, true, true, true, false, false, false, false));
-        		tmp.add(new MoveStraight(2, true, false, true, false, true, true, true, false, false, false, false));
+        		tmp.add(new MoveOnesStraight(2, true, false, true, false, true, true, true, false, false, false, false));
         		break;
         	case red :
         		tmp.add(new MoveStraight(1, true, false, true, true, true, true, false, false, false, false, false));
-        		tmp.add(new MoveStraight(2, true, false, true, true, true, true, false, false, false, false, false));
+        		tmp.add(new MoveOnesStraight(2, true, false, true, true, true, true, false, false, false, false, false));
         		break;
         	case green :
         		tmp.add(new MoveStraight(1, true, false, true, true, false, true, true, false, false, false, false));
-        		tmp.add(new MoveStraight(2, true, false, true, true, false, true, true, false, false, false, false));
+        		tmp.add(new MoveOnesStraight(2, true, false, true, true, false, true, true, false, false, false, false));
         		break;
     	}
 		tmp.add(new MoveStraight(1, false, true, true, false, false, false, false, true, true, true, true));
-		for (int x = Chessboard.getTop() + chessboard.getCornerSquares(); x < chessboard.getNumSquares()
-				- chessboard.getCornerSquares(); x++) {
+		
 			if (switchRowCol)
 				chessboard.getSquares()[row][x].setPiece(new Piece(chessboard, player, tmp, "Pawn", "P"));
 			else
@@ -368,11 +372,12 @@ public class ChessboardLogic {
 		}
 		
 		//call all moveTo methods of piece
-		/*for (PieceBehaviour behaviour : usedPiece.getBehaviours()) {
-			behaviour.moveTo(chessboard, begin, end, begin.getPiece().getPlayer());
-		}*/
-		for(int i = 0; i < usedPiece.getBehaviours().size(); ++i){
-			usedPiece.getBehaviours().get(i).moveTo(chessboard, begin, end, begin.getPiece().getPlayer());
+		ArrayList<PieceBehaviour> toDelete = new ArrayList<PieceBehaviour>();
+		for (PieceBehaviour behaviour : usedPiece.getBehaviours()) {
+			toDelete.add(behaviour.moveTo(chessboard, begin, end, usedPiece.getPlayer()));
+		}
+		for (PieceBehaviour pieceBehaviour : toDelete) {
+			usedPiece.getBehaviours().remove(pieceBehaviour);
 		}
 
 		if (end.getPiece().getName().equals("King")) {
@@ -395,7 +400,7 @@ public class ChessboardLogic {
 	}/* endOf-move()- */
 
 	/**
-	 * Method to chek if there is a possible promotion 
+	 * Method to cheek if there is a possible promotion 
 	 * @param pl defines the player who checks the promotion
 	 * @param pawn Square where pawn will be moved
 	 * @return true if there is a possible promotion on the given Square

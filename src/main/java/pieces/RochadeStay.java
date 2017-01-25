@@ -19,7 +19,7 @@ public class RochadeStay extends PieceBehaviour {
 	}
 
 	public PieceBehaviour moveTo(Chessboard chessboard, Square startSquare, Square endSquare, Player player){
-		return null;
+		return this;
 	}
 	
 }
