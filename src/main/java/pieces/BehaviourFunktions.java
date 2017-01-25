@@ -1,5 +1,7 @@
 package pieces;
 
+import java.util.ArrayList;
+
 import core.Chessboard;
 import core.Player;
 import core.Square;
@@ -78,4 +80,42 @@ public class BehaviourFunktions {
         }
         return false;
     }
+
+	public static boolean isTarget(int x, int y, Chessboard chessboard, Square square, PieceBehaviour behaviour, Player player) {
+		if(chessboard.getSquares()[x][y].getPiece() != null && chessboard.getSquares()[x][y].getPiece().getName() == "Wall"
+				&& !testBreakWall(square, chessboard, behaviour, player)) {
+			return false;
+		}
+		return true;
+	}
+	
+	private static boolean testBreakWall(Square square, Chessboard chessboard, PieceBehaviour behaviour, Player player) {
+		
+		ArrayList<PieceBehaviour> neigbourBehaviours = new ArrayList<PieceBehaviour>();
+		
+		if(square.getPozX()-1 < 0 && chessboard.getSquares()[square.getPozX()-1][square.getPozY()].getPiece() != null &&
+				chessboard.getSquares()[square.getPozX()-1][square.getPozY()].getPiece().getPlayer() == player) {
+			neigbourBehaviours.addAll(chessboard.getSquares()[square.getPozX()-1][square.getPozY()].getPiece().getBehaviours());
+		}
+		if(square.getPozX()+1 < chessboard.getNumSquares() && chessboard.getSquares()[square.getPozX()+1][square.getPozY()].getPiece() != null &&
+				chessboard.getSquares()[square.getPozX()+1][square.getPozY()].getPiece().getPlayer() == player) {
+			neigbourBehaviours.addAll(chessboard.getSquares()[square.getPozX()+1][square.getPozY()].getPiece().getBehaviours());
+		}
+		if(square.getPozY()-1 < 0 && chessboard.getSquares()[square.getPozX()][square.getPozY()-1].getPiece() != null &&
+				chessboard.getSquares()[square.getPozX()][square.getPozY()-1].getPiece().getPlayer() == player) {
+			neigbourBehaviours.addAll(chessboard.getSquares()[square.getPozX()][square.getPozY()-1].getPiece().getBehaviours());
+		}
+		if(square.getPozY()+1 < chessboard.getNumSquares() && chessboard.getSquares()[square.getPozX()][square.getPozY()+1].getPiece() != null &&
+				chessboard.getSquares()[square.getPozX()][square.getPozY()+1].getPiece().getPlayer() == player) {
+			neigbourBehaviours.addAll(chessboard.getSquares()[square.getPozX()][square.getPozY()+1].getPiece().getBehaviours());
+		}
+		
+		for (PieceBehaviour pieceBehaviour : neigbourBehaviours) {
+			if (behaviour.getClass() == BreakWall.class && pieceBehaviour.getClass() == BreakWall.class) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

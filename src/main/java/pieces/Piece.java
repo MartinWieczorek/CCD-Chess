@@ -31,7 +31,6 @@ import core.Player;
 import core.Settings;
 import core.Settings.gameState;
 import core.Square;
-import pieces.KingBehaviour;
 import pieces.Piece;
 import pieces.PieceBehaviour;
 

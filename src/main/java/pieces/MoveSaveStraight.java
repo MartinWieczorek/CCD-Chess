@@ -41,7 +41,7 @@ public class MoveSaveStraight extends MoveStraight {
 		ArrayList<Square> result = new ArrayList<Square>();
 		
 		for (Square posibility : posibilities) {
-			Piece dummy = new Piece(chessboard, player, new ArrayList<PieceBehaviour>(), "Pawn", "D");
+			Piece dummy = PieceFactory.getInstance().createNewPiece(chessboard, player, "Pawn");
 			Piece oldPice = posibility.getPiece();
 			posibility.setPiece(dummy);
 			if(BehaviourFunktions.isSafe(chessboard, posibility, player)) {
