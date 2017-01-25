@@ -68,7 +68,8 @@ public class MoveTwoDirections extends PieceBehaviour {
 				if(computeDirektion(range1 * direktion[0], 0, 0, -1, square, chessboard, player) &&
     					!BehaviourFunktions.isout(x, y, chessboard) &&
     					(BehaviourFunktions.checkSpaceAtPosition(x, y, player, chessboard) && canMoveOnEmpty ||
-    		            		BehaviourFunktions.enemyPieceOnPosition(x, y, chessboard, player) && canMoveOnEnemy)){
+    		            		BehaviourFunktions.enemyPieceOnPosition(x, y, chessboard, player) && canMoveOnEnemy) &&
+	            		BehaviourFunktions.isTarget(x, y, chessboard, square, this, player)){
 					result.add(chessboard.getSquares()[x][y]);
 				}
 				
@@ -77,7 +78,8 @@ public class MoveTwoDirections extends PieceBehaviour {
 				if(computeDirektion(range1 * direktion[0], 0, 0, 1, square, chessboard, player) &&
     					!BehaviourFunktions.isout(x, y, chessboard) &&
     					(BehaviourFunktions.checkSpaceAtPosition(x, y, player, chessboard) && canMoveOnEmpty ||
-    							BehaviourFunktions.enemyPieceOnPosition(x, y, chessboard, player) && canMoveOnEnemy)){
+    							BehaviourFunktions.enemyPieceOnPosition(x, y, chessboard, player) && canMoveOnEnemy) &&
+	            		BehaviourFunktions.isTarget(x, y, chessboard, square, this, player)){
 					result.add(chessboard.getSquares()[x][y]);
 				}
     		}
@@ -88,7 +90,8 @@ public class MoveTwoDirections extends PieceBehaviour {
     			if(computeDirektion(0, range1 * direktion[1], -1, 0, square, chessboard, player) &&
     					!BehaviourFunktions.isout(x, y, chessboard) &&
     					(BehaviourFunktions.checkSpaceAtPosition(x, y, player, chessboard) && canMoveOnEmpty ||
-    							BehaviourFunktions.enemyPieceOnPosition(x, y, chessboard, player) && canMoveOnEnemy)){
+    							BehaviourFunktions.enemyPieceOnPosition(x, y, chessboard, player) && canMoveOnEnemy) &&
+	            		BehaviourFunktions.isTarget(x, y, chessboard, square, this, player)){
 					result.add(chessboard.getSquares()[x][y]);
 				}
     			x = square.getPozX() + range2;
@@ -96,7 +99,8 @@ public class MoveTwoDirections extends PieceBehaviour {
     			if(computeDirektion(0, range1 * direktion[1], 1, 0, square, chessboard, player) &&
     					!BehaviourFunktions.isout(x, y, chessboard) &&
     					(BehaviourFunktions.checkSpaceAtPosition(x, y, player, chessboard) && canMoveOnEmpty ||
-    							BehaviourFunktions.enemyPieceOnPosition(x, y, chessboard, player) && canMoveOnEnemy)){
+    							BehaviourFunktions.enemyPieceOnPosition(x, y, chessboard, player) && canMoveOnEnemy) &&
+	            		BehaviourFunktions.isTarget(x, y, chessboard, square, this, player)){
 					result.add(chessboard.getSquares()[x][y]);
 				}
     		}
@@ -148,7 +152,8 @@ public class MoveTwoDirections extends PieceBehaviour {
 				 !BehaviourFunktions.isout(x, y, chessboard) && distanz < range2; x=x+xDir, y=y+yDir, ++distanz)
         {
             if (BehaviourFunktions.checkSpaceAtPosition(x, y, player, chessboard) && canMoveOnEmpty ||
-            		BehaviourFunktions.enemyPieceOnPosition(x, y, chessboard, player) && canMoveOnEnemy)
+            		BehaviourFunktions.enemyPieceOnPosition(x, y, chessboard, player) && canMoveOnEnemy &&
+            		BehaviourFunktions.isTarget(x, y, chessboard, square, this, player))
             {
             	if (!BehaviourFunktions.checkSpaceAtPosition(x, y, player, chessboard) && blockedByPieces)
 	            {
@@ -161,5 +166,13 @@ public class MoveTwoDirections extends PieceBehaviour {
             }
         }
 		return true;
+	}
+	
+	public PieceBehaviour moveTo(Chessboard chessboard, Square startSquare, Square endSquare, Player player){
+		if(startSquare.getPiece() != null) {
+			endSquare.setPiece(startSquare.getPiece());
+			startSquare.setPiece(null);
+		}
+		return null;
 	}
 }

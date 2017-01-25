@@ -22,7 +22,6 @@ package core;
 
 import java.util.ArrayList;
 
-import pieces.KingBehaviour;
 import pieces.Piece;
 
 /**

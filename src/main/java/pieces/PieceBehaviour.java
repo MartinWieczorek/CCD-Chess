@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import core.Chessboard;
 import core.Player;
 import core.Square;
+import javafx.util.converter.PercentageStringConverter;
 
 /**
  * interface of movement behaviors of pieces
- * @author Patrick
- *
  */
 public abstract class PieceBehaviour {
 	
@@ -29,4 +28,7 @@ public abstract class PieceBehaviour {
 	 * @return returns all possible movements of given piece for this behavior
 	 */
 	abstract public ArrayList<Square> getUnsaveMoves(Chessboard chessboard, Square square, Player player);
+	
+	
+	abstract public PieceBehaviour moveTo(Chessboard chessboard, Square startSquare, Square endSquare, Player player);
 }

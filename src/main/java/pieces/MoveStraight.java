@@ -13,17 +13,17 @@ import core.Square;
 public class MoveStraight extends PieceBehaviour {
 	
 	int range;
-	private boolean canMoveOnEmpty;
-	private boolean canMoveOnEnemy;
-	private boolean blockedByPieces;
-	private boolean canMoveUp;
-	private boolean canMoveRight;
-	private boolean canMoveDown;
-	private boolean canMoveLeft;
-	private boolean canMoveLeftUp;
-	private boolean canMoveRightUp;
-	private boolean canMoveRightDown;
-	private boolean canMoveLeftDown;
+	protected boolean canMoveOnEmpty;
+	protected boolean canMoveOnEnemy;
+	protected boolean blockedByPieces;
+	protected boolean canMoveUp;
+	protected boolean canMoveRight;
+	protected boolean canMoveDown;
+	protected boolean canMoveLeft;
+	protected boolean canMoveLeftUp;
+	protected boolean canMoveRightUp;
+	protected boolean canMoveRightDown;
+	protected boolean canMoveLeftDown;
 	
 	/**
 	 * 
@@ -125,7 +125,8 @@ public class MoveStraight extends PieceBehaviour {
 				 x=x+xDir, y=y+yDir, ++distanz)
 	        {
 	            if (BehaviourFunktions.checkSpaceAtPosition(x, y, player, chessboard) && canMoveOnEmpty ||
-	            		BehaviourFunktions.enemyPieceOnPosition(x, y, chessboard, player) && canMoveOnEnemy)
+	            		BehaviourFunktions.enemyPieceOnPosition(x, y, chessboard, player) && canMoveOnEnemy &&
+	            		BehaviourFunktions.isTarget(x, y, chessboard, square, this, player))
 	            {
 	            	result.add(chessboard.getSquares()[x][y]);
 	            	 
@@ -140,5 +141,13 @@ public class MoveStraight extends PieceBehaviour {
 	            }
 	        }
 		return result;
+	}
+	
+	public PieceBehaviour moveTo(Chessboard chessboard, Square startSquare, Square endSquare, Player player){
+		if(startSquare.getPiece() != null) {
+			endSquare.setPiece(startSquare.getPiece());
+			startSquare.setPiece(null);
+		}
+		return null;
 	}
 }
