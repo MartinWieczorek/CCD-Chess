@@ -14,18 +14,22 @@ public class BehaviourFunktions {
      */
 	public static boolean isSafe(Chessboard chessboard, Square square, Player player)
 	{
+		Piece oldPiece = square.getPiece();
+		square.setPiece(PieceFactory.getInstance().createNewPiece(chessboard, player, "Pawn"));
 		for(int x = 0; x < chessboard.getNumSquares(); ++x){
 			for(int y = 0; y < chessboard.getNumSquares(); ++y){
 				Square originSquare = chessboard.getSquares()[x][y];
 				if(originSquare.getPiece() != null && originSquare.getPiece().getPlayer() != player){
 					for (PieceBehaviour behaviour : originSquare.getPiece().getBehaviours()) {
 						if(behaviour.getUnsaveMoves(chessboard, originSquare, originSquare.getPiece().getPlayer()).contains(square)) {
+							square.setPiece(oldPiece);
 							return false;
 						}
 					}
 				}
 			}
 		}
+		square.setPiece(oldPiece);
 		return true;
 	}
 	
@@ -91,31 +95,36 @@ public class BehaviourFunktions {
 	
 	private static boolean testBreakWall(Square square, Chessboard chessboard, PieceBehaviour behaviour, Player player) {
 		
-		ArrayList<PieceBehaviour> neigbourBehaviours = new ArrayList<PieceBehaviour>();
-		
-		if(square.getPozX()-1 < 0 && chessboard.getSquares()[square.getPozX()-1][square.getPozY()].getPiece() != null &&
-				chessboard.getSquares()[square.getPozX()-1][square.getPozY()].getPiece().getPlayer() == player) {
-			neigbourBehaviours.addAll(chessboard.getSquares()[square.getPozX()-1][square.getPozY()].getPiece().getBehaviours());
-		}
-		if(square.getPozX()+1 < chessboard.getNumSquares() && chessboard.getSquares()[square.getPozX()+1][square.getPozY()].getPiece() != null &&
-				chessboard.getSquares()[square.getPozX()+1][square.getPozY()].getPiece().getPlayer() == player) {
-			neigbourBehaviours.addAll(chessboard.getSquares()[square.getPozX()+1][square.getPozY()].getPiece().getBehaviours());
-		}
-		if(square.getPozY()-1 < 0 && chessboard.getSquares()[square.getPozX()][square.getPozY()-1].getPiece() != null &&
-				chessboard.getSquares()[square.getPozX()][square.getPozY()-1].getPiece().getPlayer() == player) {
-			neigbourBehaviours.addAll(chessboard.getSquares()[square.getPozX()][square.getPozY()-1].getPiece().getBehaviours());
-		}
-		if(square.getPozY()+1 < chessboard.getNumSquares() && chessboard.getSquares()[square.getPozX()][square.getPozY()+1].getPiece() != null &&
-				chessboard.getSquares()[square.getPozX()][square.getPozY()+1].getPiece().getPlayer() == player) {
-			neigbourBehaviours.addAll(chessboard.getSquares()[square.getPozX()][square.getPozY()+1].getPiece().getBehaviours());
-		}
+		ArrayList<PieceBehaviour> neigbourBehaviours = getNeigbourBehaviours(square, chessboard, player);
 		
 		for (PieceBehaviour pieceBehaviour : neigbourBehaviours) {
 			if (behaviour.getClass() == BreakWall.class && pieceBehaviour.getClass() == BreakWall.class) {
 				return true;
 			}
 		}
-
 		return false;
+	}
+	
+	public static ArrayList<PieceBehaviour> getNeigbourBehaviours(Square square, Chessboard chessboard, Player player) {
+		ArrayList<PieceBehaviour> result = new ArrayList<PieceBehaviour>();
+		
+		if(square.getPozX()-1 < 0 && chessboard.getSquares()[square.getPozX()-1][square.getPozY()].getPiece() != null &&
+				chessboard.getSquares()[square.getPozX()-1][square.getPozY()].getPiece().getPlayer() == player) {
+			result.addAll(chessboard.getSquares()[square.getPozX()-1][square.getPozY()].getPiece().getBehaviours());
+		}
+		if(square.getPozX()+1 < chessboard.getNumSquares() && chessboard.getSquares()[square.getPozX()+1][square.getPozY()].getPiece() != null &&
+				chessboard.getSquares()[square.getPozX()+1][square.getPozY()].getPiece().getPlayer() == player) {
+			result.addAll(chessboard.getSquares()[square.getPozX()+1][square.getPozY()].getPiece().getBehaviours());
+		}
+		if(square.getPozY()-1 < 0 && chessboard.getSquares()[square.getPozX()][square.getPozY()-1].getPiece() != null &&
+				chessboard.getSquares()[square.getPozX()][square.getPozY()-1].getPiece().getPlayer() == player) {
+			result.addAll(chessboard.getSquares()[square.getPozX()][square.getPozY()-1].getPiece().getBehaviours());
+		}
+		if(square.getPozY()+1 < chessboard.getNumSquares() && chessboard.getSquares()[square.getPozX()][square.getPozY()+1].getPiece() != null &&
+				chessboard.getSquares()[square.getPozX()][square.getPozY()+1].getPiece().getPlayer() == player) {
+			result.addAll(chessboard.getSquares()[square.getPozX()][square.getPozY()+1].getPiece().getBehaviours());
+		}
+		
+		return result;
 	}
 }

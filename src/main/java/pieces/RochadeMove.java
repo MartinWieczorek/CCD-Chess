@@ -49,7 +49,20 @@ public class RochadeMove extends PieceBehaviour {
 	public ArrayList<Square> getUnsaveMoves(Chessboard chessboard, Square square, Player player) {
 		ArrayList<Square> result = new ArrayList<Square>();
 		
-
+		switch(player.getColor()) {
+			case white:
+				result.addAll(castlingMoves(-1, 0, chessboard, square, player));
+				break;
+			case black:
+				result.addAll(castlingMoves(1, 0, chessboard, square, player));
+				break;
+			case red:
+				result.addAll(castlingMoves(0, 1, chessboard, square, player));
+				break;
+			case green:
+				result.addAll(castlingMoves(0, -1, chessboard, square, player));
+				break;
+		}
 		
 		return result;
 	}
@@ -57,58 +70,35 @@ public class RochadeMove extends PieceBehaviour {
 	private ArrayList<Square> castlingMoves(int offX, int offY, Chessboard chessboard, Square square, Player player) 
 	{
 		ArrayList<Square> result = new ArrayList<Square>();
+
+		//short Rochade
+		if( BehaviourFunktions.checkSpaceAtPosition(square.getPozX() + offX, square.getPozY() + offY, player, chessboard) &&
+				BehaviourFunktions.isSafe(chessboard, chessboard.getSquares()[square.getPozX() + offX][square.getPozY() + offY], player) &&
+				BehaviourFunktions.checkSpaceAtPosition(square.getPozX() + offX * 2, square.getPozY() + offY * 2, player, chessboard) &&
+				BehaviourFunktions.isSafe(chessboard, chessboard.getSquares()[square.getPozX() + offX * 2][square.getPozY() + offY * 2], player) &&
+				chessboard.getSquares()[square.getPozX() + offX * 3][square.getPozY() + offY * 3].getPiece() != null) {
+			for (PieceBehaviour behaviour : chessboard.getSquares()[square.getPozX() + offX * 3][square.getPozY() + offY * 3].getPiece().getBehaviours()) {
+				if(behaviour.getClass() == RochadeStay.class) {
+					result.add(chessboard.getSquares()[square.getPozX() + offX * 2][square.getPozY() + offY * 2]);
+				}
+			}
+		}
 		
+		//long Rochade
+		if( BehaviourFunktions.checkSpaceAtPosition(square.getPozX() - offX, square.getPozY() - offY, player, chessboard) &&
+				BehaviourFunktions.isSafe(chessboard, chessboard.getSquares()[square.getPozX() - offX][square.getPozY() - offY], player) &&
+				BehaviourFunktions.checkSpaceAtPosition(square.getPozX() - offX * 2, square.getPozY() - offY * 2, player, chessboard) &&
+				BehaviourFunktions.isSafe(chessboard, chessboard.getSquares()[square.getPozX() - offX * 2][square.getPozY() - offY * 2], player) &&
+				BehaviourFunktions.checkSpaceAtPosition(square.getPozX() - offX * 3, square.getPozY() - offY * 3, player, chessboard) &&
+				BehaviourFunktions.isSafe(chessboard, chessboard.getSquares()[square.getPozX() - offX * 3][square.getPozY() - offY * 3], player) &&
+				chessboard.getSquares()[square.getPozX() - offX * 4][square.getPozY() - offY * 4].getPiece() != null) {
+			for (PieceBehaviour behaviour : chessboard.getSquares()[square.getPozX() - offX * 4][square.getPozY() - offY * 4].getPiece().getBehaviours()) {
+				if(behaviour.getClass() == RochadeStay.class) {
+					result.add(chessboard.getSquares()[square.getPozX() - offX * 3][square.getPozY() - offY * 3]);
+				}
+			}
+		}
 		
-		
-		if (BehaviourFunktions.isSafe(chessboard, square, player))
-        {
-			Piece rook = chessboard.getSquares()[square.getPozX() + offX * 3][square.getPozY() + offY * 3].getPiece();
-			Square square1 = chessboard.getSquares()[square.getPozX() + offX][square.getPozY() + offY];
-			Square square2 = chessboard.getSquares()[square.getPozX() + offX * 2][square.getPozY() + offY * 2];
-			boolean canCastling;
-            if (rook != null && rook.getName().equals("Rook"))
-            {
-                canCastling = true;
-                if (!rook.isWasMotion()) //if rook was not moved before
-                {
-                    for (int x = square.getPozX() + offX, y = square.getPozY() + offY; !BehaviourFunktions.isout(x, y, chessboard); x = x + offX, y = y + offY)
-                    {
-                        if (chessboard.getSquares()[x][y].getPiece() != null && chessboard.getSquares()[x][y].getPiece().getName() != "Rook") //if square is not empty and no rook
-                        {
-                            canCastling = false;
-                            break;
-                        }
-                    }
-                    if (canCastling && BehaviourFunktions.isSafe(chessboard, square1, player) && BehaviourFunktions.isSafe(chessboard, square2, player)) //can do castling when square1 and square2 are not checked
-                    { 
-                    	result.add(square2);
-                    }
-                }
-            }
-            rook = chessboard.getSquares()[square.getPozX() - offX * 3][square.getPozY() - offY * 3].getPiece();
-			square1 = chessboard.getSquares()[square.getPozX() - offX][square.getPozY() - offY];
-			square2 = chessboard.getSquares()[square.getPozX() - offX * 2][square.getPozY() - offY * 2];
-			
-            if (rook != null && rook.getName().equals("Rook"))
-            {
-                canCastling = true;
-                if (!rook.isWasMotion()) //if rook was not moved
-                {
-                	for (int x = square.getPozX() - offX, y = square.getPozY() - offY; !BehaviourFunktions.isout(x, y, chessboard); x = x - offX, y = y - offY)
-                    {
-                        if (chessboard.getSquares()[x][y].getPiece() != null  && chessboard.getSquares()[x][y].getPiece().getName() != "Rook") //if square is not empty and no rook
-                        {
-                            canCastling = false;
-                            break;
-                        }
-                    }
-                    if (canCastling && BehaviourFunktions.isSafe(chessboard, square1, player) && BehaviourFunktions.isSafe(chessboard, square2, player))  //can do castling when square1 and square2 are not checked
-                    {
-                    	result.add(square2);
-                    }
-                }
-            }
-        }
 		return result;
 	}
 	
@@ -117,6 +107,18 @@ public class RochadeMove extends PieceBehaviour {
 			endSquare.setPiece(startSquare.getPiece());
 			startSquare.setPiece(null);
 		}
+		
+		int moveDirektionX = endSquare.getPozX() - startSquare.getPozX();
+		int moveDirektionY = endSquare.getPozY() - startSquare.getPozY();
+		if(Math.abs(moveDirektionX) > 1 || Math.abs(moveDirektionY) > 1) {
+			if(moveDirektionX != 0) moveDirektionX = moveDirektionX / Math.abs(moveDirektionX);
+			if(moveDirektionY != 0) moveDirektionY = moveDirektionY / Math.abs(moveDirektionY);
+			Square originSquare = chessboard.getSquares()[endSquare.getPozX() + moveDirektionX][endSquare.getPozY() + moveDirektionY];
+			Square targetSquare = chessboard.getSquares()[endSquare.getPozX() - moveDirektionX][endSquare.getPozY() - moveDirektionY];
+			targetSquare.setPiece(originSquare.getPiece());
+			originSquare.setPiece(null);
+		}
+		
 		return this;
 	}
 }
