@@ -43,11 +43,11 @@ public class TestPawnGetAllMoves extends TestGetAllMoves
 		int[] p1 = { 4, 10 };
 		
 		// set other pieces
-		testBoard.getSquares()[6][13].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
-		testBoard.getSquares()[6][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(), new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
+		testBoard.getSquares()[6][13].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerWhite(), "King"));
+		testBoard.getSquares()[6][0].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerBlack(), "King"));
 		
 		// set Pawn 
-		testBoard.getSquares()[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
+		testBoard.getSquares()[p1[0]][p1[1]].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerWhite(), "Pawn"));
 		
 		// first move of pawn to cancel twoSteps
 		ChessboardLogic.getInstance().move(testBoard, testBoard.getSquares()[p1[0]][p1[1]], testBoard.getSquares()[p1[0]][p1[1] + 1], false, false);
@@ -78,7 +78,7 @@ public class TestPawnGetAllMoves extends TestGetAllMoves
 		|_|_|_|_|_|_|_|_|_|_|_|_|_|_|09
 		|_|_|_|_|_|_|_|_|o|_|_|_|_|_|10
 		|-|-|-|_|_|_|_|_|o|_|_|-|-|-|11
-		|-|-|-|_|_|P|o|o|X|P|o|-|-|-|12
+		|-|-|-|_|_|P|o|o|X|P|_|-|-|-|12
 		|-|-|-|_|_|_|K|_|_|_|_|-|-|-|13
 		0 1 2 3 4 5 6 7 8 9 10  12 
 		                      11  13  
@@ -88,24 +88,19 @@ public class TestPawnGetAllMoves extends TestGetAllMoves
 		initTest();
 
 		// create solution
-		Square[] SolutionPawn = { new Square(6, 12, null), new Square(7, 12, null), new Square(8, 11, null), new Square(8, 10, null), new Square(10, 12, null) };
+		Square[] SolutionPawn = { new Square(6, 12, null), new Square(7, 12, null), new Square(8, 11, null), new Square(8, 10, null) };
 
 		// Pawn position
 		int[] p1 = { 8, 12 };
 
 		// set other pieces
-		testBoard.getSquares()[6][13].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
-				new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
-		testBoard.getSquares()[6][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(),
-				new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
-		testBoard.getSquares()[5][12].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
-				new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
-		testBoard.getSquares()[9][12].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
-				new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
+		testBoard.getSquares()[6][13].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerWhite(), "King"));
+		testBoard.getSquares()[6][0].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerBlack(), "King"));
+		testBoard.getSquares()[5][12].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerWhite(), "Pawn"));
+		testBoard.getSquares()[9][12].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerWhite(), "Pawn"));
 
 		// set Pawn
-		testBoard.getSquares()[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
-				new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
+		testBoard.getSquares()[p1[0]][p1[1]].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerWhite(), "Pawn"));
 
 		// test movements
 		ArrayList<Square> testMoves = testBoard.getSquares()[p1[0]][p1[1]].allMoves();
@@ -149,18 +144,13 @@ public class TestPawnGetAllMoves extends TestGetAllMoves
 		int[] p1 = { 5, 9 };
 
 		// set other pieces
-		testBoard.getSquares()[6][13].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
-				new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
-		testBoard.getSquares()[6][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(),
-				new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
-		testBoard.getSquares()[4][7].setPiece(new Piece(testBoard, settings.getPlayerBlack(),
-				new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
-		testBoard.getSquares()[6][7].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
-				new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
+		testBoard.getSquares()[6][13].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerWhite(), "King"));
+		testBoard.getSquares()[6][0].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerBlack(), "King"));
+		testBoard.getSquares()[4][7].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerBlack(), "Pawn"));
+		testBoard.getSquares()[6][7].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerWhite(), "Pawn"));
 
 		// set Pawn
-		testBoard.getSquares()[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(),
-				new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
+		testBoard.getSquares()[p1[0]][p1[1]].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerWhite(), "Pawn"));
 		
 		// first move of pawn to cancel twoSteps
 		ChessboardLogic.getInstance().move(testBoard, testBoard.getSquares()[p1[0]][p1[1]], testBoard.getSquares()[p1[0]][p1[1] - 1], false, false);

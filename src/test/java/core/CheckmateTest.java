@@ -2,14 +2,11 @@ package core;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 
 import org.junit.Test;
 
-import pieces.KingBehaviour;
-import pieces.MoveStraight;
 import pieces.Piece;
-import pieces.PieceBehaviour;
+import pieces.PieceFactory;
 
 public class CheckmateTest {
 
@@ -54,18 +51,12 @@ public class CheckmateTest {
 		int[] p1 = { 10, 13 };
 		
 		// set other pieces
-		ArrayList<PieceBehaviour> tmp = new ArrayList<PieceBehaviour>();
-		tmp.add(KingBehaviour.getInstance());
-		testBoard.getSquares()[6][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(), tmp, "King", "K"));
-		tmp.clear();
-		tmp.add(new MoveStraight(Integer.MAX_VALUE, true, true, true, true, true, true, true, false, false, false, false));
-		testBoard.getSquares()[4][12].setPiece(new Piece(testBoard, settings.getPlayerBlack(), tmp, "Rook", "R"));
-		testBoard.getSquares()[3][13].setPiece(new Piece(testBoard, settings.getPlayerBlack(),tmp, "Rook", "R"));
+		testBoard.getSquares()[6][0].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerBlack(), "King"));
+		testBoard.getSquares()[4][12].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerBlack(), "Rook"));
+		testBoard.getSquares()[3][13].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerBlack(), "Rook"));
 		
 		// set white King
-		tmp.clear();
-		tmp.add(KingBehaviour.getInstance());
-		testBoard.getSquares()[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(),tmp, "King", "K"));
+		testBoard.getSquares()[p1[0]][p1[1]].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerWhite(), "King"));
 		
 		// test checkmate
 		
@@ -108,18 +99,12 @@ public class CheckmateTest {
 		int[] p1 = { 10, 13 };
 		
 		// set other pieces
-		ArrayList<PieceBehaviour> tmp = new ArrayList<PieceBehaviour>();
-		tmp.add(KingBehaviour.getInstance());
-		testBoard.getSquares()[6][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(), tmp, "King", "K"));
-		tmp.clear();
-		tmp.add(new MoveStraight(Integer.MAX_VALUE, true, true, true, true, true, true, true, false, false, false, false));
-		testBoard.getSquares()[4][12].setPiece(new Piece(testBoard, settings.getPlayerBlack(), tmp, "Rook", "R"));
-		testBoard.getSquares()[9][11].setPiece(new Piece(testBoard, settings.getPlayerBlack(), tmp, "Rook", "R"));
+		testBoard.getSquares()[6][0].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerBlack(), "King"));
+		testBoard.getSquares()[4][12].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerBlack(), "Rook"));
+		testBoard.getSquares()[9][11].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerBlack(), "Rook"));
 		
 		// set white King
-		tmp.clear();
-		tmp.add(KingBehaviour.getInstance());
-		testBoard.getSquares()[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(), tmp, "King", "K"));
+		testBoard.getSquares()[p1[0]][p1[1]].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerWhite(), "King"));
 		
 		// test checkmate
 		

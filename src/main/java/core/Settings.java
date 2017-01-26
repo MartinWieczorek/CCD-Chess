@@ -207,6 +207,14 @@ public class Settings implements Serializable
 			}
 		}
 	}
+	
+	public Boolean isPlayerActive(Player pl) {
+		for (Player player : activePlayers) {
+			if(player == pl)
+				return true;
+		}
+		return false;
+	}
 
 	public ArrayList<Player> getActivePlayers() {
 		return activePlayers;

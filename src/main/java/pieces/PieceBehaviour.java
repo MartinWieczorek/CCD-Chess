@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import core.Chessboard;
 import core.Player;
 import core.Square;
-import javafx.util.converter.PercentageStringConverter;
 
 /**
  * interface of movement behaviors of pieces

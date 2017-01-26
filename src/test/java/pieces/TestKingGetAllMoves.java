@@ -43,10 +43,10 @@ public class TestKingGetAllMoves extends TestGetAllMoves{
 		int[] p1 = { 5, 8 };
 		
 		// set other pieces
-		testBoard.getSquares()[6][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(), new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
+		testBoard.getSquares()[6][0].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerBlack(), "King"));
 		
 		// set King white 
-		testBoard.getSquares()[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
+		testBoard.getSquares()[p1[0]][p1[1]].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerWhite(), "King"));
 		
 		// test movements
 		ArrayList<Square> testMoves = testBoard.getSquares()[p1[0]][p1[1]].allMoves();
@@ -92,12 +92,12 @@ public class TestKingGetAllMoves extends TestGetAllMoves{
 		int[] p1 = { 10, 12 };
 		
 		// set other pieces
-		testBoard.getSquares()[6][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(), new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
-		testBoard.getSquares()[9][13].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
+		testBoard.getSquares()[6][0].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerBlack(), "King"));
+		testBoard.getSquares()[9][13].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerWhite(), "Pawn"));
 		
 		
 		// set King white
-		testBoard.getSquares()[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
+		testBoard.getSquares()[p1[0]][p1[1]].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerWhite(), "King"));
 		
 		// test movements
 		ArrayList<Square> testMoves = testBoard.getSquares()[p1[0]][p1[1]].allMoves();
@@ -143,17 +143,17 @@ public class TestKingGetAllMoves extends TestGetAllMoves{
 		int[] p1 = { 8, 9 };
 		
 		// set other pieces
-		testBoard.getSquares()[6][0].setPiece(new Piece(testBoard, settings.getPlayerBlack(), new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
+		testBoard.getSquares()[6][0].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerBlack(), "King"));
 		  	// white Pawns 
-		testBoard.getSquares()[8][10].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
-		testBoard.getSquares()[9][10].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
-		testBoard.getSquares()[9][9].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
+		testBoard.getSquares()[8][10].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerWhite(), "Pawn"));
+		testBoard.getSquares()[9][10].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerWhite(), "Pawn"));
+		testBoard.getSquares()[9][9].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerWhite(), "Pawn"));
 			// black Pawn and Rook
-		testBoard.getSquares()[7][9].setPiece(new Piece(testBoard, settings.getPlayerBlack(), new PieceBehaviour[] { PawnBehaviour.getInstance() }, "Pawn"));
-		testBoard.getSquares()[7][8].setPiece(new Piece(testBoard, settings.getPlayerBlack(), new PieceBehaviour[] { RookBehaviour.getInstance() }, "Rook"));
+		testBoard.getSquares()[7][9].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerBlack(), "Pawn"));
+		testBoard.getSquares()[7][8].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerBlack(), "Rook"));
 		
 		// set King white 
-		testBoard.getSquares()[p1[0]][p1[1]].setPiece(new Piece(testBoard, settings.getPlayerWhite(), new PieceBehaviour[] { KingBehaviour.getInstance() }, "King"));
+		testBoard.getSquares()[p1[0]][p1[1]].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerWhite(), "King"));
 		
 		// test movements
 		ArrayList<Square> testMoves = testBoard.getSquares()[p1[0]][p1[1]].allMoves();
