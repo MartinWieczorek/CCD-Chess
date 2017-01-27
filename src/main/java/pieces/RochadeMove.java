@@ -6,7 +6,7 @@ import core.Chessboard;
 import core.Player;
 import core.Square;
 
-public class RochadeMove extends PieceBehaviour {
+public class RochadeMove implements PieceBehaviour {
 
 	@Override
 	public ArrayList<Square> getMoves(Chessboard chessboard, Square square, Player player) {
@@ -76,7 +76,7 @@ public class RochadeMove extends PieceBehaviour {
 				BehaviourFunktions.isSafe(chessboard, chessboard.getSquares()[square.getPozX() + offX][square.getPozY() + offY], player) &&
 				BehaviourFunktions.checkSpaceAtPosition(square.getPozX() + offX * 2, square.getPozY() + offY * 2, player, chessboard) &&
 				BehaviourFunktions.isSafe(chessboard, chessboard.getSquares()[square.getPozX() + offX * 2][square.getPozY() + offY * 2], player) &&
-				chessboard.getSquares()[square.getPozX() + offX * 3][square.getPozY() + offY * 3].getPiece() != null) {
+				BehaviourFunktions.checkRookinCastling(square.getPozX() + offX * 3, square.getPozY() + offY * 3, chessboard) ) {
 			for (PieceBehaviour behaviour : chessboard.getSquares()[square.getPozX() + offX * 3][square.getPozY() + offY * 3].getPiece().getBehaviours()) {
 				if(behaviour.getClass() == RochadeStay.class) {
 					result.add(chessboard.getSquares()[square.getPozX() + offX * 2][square.getPozY() + offY * 2]);
@@ -91,7 +91,7 @@ public class RochadeMove extends PieceBehaviour {
 				BehaviourFunktions.isSafe(chessboard, chessboard.getSquares()[square.getPozX() - offX * 2][square.getPozY() - offY * 2], player) &&
 				BehaviourFunktions.checkSpaceAtPosition(square.getPozX() - offX * 3, square.getPozY() - offY * 3, player, chessboard) &&
 				BehaviourFunktions.isSafe(chessboard, chessboard.getSquares()[square.getPozX() - offX * 3][square.getPozY() - offY * 3], player) &&
-				chessboard.getSquares()[square.getPozX() - offX * 4][square.getPozY() - offY * 4].getPiece() != null) {
+				BehaviourFunktions.checkRookinCastling(square.getPozX() - offX * 4, square.getPozY() - offY * 4, chessboard) ){
 			for (PieceBehaviour behaviour : chessboard.getSquares()[square.getPozX() - offX * 4][square.getPozY() - offY * 4].getPiece().getBehaviours()) {
 				if(behaviour.getClass() == RochadeStay.class) {
 					result.add(chessboard.getSquares()[square.getPozX() - offX * 3][square.getPozY() - offY * 3]);

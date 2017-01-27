@@ -8,7 +8,7 @@ import core.Square;
 /**
  * interface of movement behaviors of pieces
  */
-public abstract class PieceBehaviour {
+public interface PieceBehaviour {
 	
 	/**
 	 * Function for computing all possible position a given piece can reach on a given cheesboard with this behavior.

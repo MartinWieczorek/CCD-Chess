@@ -6,7 +6,7 @@ import core.Chessboard;
 import core.Player;
 import core.Square;
 
-public class RochadeStay extends PieceBehaviour {
+public class RochadeStay implements PieceBehaviour {
 
 	@Override
 	public ArrayList<Square> getMoves(Chessboard chessboard, Square square, Player player) {

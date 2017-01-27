@@ -20,6 +20,9 @@ public class CheckmateTest {
 		settings = game.getSettings();
 		moves_history = new Moves(game);
 		testBoard = game.getChessboard();
+		
+//		testBoard.getSquares()[6][0].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerBlack(), "King"));
+//		testBoard.getSquares()[p1[0]][p1[1]].setPiece(PieceFactory.getInstance().createNewPiece(testBoard, settings.getPlayerWhite(), "King"));
 	}
 
 	//Scenario testCheckmate

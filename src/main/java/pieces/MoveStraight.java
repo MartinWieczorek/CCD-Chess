@@ -10,7 +10,7 @@ import core.Square;
  * Enables a variety of horizontal, vertical and diagonal movement patterns
  */
 
-public class MoveStraight extends PieceBehaviour {
+public class MoveStraight implements PieceBehaviour {
 	
 	int range;
 	protected boolean canMoveOnEmpty;

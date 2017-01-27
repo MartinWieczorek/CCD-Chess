@@ -10,7 +10,7 @@ import core.Square;
  * Enables a variety of movement patterns with goes in one direction first and than in another.
  */
 
-public class MoveTwoDirections extends PieceBehaviour {
+public class MoveTwoDirections implements PieceBehaviour {
 	
 	int range1;
 	int range2;

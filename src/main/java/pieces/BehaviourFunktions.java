@@ -65,6 +65,25 @@ public class BehaviourFunktions {
     	if(chessboard.getSquares()[x][y].getPiece() == null) return true;
     	else return false;
     }  
+    
+    /**
+     * checks if an given Position is empty
+     * @param x x position on chessboard
+     * @param y y position on chessboard
+     * @param player owning player of calling piece
+     * @param chessboard chessboard of the Game
+     * @return true if position is empty
+     */
+    static boolean checkRookinCastling (int x, int y, Chessboard chessboard)
+    {
+    	if( !isout(x, y, chessboard) && chessboard.getSquares()[x][y].getPiece() != null 
+    			&& chessboard.getSquares()[x][y].getPiece().getName().equals("Rook") ){
+    		return true;
+    	}
+    	else{
+    		return false;
+    	}
+    }  
 
     /** Method is useful for out of bounds protection
      * @param x x position on chessboard
