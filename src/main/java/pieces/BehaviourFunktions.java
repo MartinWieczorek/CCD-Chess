@@ -19,7 +19,8 @@ public class BehaviourFunktions {
 		for(int x = 0; x < chessboard.getNumSquares(); ++x){
 			for(int y = 0; y < chessboard.getNumSquares(); ++y){
 				Square originSquare = chessboard.getSquares()[x][y];
-				if(originSquare.getPiece() != null && originSquare.getPiece().getPlayer() != player){
+				if(originSquare.getPiece() != null && originSquare.getPiece().getPlayer() != player
+						&& chessboard.getSettings().isPlayerActive(originSquare.getPiece().getPlayer())){
 					for (PieceBehaviour behaviour : originSquare.getPiece().getBehaviours()) {
 						if(behaviour.getUnsaveMoves(chessboard, originSquare, originSquare.getPiece().getPlayer()).contains(square)) {
 							square.setPiece(oldPiece);
@@ -127,7 +128,7 @@ public class BehaviourFunktions {
 	public static ArrayList<PieceBehaviour> getNeigbourBehaviours(Square square, Chessboard chessboard, Player player) {
 		ArrayList<PieceBehaviour> result = new ArrayList<PieceBehaviour>();
 		
-		if(square.getPozX()-1 < 0 && chessboard.getSquares()[square.getPozX()-1][square.getPozY()].getPiece() != null &&
+		if(square.getPozX()-1 >= 0 && chessboard.getSquares()[square.getPozX()-1][square.getPozY()].getPiece() != null &&
 				chessboard.getSquares()[square.getPozX()-1][square.getPozY()].getPiece().getPlayer() == player) {
 			result.addAll(chessboard.getSquares()[square.getPozX()-1][square.getPozY()].getPiece().getBehaviours());
 		}
@@ -135,7 +136,7 @@ public class BehaviourFunktions {
 				chessboard.getSquares()[square.getPozX()+1][square.getPozY()].getPiece().getPlayer() == player) {
 			result.addAll(chessboard.getSquares()[square.getPozX()+1][square.getPozY()].getPiece().getBehaviours());
 		}
-		if(square.getPozY()-1 < 0 && chessboard.getSquares()[square.getPozX()][square.getPozY()-1].getPiece() != null &&
+		if(square.getPozY()-1 >= 0 && chessboard.getSquares()[square.getPozX()][square.getPozY()-1].getPiece() != null &&
 				chessboard.getSquares()[square.getPozX()][square.getPozY()-1].getPiece().getPlayer() == player) {
 			result.addAll(chessboard.getSquares()[square.getPozX()][square.getPozY()-1].getPiece().getBehaviours());
 		}
