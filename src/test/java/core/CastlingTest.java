@@ -2,6 +2,8 @@ package core;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 import pieces.PieceFactory;
@@ -55,8 +57,13 @@ public class CastlingTest {
 	public void testShortCastling() {
 		//set white rook
 		testBoard.getSquares()[3][13].setPiece(factory.createNewPiece(testBoard, settings.getPlayerWhite(), "Rook"));
+		//test king rochade movement
+		ArrayList<Square>testMoves = testBoard.getSquares()[6][13].getPiece().allMoves(testBoard.getSquares()[6][13]);
+		assertTrue(testMoves.contains(testBoard.getSquares()[4][13]));
+		// test changed rook position
         ChessboardLogic.getInstance().move(testBoard,  testBoard.getKing(settings.getPlayerWhite()),  testBoard.getSquares()[4][13]);
         assertEquals("Rook", testBoard.getSquares()[5][13].getPiece().getName());
+		
 	}
 
 	//Scenario testshort Castling
@@ -86,8 +93,13 @@ public class CastlingTest {
 	public void testLongCastling() {
 		//set white rook
 		testBoard.getSquares()[10][13].setPiece(factory.createNewPiece(testBoard, settings.getPlayerWhite(), "Rook"));
+		//test king rochade movement available
+		ArrayList<Square>testMoves = testBoard.getSquares()[6][13].getPiece().allMoves(testBoard.getSquares()[6][13]);
+		assertTrue(testMoves.contains(testBoard.getSquares()[9][13]));
+		// test changed rook position
 	    ChessboardLogic.getInstance().move(testBoard,  testBoard.getKing(settings.getPlayerWhite()),  testBoard.getSquares()[9][13]);
 	    assertEquals("Rook", testBoard.getSquares()[8][13].getPiece().getName());
+	    
 	}
 
 }

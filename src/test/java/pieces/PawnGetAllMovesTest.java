@@ -9,7 +9,7 @@ import org.junit.Test;
 import core.ChessboardLogic;
 import core.Square;
 
-public class TestPawnGetAllMoves extends TestGetAllMoves
+public class PawnGetAllMovesTest extends GetAllMovesTest
 {
 
 	//Scenario testPawnMovement1

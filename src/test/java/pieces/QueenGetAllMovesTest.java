@@ -15,7 +15,7 @@ import core.Square;
  * @author peter
  * @version Dec 10/2016
  */
-public class TestQueenGetAllMoves extends TestGetAllMoves {
+public class QueenGetAllMovesTest extends GetAllMovesTest {
 
 	/** Scenario testQueenMovement1 with fundamentals and one attack to a black pawn
 		/* X = white Queen and o = her movepoints

@@ -16,7 +16,7 @@ import core.Square;
  * @version Dec 10/2016
  */
 
-public class TestBishopGetAllMoves extends TestGetAllMoves 
+public class BishopGetAllMovesTest extends GetAllMovesTest 
 {
 		//Scenario testBishopMovement1
 			/* X = Bishop

@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import core.Square;
 
-public class TestKnightGetAllMoves extends TestGetAllMoves{
+public class KnightGetAllMovesTest extends GetAllMovesTest{
 
 	
 	/**

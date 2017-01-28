@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import core.Square;
 
-public class TestKingGetAllMoves extends TestGetAllMoves{
+public class KingGetAllMovesTest extends GetAllMovesTest{
 
 	//Scenario testKingMovement1
 		/* X = King white

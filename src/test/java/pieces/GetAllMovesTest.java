@@ -8,7 +8,7 @@ import core.Moves;
 import core.Settings;
 import core.Square;
 
-public class TestGetAllMoves {
+public class GetAllMovesTest {
 
 	protected Game game;
 	protected Settings settings;

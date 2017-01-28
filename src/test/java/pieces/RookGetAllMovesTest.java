@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import core.Square;
 
-public class TestRookGetAllMoves extends TestGetAllMoves{
+public class RookGetAllMovesTest extends GetAllMovesTest{
 
 
 	//Scenario testRookMovement1

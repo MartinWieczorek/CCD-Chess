@@ -14,7 +14,7 @@ import core.Settings;
 import core.Square;
 import pieces.PieceFactory;
 
-public class TestWallGetAllMoves extends TestGetAllMoves {
+public class WallGetAllMovesTest extends GetAllMovesTest {
 
 	private Game game;
 	private Settings settings;
