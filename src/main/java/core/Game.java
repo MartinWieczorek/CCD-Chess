@@ -492,7 +492,6 @@ public class Game extends JPanel implements MouseListener, ComponentListener
                     int y = event.getY();//get Y position of mouse
 
                     Square sq = ChessboardLogic.getInstance().getSquare(getChessboard(), x, y);
-                    //Square sq = chessboard.getSquares()[x][y];
                     
                     if ((sq == null && getChessboard().getActiveSquare() == null)
                             || (this.getChessboard().getActiveSquare() == null && sq.getPiece() != null && sq.getPiece().getPlayer() != this.activePlayer))
@@ -543,18 +542,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
                         		this.nextMove();
                         		settings.removeActivePlayer(playerToRemove);
                         	}
-                        }
-//                        Piece king;
-//                        if (this.activePlayer == getSettings().getPlayerWhite())
-//                        {
-//                            king = getChessboard().getKing(getSettings().getPlayerWhite()).getPiece();
-//                        }
-//                        else
-//                        {
-//                            king = getChessboard().getKing(getSettings().getPlayerBlack()).getPiece();
-//                        }
-
-                        
+                        }                        
                     }
                     
                 } 
