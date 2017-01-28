@@ -11,6 +11,11 @@ public class PieceFactory {
 	
 	private PieceFactory(){}
 	
+	 public enum PieceType
+	    {
+		 Rook,Bishop, King, Queen, Wall, Pawn, Knight
+	    }
+	
 	public static PieceFactory getInstance(){
 		if(factory == null){
 			factory = new PieceFactory();

@@ -73,7 +73,7 @@ public class RochadeMove implements PieceBehaviour {
 
 		//short Rochade
 		if( BehaviourFunktions.checkSpaceAtPosition(square.getPozX() + offX, square.getPozY() + offY, player, chessboard) &&
-				BehaviourFunktions.isSafe(chessboard, chessboard.getSquares()[square.getPozX() + offX][square.getPozY() + offY], player) &&
+				//BehaviourFunktions.isSafe(chessboard, chessboard.getSquares()[square.getPozX() + offX][square.getPozY() + offY], player) &&
 				BehaviourFunktions.checkSpaceAtPosition(square.getPozX() + offX * 2, square.getPozY() + offY * 2, player, chessboard) &&
 				BehaviourFunktions.isSafe(chessboard, chessboard.getSquares()[square.getPozX() + offX * 2][square.getPozY() + offY * 2], player) &&
 				BehaviourFunktions.checkRookinCastling(square.getPozX() + offX * 3, square.getPozY() + offY * 3, chessboard) ) {
@@ -86,9 +86,9 @@ public class RochadeMove implements PieceBehaviour {
 		
 		//long Rochade
 		if( BehaviourFunktions.checkSpaceAtPosition(square.getPozX() - offX, square.getPozY() - offY, player, chessboard) &&
-				BehaviourFunktions.isSafe(chessboard, chessboard.getSquares()[square.getPozX() - offX][square.getPozY() - offY], player) &&
+				//BehaviourFunktions.isSafe(chessboard, chessboard.getSquares()[square.getPozX() - offX][square.getPozY() - offY], player) &&
 				BehaviourFunktions.checkSpaceAtPosition(square.getPozX() - offX * 2, square.getPozY() - offY * 2, player, chessboard) &&
-				BehaviourFunktions.isSafe(chessboard, chessboard.getSquares()[square.getPozX() - offX * 2][square.getPozY() - offY * 2], player) &&
+				//BehaviourFunktions.isSafe(chessboard, chessboard.getSquares()[square.getPozX() - offX * 2][square.getPozY() - offY * 2], player) &&
 				BehaviourFunktions.checkSpaceAtPosition(square.getPozX() - offX * 3, square.getPozY() - offY * 3, player, chessboard) &&
 				BehaviourFunktions.isSafe(chessboard, chessboard.getSquares()[square.getPozX() - offX * 3][square.getPozY() - offY * 3], player) &&
 				BehaviourFunktions.checkRookinCastling(square.getPozX() - offX * 4, square.getPozY() - offY * 4, chessboard) ){
