@@ -28,6 +28,12 @@ public interface PieceBehaviour {
 	 */
 	abstract public ArrayList<Square> getUnsaveMoves(Chessboard chessboard, Square square, Player player);
 	
-	
+	/** Moves the piece from the startSquare to the endSquare and computes side effects in some cases
+	 * @param chessboard
+	 * @param startSquare
+	 * @param endSquare
+	 * @param player
+	 * @return Should either return null or this. Returning "this" will delete this behavior in the calling piece. Returning "null" will do nothing.  
+	 */
 	abstract public PieceBehaviour moveTo(Chessboard chessboard, Square startSquare, Square endSquare, Player player);
 }

@@ -102,6 +102,7 @@ public class RochadeMove implements PieceBehaviour {
 		return result;
 	}
 	
+	@Override
 	public PieceBehaviour moveTo(Chessboard chessboard, Square startSquare, Square endSquare, Player player){
 		if(startSquare.getPiece() != null){
 			endSquare.setPiece(startSquare.getPiece());

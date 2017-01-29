@@ -24,6 +24,12 @@ public class PieceFactory {
 		return factory;
 	}
 	
+	/** Method to create and returning a new piece.
+	 * @param chessboard
+	 * @param player
+	 * @param name Name of the new piece. Valid names are: Rook, Bishop, King, Queen, Wall, Knight, Pawn. 
+	 * @return Returns the new piece or null for invalid names.
+	 */
 	public Piece createNewPiece(Chessboard chessboard, Player player, String name){
 		Piece newPiece = null;
 		switch(name){
@@ -47,6 +53,8 @@ public class PieceFactory {
 			break;
 		case "Pawn":
 			newPiece = createPawn(chessboard, player);
+			break;
+		default:
 			break;
 		}
 		return newPiece;

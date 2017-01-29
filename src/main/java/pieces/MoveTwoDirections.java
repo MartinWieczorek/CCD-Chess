@@ -23,12 +23,11 @@ public class MoveTwoDirections implements PieceBehaviour {
 	private boolean canMoveLeft;
 	
 	/**
-	 * 
-	 * @param range1
-	 * @param range2
-	 * @param canMoveOnEmpty
-	 * @param canMoveOnEnemy
-	 * @param blockedByPieces
+	 * @param range1 Indicates the number of squares which the behaviour can bridge in every valid direction.
+	 * @param range2 Indicates the number of sqaures which tes behaviour can bridge in both orthogonal directions from the endpoint of the first range.
+	 * @param canMoveOnEmpty Behaviour can move a square where no piece is standing.
+	 * @param canMoveOnEnemy Behaviour can move a square where an enemy piece is standing.
+	 * @param blockedByPieces False if the behaviour can move past other pieces.
 	 * @param canMoveUp
 	 * @param canMoveRight
 	 * @param canMoveDown

@@ -26,11 +26,10 @@ public class MoveStraight implements PieceBehaviour {
 	protected boolean canMoveLeftDown;
 	
 	/**
-	 * 
-	 * @param range
-	 * @param canMoveOnEmpty
-	 * @param canMoveOnEnemy
-	 * @param blockedByPieces
+	 * @param range Indicates the number of squares which the behaviour can bridge.
+	 * @param canMoveOnEmpty Behaviour can move a square where no piece is standing.
+	 * @param canMoveOnEnemy Behaviour can move a square where an enemy piece is standing.
+	 * @param blockedByPieces False if the behaviour can move past other pieces.
 	 * @param canMoveUp
 	 * @param canMoveRight
 	 * @param canMoveDown

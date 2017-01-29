@@ -105,6 +105,15 @@ public class BehaviourFunktions {
         return false;
     }
 
+    /** Method to test if on square with coordinates x, y is either no piece or a targetable piece 
+     * @param x
+     * @param y
+     * @param chessboard
+     * @param square Square of the piece that wants to move
+     * @param behaviour Behaviour which enabled the movement to square x, y
+     * @param player Player of the piece that wants to move
+     * @return
+     */
 	public static boolean isTarget(int x, int y, Chessboard chessboard, Square square, PieceBehaviour behaviour, Player player) {
 		if(chessboard.getSquares()[x][y].getPiece() != null && chessboard.getSquares()[x][y].getPiece().getName() == "Wall"
 				&& !testBreakWall(square, chessboard, behaviour, player)) {
@@ -125,6 +134,12 @@ public class BehaviourFunktions {
 		return false;
 	}
 	
+	/** Method to get the behaviours of all the allied pieces which are on neigbour squares 
+	 * @param square The center
+	 * @param chessboard
+	 * @param player The player of the piece in the center
+	 * @return
+	 */
 	public static ArrayList<PieceBehaviour> getNeigbourBehaviours(Square square, Chessboard chessboard, Player player) {
 		ArrayList<PieceBehaviour> result = new ArrayList<PieceBehaviour>();
 		

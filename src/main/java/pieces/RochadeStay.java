@@ -18,6 +18,7 @@ public class RochadeStay implements PieceBehaviour {
 		return new ArrayList<Square>();
 	}
 
+	@Override
 	public PieceBehaviour moveTo(Chessboard chessboard, Square startSquare, Square endSquare, Player player){
 		return this;
 	}

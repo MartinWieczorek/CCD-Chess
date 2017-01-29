@@ -19,22 +19,6 @@ public class MoveSaveStraight extends MoveStraight {
 				canMoveLeftUp, canMoveRightUp, canMoveRightDown, canMoveLeftDown);
 	}
 
-	/**
-	 * 
-	 * @param range
-	 * @param canMoveOnEmpty
-	 * @param canMoveOnEnemy
-	 * @param blockedByPieces
-	 * @param canMoveUp
-	 * @param canMoveRight
-	 * @param canMoveDown
-	 * @param canMoveLeft
-	 * @param canMoveLeftUp
-	 * @param canMoveRightUp
-	 * @param canMoveRightDown
-	 * @param canMoveLeftDown
-	 */
-	
 	@Override
 	public ArrayList<Square> getMoves(Chessboard chessboard, Square square, Player player) {
 		ArrayList<Square> posibilities = getUnsaveMoves(chessboard, square, player);

@@ -58,8 +58,7 @@ public class Piece {
 
 	/**
 	 * Construct a new Piece on given chessboard for given player with given behaviors.
-	 * @param name the name of the type of the piece specifies the symbol of the pie and the way other pieces interact with this one.
-	 * 	only Bishop, Knight, Pawn, Queen, Rook or King should be used.
+	 * @param name the name of the type of the piece specifies the way other pieces interact with this one.
 	 */
 	public Piece(Chessboard chessboard, Player player, ArrayList<PieceBehaviour> behaviours, String name, String symbol) {
 		this.behaviours = behaviours;
@@ -191,6 +190,10 @@ public class Piece {
 		return ret;
 	}
 
+	/** Method to check if the piece is a target of another piece
+	 * @param sq Square of the piece to check
+	 * @return
+	 */
 	public boolean isChecked(Square sq) {
 		return !BehaviourFunktions.isSafe(this.chessboard, sq, this.getPlayer());
 	}
@@ -252,7 +255,7 @@ public class Piece {
 		this.player = player;
 	}
 
-	public boolean isWasMotion() {
+	public boolean getWasMotion() {
 		return wasMotion;
 	}
 
